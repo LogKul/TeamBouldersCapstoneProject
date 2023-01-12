@@ -5,5 +5,5 @@ TEAM MEMBERS
 =====================================
 -Cody Cox
 -Logan Kulesus
--Hudson Turnerr
+-Hudson Turner
 -Kyle Longaker
