@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
 });
 
 /* TEST endpoint */
-router.get('/api', (req, res) => {
+router.get('/api', (req, res, next) => {
   res.json({ 'users': ['user1', 'user2', 'user3'] })
 })
 
