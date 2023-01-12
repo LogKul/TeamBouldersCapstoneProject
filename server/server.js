@@ -7,4 +7,4 @@ app.get("/api", (req, res) => {
 
 // When changing port number, DON'T FORGET
 // to also change it in proxy in /client/package.json
-app.listen(5027, () => { console.log("Server started on port 5027") })
+app.listen(5000, () => { console.log("Server started on port 5000") })
