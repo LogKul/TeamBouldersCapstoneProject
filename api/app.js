@@ -9,7 +9,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.ORIGIN_ADDRESS,
+  optionsSuccessStatus: 200
 }
 
 var app = express();
