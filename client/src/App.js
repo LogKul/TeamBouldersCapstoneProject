@@ -13,7 +13,7 @@ function App() {
   // const to store user details and error message
   // needed to determine if user is logged in when first accessing site
   // token is currently unused
-  const [user, setUser] = useState({name: "", email: "", token: ""});
+  const [user, setUser] = useState({ name: "", email: "", token: "" });
   const [error, setError] = useState("");
 
 
@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
     console.log(process.env.REACT_APP_API_URL)
-    fetch(process.env.REACT_APP_API_URL + "/api").then(
+    fetch(process.env.REACT_APP_API_URL + "/users/all").then(
       response => response.json()
     ).then(
       data => {
@@ -64,11 +64,12 @@ function App() {
 
   return (
     <div>
-      {(typeof backendData.users === 'undefined') ? (
+      {(typeof backendData === 'undefined') ? (
         <p>Loading...</p>
       ) : (
-        backendData.users.map((user, i) => (
-          <p key={i}>{i + 1}. {user}</p>
+        backendData.map((user, i) => (
+          <p>id: {user.id},
+            username: {user.username}</p>
         ))
       )},
       {(user.email != "") ? (
@@ -79,7 +80,7 @@ function App() {
           <button onClick={Logout}>Logout</button>
         </div>
       ) : (
-        <LoginForm Login={Login} error={error}/>
+        <LoginForm Login={Login} error={error} />
       )}
     </div>
   )

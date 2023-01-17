@@ -1,9 +1,11 @@
 var createError = require('http-errors');
 var cors = require('cors')
 var express = require('express');
+var bodyParser = require('body-parser')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require('dotenv').config();
 
 var testRouter = require('./routes/test');
 var indexRouter = require('./routes/index');
@@ -16,6 +18,15 @@ var corsOptions = {
 
 var app = express();
 app.use(cors(corsOptions))
+console.log(corsOptions)
+
+// Some middleware required for PostgreSQL connector (pg)
+/*app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+)*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
