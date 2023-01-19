@@ -84,7 +84,7 @@ function onError(error) {
  * Connect to PostgreSQL Database
  */
 
-var client = new Client({
+/*var client = new Client({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
   database: process.env.PG_DB,
@@ -96,7 +96,7 @@ var client = new Client({
 })
 client.connect()
 app.locals.db = client;
-console.log("Database initialized");
+console.log("Database initialized");*/
 
 /**
  * Event listener for HTTP server "listening" event.
