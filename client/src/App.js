@@ -1,49 +1,43 @@
 import React, { useEffect, useState } from 'react'
-import LoginForm from './components/LoginForm'
+import LoginView from './components/LoginView'
+import RegisterView from './components/RegisterView'
+import LoggedInView from './components/LoggedInView'
 
 function App() {
+  
+  const [currentView, setCurrentView] = useState("login")
 
-  // temp user details to validate against for form
-  // once auth is built then can just confirm from auth
-  const testUser = {
-    email: "test@test.test",
-    password: "testPassword"
+  const switchView = (viewName) => {
+    setCurrentView(viewName)
   }
 
-  // const to store user details and error message
-  // needed to determine if user is logged in when first accessing site
-  // token is currently unused
-  const [user, setUser] = useState({ name: "", email: "", token: "" });
-  const [error, setError] = useState("");
+  const [currentUser, setCurrentUser] = useState({ username: "", email: "", password: "" })
 
+  const [error, setError] = useState("")
 
-  // user details held for login verification
-  // *** ONCE AUTH IS BUILT THIS NEEDS TO CHANGE TO VALIDATE WITH TOKEN
-  const Login = details => {
-    console.log(details)
+  const [testUser, setTestUser] = useState({ username: "testUser", email: "test@test.test", password: "testPassword" })
 
-    if (details.email == testUser.email && details.password == testUser.password) {
-      console.log("Logged in");
-      setUser({
-        name: details.name,
-        email: details.email
-      });
+  const Register = credentials => {
+    setTestUser(credentials)
+  }
+
+  const Login = credentials => {
+    console.log(credentials)
+
+    if (credentials.email == testUser.email && credentials.password == testUser.password) {
+      setCurrentUser({username: credentials.username, email: credentials.email, password: credentials.password})
+      setCurrentView('loggedin')
       setError("")
     } else {
-      console.log("Details do not match")
-      setError("Details do not match")
+      console.log("Invalid Credentials")
+      setError("Invalid Credentials")
     }
   }
 
-  // reset user details when logged out
   const Logout = () => {
-    setUser({
-      name: "",
-      email: ""
-    })
+    setCurrentUser({username: '', email: '', password: ''})
+    setCurrentView('login')
   }
-
-  // backendData stuff?
 
   const [backendData, setBackendData] = useState([{}])
 
@@ -58,10 +52,6 @@ function App() {
     )
   }, [])
 
-  // return loading backendData
-
-  // also return login form or temporary logged in page
-
   return (
     <div>
       {(typeof backendData === 'undefined') ? (
@@ -71,17 +61,11 @@ function App() {
           <p>id: {user.id},
             username: {user.username}</p>
         ))
-      )},
-      {(user.email != "") ? (
-
-        // temp logged in page or login form
-        <div className="welcome">
-          <h2>Welcome, <span>{user.name}</span></h2>
-          <button onClick={Logout}>Logout</button>
-        </div>
-      ) : (
-        <LoginForm Login={Login} error={error} />
       )}
+
+      {currentView === "login" ? <LoginView Login={Login} error={error} switchView={switchView} /> : 
+      currentView === "register" ? <RegisterView Register={Register} error={error} switchView={switchView} /> : 
+      <LoggedInView Logout={Logout} error={error} />}
     </div>
   )
 }
