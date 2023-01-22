@@ -16,7 +16,11 @@ var corsOptions = {
   optionsSuccessStatus: 200
 }
 
+var express = require('express');
+var helmet = require('helmet');
+ 
 var app = express();
+app.use(helmet());
 app.use(cors(corsOptions))
 console.log(corsOptions)
 
