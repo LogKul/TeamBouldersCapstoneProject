@@ -6,7 +6,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
-
+const helmet = require('helmet');
 var authRouter = require('./routes/auth');
 var testRouter = require('./routes/test');
 var usersRouter = require('./routes/users');
@@ -15,11 +15,8 @@ var corsOptions = {
   origin: process.env.ORIGIN_ADDRESS,
   optionsSuccessStatus: 200
 }
-
-var express = require('express');
-var helmet = require('helmet');
  
-var app = express();
+const app = express();
 app.use(helmet());
 app.use(cors(corsOptions))
 console.log(corsOptions)
