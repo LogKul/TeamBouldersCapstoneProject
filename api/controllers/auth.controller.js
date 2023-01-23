@@ -25,7 +25,7 @@ exports.signup = (req, res) => {
 exports.login = (req, res) => {
     User.findOne({
         where: {
-            username: req.body.username,
+            username: req.params.username,
         }
     })
         .then(user => {
@@ -38,7 +38,7 @@ exports.login = (req, res) => {
             }
 
             var passwordIsValid = bcrypt.compareSync(
-                req.body.password,
+                req.params.password,
                 user.password
             );
 
