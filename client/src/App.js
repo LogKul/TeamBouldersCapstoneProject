@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 import LoginView from './components/LoginView'
 import RegisterView from './components/RegisterView'
 import LoggedInView from './components/LoggedInView'
-import Register from './components/Register'
+
+import Register from "./components/Register"
+import Login from "./components/Login"
 
 function App() {
   
@@ -55,10 +57,10 @@ function App() {
   }, [])*/
 
   return (
-    <div>
-      <Register />
+    <main>
+      <Login />
 
-    </div>
+    </main>
   )
 }
 
