@@ -17,7 +17,7 @@ router.get('/users', (req, res, next) => {
 })
 
 /* Login */
-router.get('/login:username&:password', controller.login)
+router.get('/login/:username&:password', controller.login)
 
 /* Signup */
 router.post('/signup', [validateSignUp.validateNoDuplicateUsername], controller.signup)
