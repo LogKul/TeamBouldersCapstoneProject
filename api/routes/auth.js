@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var controller = require("../controllers/auth.controller");
-var { validateSignUp } = require("../middleware");
+var { validateSignUp, authJwt } = require("../middleware");
 
 router.use(function (req, res, next) {
     res.header(
@@ -21,5 +21,8 @@ router.get('/login', controller.login)
 
 /* Signup */
 router.post('/signup', [validateSignUp.validateNoDuplicateUsername], controller.signup)
+
+/* Refresh Token */
+router.get('/refresh', [authJwt.verifyToken], controller.refresh)
 
 module.exports = router;

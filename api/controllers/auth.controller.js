@@ -69,3 +69,34 @@ exports.login = (req, res) => {
             res.status(500).send({ message: err.message });
         });
 };
+
+exports.refresh = (req, res) => {
+    User.findOne({
+        where: {
+            username: req.query.username,
+        }
+    })
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
+
+            if (user.deleted) {
+                return res.status(404).send({ message: "User has been deleted." });
+            }
+
+            var token = jwt.sign({ id: user.id }, config.secret, {
+                expiresIn: 86400 // 24 hours
+            });
+
+            res.status(200).send({
+                id: user.id,
+                username: user.username,
+                accessToken: token
+            });
+
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+        });
+};
