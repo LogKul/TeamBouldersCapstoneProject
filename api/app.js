@@ -6,7 +6,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
-
+const helmet = require('helmet');
 var authRouter = require('./routes/auth');
 var testRouter = require('./routes/test');
 var usersRouter = require('./routes/users');
@@ -15,8 +15,49 @@ var corsOptions = {
   origin: process.env.ORIGIN_ADDRESS,
   optionsSuccessStatus: 200
 }
-
-var app = express();
+ 
+const app = express();
+//Helmet Security Policies
+app.use(
+  helmet({
+    hsts: {
+      maxAge: 31536000,
+      includeSubdomains: true,
+    },
+    frameGuard: {
+      action: "deny",
+    },
+    noSniff: {
+    },
+    contentSecurityPolicy: {
+      directives:{
+        defaultSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        upgradeInsecureRequests: [],
+        blockAllMixedContent: [],
+      }
+    },
+    permittedCrossDomainPolicies: {
+      permittedpolicies: "none",
+    },
+    referrerPolicy : {
+      policy: "no-referrer",
+    },
+    crossOriginEmbedderPolicy: {
+    },
+    crossOriginOpenerPolicy: {
+      policy: "same-origin",
+    },
+    crossOriginResourcePolicy:{
+      policy: "same-origin",
+    },
+    xssFilter: {
+    },
+    hidePoweredBy: {
+    },
+  })
+);
 app.use(cors(corsOptions))
 console.log(corsOptions)
 
