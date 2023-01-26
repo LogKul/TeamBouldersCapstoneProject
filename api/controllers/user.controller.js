@@ -42,6 +42,7 @@ exports.update = (req, res) => {
     })
         .then(user => {
             user.set(req.body);
+            user.save();
 
             res.status(200).send({ message: "User was updated successfully!" });
         })

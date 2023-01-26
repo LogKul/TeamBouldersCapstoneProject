@@ -15,7 +15,6 @@ const sequelize = new Sequelize(
                 rejectUnauthorized: false,
             }
         },
-        operatorsAliases: false,
         define: {
             timestamps: false
         }
@@ -35,6 +34,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
+db.game = require("../models/game.model.js")(sequelize, Sequelize);
+db.chat = require("../models/chat.model.js")(sequelize, Sequelize);
+db.report = require("../models/report.model.js")(sequelize, Sequelize);
 
 /*
 db.role.belongsToMany(db.user, {
