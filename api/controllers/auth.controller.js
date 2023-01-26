@@ -61,6 +61,10 @@ exports.login = (req, res) => {
                 mmr: user.mmr,
                 deleted: user.deleted,
                 admin: user.admin,
+                lightswitch: user.lightswitch,
+                theme: user.theme,
+                banned: user.banned,
+                hideschat: user.hideschat,
                 accessToken: token
             });
 

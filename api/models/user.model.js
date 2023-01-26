@@ -31,6 +31,21 @@ module.exports = (sequelize, Sequelize) => {
         },
         admin: {
             type: Sequelize.BOOLEAN
+        },
+        lightswitch: {
+            type: Sequelize.BOOLEAN
+        },
+        theme: {
+            type: Sequelize.INTEGER
+        },
+        banned: {
+            type: Sequelize.BOOLEAN
+        },
+        hideschat: {
+            type: Sequelize.BOOLEAN
+        },
+        priority: {
+            type: Sequelize.BOOLEAN
         }
     });
 
