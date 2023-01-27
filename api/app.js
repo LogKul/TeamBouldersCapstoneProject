@@ -19,44 +19,42 @@ var corsOptions = {
 const app = express();
 //Helmet Security Policies
 app.use(
-  helmet({
-    hsts: {
-      maxAge: 31536000,
-      includeSubdomains: true,
-    },
-    frameGuard: {
-      action: "deny",
-    },
-    noSniff: {
-    },
-    contentSecurityPolicy: {
-      directives:{
-        defaultSrc: ["'self'"],
-        objectSrc: ["'none'"],
-        frameAncestors: ["'none'"],
-        upgradeInsecureRequests: [],
-        blockAllMixedContent: [],
-      }
-    },
-    permittedCrossDomainPolicies: {
-      permittedpolicies: "none",
-    },
-    referrerPolicy : {
-      policy: "no-referrer",
-    },
-    crossOriginEmbedderPolicy: {
-    },
-    crossOriginOpenerPolicy: {
-      policy: "same-origin",
-    },
-    crossOriginResourcePolicy:{
-      policy: "same-origin",
-    },
-    xssFilter: {
-    },
-    hidePoweredBy: {
-    },
-  })
+  helmet.hsts ({
+    maxAge: 31536000,
+    includeSubdomains: true,
+  }),
+  helmet.frameGuard({
+    action: "deny",
+  }),
+  helmet.noSniff({
+  }),
+  contentSecurityPolicy({
+    directives:{
+      defaultSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      frameAncestors: ["'none'"],
+      upgradeInsecureRequests: [],
+      blockAllMixedContent: [],
+    }
+  }),
+  permittedCrossDomainPolicies({
+    permittedpolicies: "none",
+  }),
+  referrerPolicy({
+    policy: "no-referrer",
+  }),
+  crossOriginEmbedderPolicy({
+  }),
+  crossOriginOpenerPolicy({
+    policy: "same-origin",
+  }),
+  crossOriginResourcePolicy({
+    policy: "same-origin",
+  }),
+  xssFilter({
+  }),
+  hidePoweredBy({
+  }),
 );
 app.use(cors(corsOptions))
 console.log(corsOptions)
