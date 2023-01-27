@@ -7,3 +7,5 @@ TEAM MEMBERS
 -Logan Kulesus
 -Hudson Turner
 -Kyle Longaker
+
+Test for CodeQL
