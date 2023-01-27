@@ -39,19 +39,19 @@ db.chat = require("../models/chat.model.js")(sequelize, Sequelize);
 db.report = require("../models/report.model.js")(sequelize, Sequelize);
 
 /* Associations */
-(db.game).hasOne(db.user, { foreignKey: "player1" });
-(db.game).hasOne(db.user, { foreignKey: "player2" });
+(db.user).hasMany(db.game, { foreignKey: "player1" });
+(db.user).hasMany(db.game, { foreignKey: "player2" });
 //(db.users).hasMany(db.game, { as: "player1", foreignKey: "player1" });
 //(db.users).hasMany(db.game, { as: "player2", foreignKey: "player2" });
-(db.user).belongsTo(db.game);
+(db.game).belongsTo(db.user);
 
-(db.report).hasOne(db.user, { foreignKey: "reported_user" });
-(db.user).belongsTo(db.report);
+(db.user).hasMany(db.report, { foreignKey: "reported_user" });
+(db.report).belongsTo(db.user);
 
-(db.chat).hasOne(db.game, { foreignKey: "game_id" });
-(db.chat).hasOne(db.user, { foreignKey: "player" });
-(db.user).belongsTo(db.chat);
-(db.game).belongsTo(db.chat);
+(db.game).hasOne(db.chat, { foreignKey: "game_id" });
+(db.user).hasMany(db.chat, { foreignKey: "player" });
+(db.chat).belongsTo(db.user);
+(db.chat).belongsTo(db.game);
 
 // as: "player1",
 // as: "player2",

@@ -24,6 +24,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         time: {
             type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
         winner: {
             type: Sequelize.UUID,
