@@ -15,7 +15,7 @@ router.use(function (req, res, next) {
 });
 
 /* GET users listing. */
-router.get('/create', [authJwt.verifyToken], controller.create);
+router.post('/create', [authJwt.verifyToken], controller.create);
 router.get('/read', [authJwt.verifyToken], controller.read);
 router.put('/update', [authJwt.verifyToken], controller.update);
 router.delete('/delete', [authJwt.verifyToken], controller.delete);
