@@ -1,6 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
+const Role = db.role;
 require('dotenv').config();
 
 const Op = db.Sequelize.Op;
@@ -16,8 +17,25 @@ exports.signup = (req, res) => {
         username: req.body.username,
         password: bcrypt.hashSync(salted, 8)
     })
-        .then(() => {
-            res.send({ message: "User was registered successfully!" });
+        .then(user => {
+            if (req.body.roles) {
+                Role.findAll({
+                    where: {
+                        name: {
+                            [Op.or]: req.body.roles
+                        }
+                    }
+                }).then(roles => {
+                    user.setRoles(roles).then(() => {
+                        res.send({ message: "User was registered successfully!" });
+                    });
+                });
+            } else {
+                // user role = 1
+                user.setRoles([1]).then(() => {
+                    res.send({ message: "User was registered successfully!" });
+                });
+            }
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
@@ -57,19 +75,26 @@ exports.login = (req, res) => {
                 expiresIn: 86400 // 24 hours
             });
 
-            res.status(200).send({
-                id: user.id,
-                username: user.username,
-                wins: user.wins,
-                losses: user.losses,
-                mmr: user.mmr,
-                deleted: user.deleted,
-                admin: user.admin,
-                lightswitch: user.lightswitch,
-                theme: user.theme,
-                banned: user.banned,
-                hideschat: user.hideschat,
-                accessToken: token
+            var authorities = [];
+            user.getRoles().then(roles => {
+                for (let i = 0; i < roles.length; i++) {
+                    authorities.push("ROLE_" + roles[i].name.toUpperCase());
+                }
+                res.status(200).send({
+                    id: user.id,
+                    username: user.username,
+                    wins: user.wins,
+                    losses: user.losses,
+                    mmr: user.mmr,
+                    deleted: user.deleted,
+                    admin: user.admin,
+                    lightswitch: user.lightswitch,
+                    theme: user.theme,
+                    banned: user.banned,
+                    hideschat: user.hideschat,
+                    roles: authorities,
+                    accessToken: token
+                });
             });
 
         })

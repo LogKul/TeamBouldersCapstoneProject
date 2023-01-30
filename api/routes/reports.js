@@ -18,6 +18,6 @@ router.use(function (req, res, next) {
 router.post('/create', [authJwt.verifyToken], controller.create);
 router.get('/read', [authJwt.verifyToken], controller.read);
 router.put('/update', [authJwt.verifyToken], controller.update);
-router.delete('/delete', [authJwt.verifyToken], controller.delete);
+router.delete('/delete', [authJwt.verifyToken, authJwt.isModeratorOrAdmin], controller.delete);
 
 module.exports = router;

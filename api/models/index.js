@@ -34,15 +34,38 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
+db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.game = require("../models/game.model.js")(sequelize, Sequelize);
 db.chat = require("../models/chat.model.js")(sequelize, Sequelize);
 db.report = require("../models/report.model.js")(sequelize, Sequelize);
+db.ROLES = ["user", "moderator", "admin"];
 
 /* Associations */
+(db.role).belongsToMany(db.user, {
+    through: "user_roles",
+    foreignKey: {
+        name: "role_id",
+        type: DataTypes.UUID
+    },
+    otherKey: {
+        name: "user_id",
+        type: DataTypes.UUID
+    }
+});
+(db.user).belongsToMany(db.role, {
+    through: "user_roles",
+    foreignKey: {
+        name: "user_id",
+        type: DataTypes.UUID
+    },
+    otherKey: {
+        name: "role_id",
+        type: DataTypes.UUID
+    }
+});
+
 (db.user).hasMany(db.game, { foreignKey: { name: 'player1', type: DataTypes.UUID } });
 (db.user).hasMany(db.game, { foreignKey: { name: 'player2', type: DataTypes.UUID } });
-//(db.users).hasMany(db.game, { as: "player1", foreignKey: "player1" });
-//(db.users).hasMany(db.game, { as: "player2", foreignKey: "player2" });
 (db.game).belongsTo(db.user, { foreignKey: { name: 'id', type: DataTypes.UUID } });
 
 (db.user).hasMany(db.report, { foreignKey: { name: 'reported_user', type: DataTypes.UUID } });
