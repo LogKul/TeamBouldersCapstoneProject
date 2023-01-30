@@ -18,12 +18,15 @@ module.exports = (sequelize, Sequelize) => {
         },
         gamestate: {
             type: Sequelize.STRING,
+            defaultValue: ""
         },
         recording: {
             type: Sequelize.STRING,
+            defaultValue: ""
         },
         time: {
             type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
         winner: {
             type: Sequelize.UUID,

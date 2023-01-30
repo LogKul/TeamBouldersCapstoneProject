@@ -18,8 +18,8 @@ module.exports = (sequelize, Sequelize) => {
         time: {
             type: DataTypes.DATE,
         },
-        player_name: {
-            type: Sequelize.STRING,
+        player: {
+            type: Sequelize.UUID,
         }
     });
 

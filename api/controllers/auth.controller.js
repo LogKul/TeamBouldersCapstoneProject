@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+require('dotenv').config();
 
 const Op = db.Sequelize.Op;
 
@@ -10,9 +11,11 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
     // Save User to Database
+    var salted = process.env.S1 + req.body.password + process.env.S2
+
     User.create({
         username: req.body.username,
-        password: bcrypt.hashSync(req.body.password, 8)
+        password: bcrypt.hashSync(salted, 8)
     })
         .then(() => {
             res.send({ message: "User was registered successfully!" });
@@ -23,6 +26,8 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
+    var salted = process.env.S1 + req.query.password + process.env.S2
+
     User.findOne({
         where: {
             username: req.query.username,
@@ -38,7 +43,7 @@ exports.login = (req, res) => {
             }
 
             var passwordIsValid = bcrypt.compareSync(
-                req.query.password,
+                salted,
                 user.password
             );
 
