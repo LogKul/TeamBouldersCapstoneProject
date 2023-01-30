@@ -17,6 +17,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         time: {
             type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
         player: {
             type: Sequelize.UUID,
