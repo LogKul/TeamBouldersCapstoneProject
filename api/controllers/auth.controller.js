@@ -87,7 +87,6 @@ exports.login = (req, res) => {
                     losses: user.losses,
                     mmr: user.mmr,
                     deleted: user.deleted,
-                    admin: user.admin,
                     lightswitch: user.lightswitch,
                     theme: user.theme,
                     banned: user.banned,

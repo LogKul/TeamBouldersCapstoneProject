@@ -1,0 +1,282 @@
+============================
+Routes Table of Contents
+============================
+
+/auth
+	GET    /auth/login
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers-
+			Query- username, password
+			Body-
+		RESPONSE:
+			Body- {
+				id,
+				username,
+				wins,
+				losses,
+				mmr,
+				deleted,
+				lightswitch,
+				theme,
+				banned,
+				hideschat,
+				roles,
+				accessToken
+			}
+	---------------------------------------------		
+	POST   /auth/signup
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers-
+			Query- 
+			Body- {
+				username,
+				password
+			}
+		RESPONSE:
+			Body- {
+				message
+			}
+	---------------------------------------------		
+	GET    /auth/refresh
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- username
+			Body-
+		RESPONSE:
+			Body- {
+				id,
+				username,
+				accessToken
+			}
+
+----------------------------------------------------------------
+/users
+	GET    /users/read
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- username
+			Body-
+		RESPONSE:
+			Body- {
+				id,
+				username,
+				wins,
+				losses,
+				mmr,
+				deleted			
+			}
+	---------------------------------------------		
+	UPDATE /users/update
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- username
+			Body- {
+				[Any updatable user fields]
+			}
+		RESPONSE:
+			Body- {
+				message
+			}
+	---------------------------------------------		
+	DELETE /users/delete
+		PERMISSIONS:
+			Moderators and Admins
+		REQUEST:
+			Headers- x-access-token
+			Query- username
+			Body- 
+		RESPONSE:
+			Body- {
+				message
+			}
+			
+----------------------------------------------------------------
+/games
+	POST   /games/create
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- 
+			Body- {
+				player1,
+				player2
+			}
+		RESPONSE:
+			Body- {
+				id
+			}
+	---------------------------------------------		
+	GET    /games/read
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body-
+		RESPONSE:
+			Body- {
+				id,
+				player1,
+				player2,
+				gamestate,
+				recording,
+				time,
+				winner
+			}
+	---------------------------------------------		
+	UPDATE /games/update
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body- {
+				[Any updateable game fields]
+			}
+		RESPONSE:
+			Body- {
+				message
+			}
+	---------------------------------------------		
+	DELETE /games/delete
+		PERMISSIONS:
+			Moderators and Admins
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body-
+		RESPONSE:
+			Body- {
+				message
+			}
+			
+----------------------------------------------------------------
+/chats
+	POST   /chats/create
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- 
+			Body- {
+				game_id,
+				chat_text,
+				player
+			}
+		RESPONSE:
+			Body- {
+				id
+			}
+	---------------------------------------------		
+	GET    /chats/read
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body-
+		RESPONSE:
+			Body- {
+				id,
+				game_id,
+				chat_text,
+				time,
+				player
+			}
+	---------------------------------------------		
+	UPDATE /chats/update
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body- {
+				[Any updateable Chat fields]
+			}
+		RESPONSE:
+			Body- {
+				message
+			}
+	---------------------------------------------		
+	DELETE /chats/delete
+		PERMISSIONS:
+			Moderators and Admins
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body-
+		RESPONSE:
+			Body- {
+				message
+			}
+			
+----------------------------------------------------------------
+/reports
+	POST   /reports/create
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- 
+			Body- {
+				reported_user,
+				report_notes,
+				report_reason
+			}
+		RESPONSE:
+			Body- {
+				id
+			}
+	---------------------------------------------		
+	GET    /reports/read
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body-
+		RESPONSE:
+			Body- {
+				id,
+				reported_user,
+				report_notes,
+				report_reason
+			}
+	---------------------------------------------		
+	UPDATE /reports/update
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body- {
+				[Any updateable Report fields]
+			}
+		RESPONSE:
+			Body- {
+				message
+			}
+	---------------------------------------------		
+	DELETE /reports/delete
+		PERMISSIONS:
+			Moderators and Admins
+		REQUEST:
+			Headers- x-access-token
+			Query- id
+			Body-
+		RESPONSE:
+			Body- {
+				message
+			}
+			

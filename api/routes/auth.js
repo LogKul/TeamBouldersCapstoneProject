@@ -11,11 +11,6 @@ router.use(function (req, res, next) {
     next();
 });
 
-/* Send simple list of data */
-router.get('/users', (req, res, next) => {
-    res.json({ 'users': ['user1', 'user2', 'user3'] })
-})
-
 /* Login */
 router.get('/login', controller.login)
 

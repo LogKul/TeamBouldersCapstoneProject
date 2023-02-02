@@ -29,9 +29,6 @@ module.exports = (sequelize, Sequelize) => {
         deleted: {
             type: Sequelize.BOOLEAN
         },
-        admin: {
-            type: Sequelize.BOOLEAN
-        },
         lightswitch: {
             type: Sequelize.BOOLEAN
         },
