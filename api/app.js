@@ -8,9 +8,10 @@ var logger = require('morgan');
 require('dotenv').config();
 const helmet = require('helmet');
 var authRouter = require('./routes/auth');
-var testRouter = require('./routes/test');
 var usersRouter = require('./routes/users');
 var gamesRouter = require('./routes/games');
+var chatsRouter = require('./routes/chats');
+var reportsRouter = require('./routes/reports');
 
 var corsOptions = {
   origin: process.env.ORIGIN_ADDRESS,
@@ -87,8 +88,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
-app.use('/test', testRouter);
 app.use('/games', gamesRouter);
+app.use('/chats', chatsRouter);
+app.use('/reports', reportsRouter);
 
 /*
 // catch 404 and forward to error handler

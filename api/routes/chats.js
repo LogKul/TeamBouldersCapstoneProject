@@ -1,8 +1,8 @@
 const { response } = require('express');
 var express = require('express');
-const { game } = require('../models');
+const { chat } = require('../models');
 var router = express.Router();
-var controller = require("../controllers/game.controller");
+var controller = require("../controllers/chat.controller");
 const { authJwt } = require("../middleware");
 
 
@@ -14,7 +14,7 @@ router.use(function (req, res, next) {
     next();
 });
 
-/* Game CRUD */
+/* Chat CRUD. */
 router.post('/create', [authJwt.verifyToken], controller.create);
 router.get('/read', [authJwt.verifyToken], controller.read);
 router.put('/update', [authJwt.verifyToken], controller.update);

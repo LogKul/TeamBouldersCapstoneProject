@@ -1,6 +1,6 @@
+const { game } = require("../models");
 const db = require("../models");
 const Game = db.game;
-const User = db.user;
 
 exports.create = (req, res) => {
     // Save Game to Database
@@ -8,8 +8,9 @@ exports.create = (req, res) => {
         player1: req.body.player1,
         player2: req.body.player2,
     })
-        .then(() => {
-            res.status(200).send({ message: "Game created successfully!" });
+        .then(game => {
+            //res.status(200).send({ message: "Game created successfully!" });
+            res.status(200).send({ id: game.id });
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
@@ -64,7 +65,7 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
     // Delete game from database
-    User.destroy({
+    Game.destroy({
         where: {
             id: req.query.id,
         }

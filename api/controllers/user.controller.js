@@ -1,12 +1,8 @@
 const db = require("../models");
 const User = db.user;
 
-exports.userAccess = (req, res) => {
-    res.status(200).send("JWTs working!");
-};
-
 exports.read = (req, res) => {
-    // Save User to Database
+    // Read single User
     User.findOne({
         where: {
             username: req.query.username,
@@ -24,7 +20,6 @@ exports.read = (req, res) => {
                 losses: user.losses,
                 mmr: user.mmr,
                 deleted: user.deleted,
-                admin: user.admin,
             });
 
         })
@@ -34,7 +29,7 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    // Save User to Database
+    // Update existing User
     User.findOne({
         where: {
             username: req.query.username,
@@ -52,10 +47,10 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    // Save User to Database
+    // Delete User from Database
     User.destroy({
         where: {
-            username: req.body.username,
+            username: req.query.username,
         }
     })
         .then(() => {
