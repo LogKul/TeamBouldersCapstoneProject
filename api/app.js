@@ -26,12 +26,10 @@ app.use(
   helmet({
     hsts: {
       maxAge: 31536000,
-      includeSubdomains: true,
+      includeSubDomains: true,
     },
     frameGuard: {
       action: "deny",
-    },
-    noSniff: {
     },
     contentSecurityPolicy: {
       directives: {
@@ -56,10 +54,9 @@ app.use(
     crossOriginResourcePolicy: {
       policy: "same-origin",
     },
-    xssFilter: {
-    },
-    hidePoweredBy: {
-    },
+    xssFilter:{},
+    hidePoweredBy:{},
+    noSniff:{},
   })
 );
 app.use(cors(corsOptions))
