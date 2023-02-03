@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 var gamesRouter = require('./routes/games');
 var chatsRouter = require('./routes/chats');
 var reportsRouter = require('./routes/reports');
+const { limiter } = require("./middleware")
 
 var corsOptions = {
   origin: process.env.ORIGIN_ADDRESS,
@@ -19,6 +20,7 @@ var corsOptions = {
 }
 
 const app = express();
+
 //Helmet Security Policies
 app.use(
   helmet({
@@ -70,6 +72,9 @@ app.use(
     extended: true,
   })
 )
+
+// Rate-limiting middleware
+app.use(limiter);
 
 // DB initialization
 var db = require("./models");

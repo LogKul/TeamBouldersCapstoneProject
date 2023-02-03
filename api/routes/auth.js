@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var controller = require("../controllers/auth.controller");
-var { validateSignUp, authJwt } = require("../middleware");
+var { validateSignUp, authJwt, signInLimiter } = require("../middleware");
 
 router.use(function (req, res, next) {
     res.header(
@@ -12,7 +12,7 @@ router.use(function (req, res, next) {
 });
 
 /* Login */
-router.get('/login', controller.login)
+router.get('/login', [signInLimiter], controller.login)
 
 /* Signup */
 router.post('/signup', [validateSignUp.validateNoDuplicateUsername], controller.signup)
