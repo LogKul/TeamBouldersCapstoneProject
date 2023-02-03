@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
@@ -18,9 +18,9 @@
     "jade": "^0.29.0",
     "jsonwebtoken": "^9.0.0",
     "morgan": "~1.9.1",
-    "pg": "^8.8.0",
+    "pg": "^8.9.0",
     "pg-hstore": "^2.3.4",
-    "sass": "^1.57.1",
+    "sass": "^1.58.0",
     "sequelize": "^6.28.0"
   },
   "devDependencies": {
