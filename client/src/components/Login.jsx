@@ -99,7 +99,7 @@ const Login = () => {
 
                         <p>
                             Need an Account?<br />
-                            <a href="#">Sign Up</a>
+                            <a href="#"><button className="small-button">Sign Up</button></a>
                         </p>
                     </form>
                 </section>
