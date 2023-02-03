@@ -1,4 +1,4 @@
-// FONTS
+// GLOBAL FONT
 @mixin font-montserrat($size, $weight, $style) {
   font-family: "Montserrat";
   font-size: $size;
@@ -8,24 +8,95 @@
   -moz-osx-font-smoothing: grayscale;
 };
 
-h1 { @include font-montserrat(97px, 700, normal); }
+// COLORS
+$primary-color: #424242;
+$primary-light: #6d6d6d;
+$primary-dark: #1b1b1b;
+$secondary-color: #d32f2f;
+$secondary-light: #ff6659;
+$secondary-dark: #9a0007;
 
-h2 { @include font-montserrat(61px, 600, normal); }
+// GLOBAL STYLES
+h1 { 
+  @include font-montserrat(97px, 700, normal); 
+  margin: auto;
+  padding: 4rem;
+}
 
-h3 { @include font-montserrat(48px, 500, normal); }
+h2 { 
+  @include font-montserrat(61px, 600, normal); 
+  margin: auto;
+  padding: 4rem;
+}
 
-h4 { @include font-montserrat(34px, 400, normal); }
+h3 { 
+  @include font-montserrat(48px, 500, normal); 
+  margin: auto;
+  padding: 4rem;
+}
 
-h5 { @include font-montserrat(24px, 300, normal); }
+h4 { 
+  @include font-montserrat(34px, 400, normal); 
+  margin: auto;
+  padding: 4rem;
+}
 
-h6 { @include font-montserrat(20px, 200, normal); }
+h5 { 
+  @include font-montserrat(24px, 300, normal); 
+  margin: auto;
+  padding: 4rem;
+}
 
-body { @include font-montserrat(18px, 400, normal); }
+h6 { 
+  @include font-montserrat(20px, 200, normal); 
+  margin: auto;
+  padding: 4rem;
+}
 
-button { @include font-montserrat(16px, bold, normal); }
+body { 
+  @include font-montserrat(18px, 400, normal);
+  text-align: center;
+  margin: auto;
+  padding: auto; 
+}
+
+a {
+  @include font-montserrat(18px, 400, normal);
+  color: black;
+}
+
+input {
+  @include font-montserrat(16px, 500, normal);
+  text-align: left;
+  margin: 0.5rem;
+  padding: auto;
+}
+
+button { 
+  @include font-montserrat(16px, bold, normal); 
+  margin: 1.5rem;
+  padding: 0.75rem 2rem 0.75rem 2rem;
+  border-radius: 2rem;
+  color: white;
+  background-color: $primary-dark;
+  transition: all .2s ease-in-out;
+}
+.small-button {
+  @include font-montserrat(14px, bold, normal); 
+  margin: 1rem;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  border-radius: 2rem;
+  color: white;
+  background-color: $primary-dark;
+  transition: all .2s ease-in-out;
+}
+button:hover, .small-button:hover {
+  color: $primary-dark;
+  background-color: $secondary-color;
+  scale: (1.15);
+}
 
 // FOR REGISTER PAGE
-
 .instructions {
   font-size: 0.75rem;
   border-radius: 0.5rem;
