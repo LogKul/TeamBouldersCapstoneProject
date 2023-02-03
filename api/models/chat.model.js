@@ -17,9 +17,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         time: {
             type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
         },
-        player_name: {
-            type: Sequelize.STRING,
+        player: {
+            type: Sequelize.UUID,
         }
     });
 

@@ -8,14 +8,16 @@ var logger = require('morgan');
 require('dotenv').config();
 const helmet = require('helmet');
 var authRouter = require('./routes/auth');
-var testRouter = require('./routes/test');
 var usersRouter = require('./routes/users');
+var gamesRouter = require('./routes/games');
+var chatsRouter = require('./routes/chats');
+var reportsRouter = require('./routes/reports');
 
 var corsOptions = {
   origin: process.env.ORIGIN_ADDRESS,
   optionsSuccessStatus: 200
 }
- 
+
 const app = express();
 //Helmet Security Policies
 app.use(
@@ -30,7 +32,7 @@ app.use(
     noSniff: {
     },
     contentSecurityPolicy: {
-      directives:{
+      directives: {
         defaultSrc: ["'self'"],
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
@@ -41,7 +43,7 @@ app.use(
     permittedCrossDomainPolicies: {
       permittedpolicies: "none",
     },
-    referrerPolicy : {
+    referrerPolicy: {
       policy: "no-referrer",
     },
     crossOriginEmbedderPolicy: {
@@ -49,7 +51,7 @@ app.use(
     crossOriginOpenerPolicy: {
       policy: "same-origin",
     },
-    crossOriginResourcePolicy:{
+    crossOriginResourcePolicy: {
       policy: "same-origin",
     },
     xssFilter: {
@@ -86,7 +88,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
-app.use('/test', testRouter);
+app.use('/games', gamesRouter);
+app.use('/chats', chatsRouter);
+app.use('/reports', reportsRouter);
 
 /*
 // catch 404 and forward to error handler
