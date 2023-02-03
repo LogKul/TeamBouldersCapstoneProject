@@ -50,9 +50,9 @@ app.use(
     crossOriginResourcePolicy:{
       policy: "same-origin",
     },
-    xssFilter,
-    hidePoweredBy,
-    noSniff,
+    xssFilter:{},
+    hidePoweredBy:{},
+    noSniff:{},
   })
 );
 app.use(cors(corsOptions))
