@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import Register from "./components/Register"
 import Login from "./components/Login"
+import Logic from "./components/checkers/Logic"
 
 function App() {
   
@@ -56,7 +57,6 @@ function App() {
   return (
     <main>
       <Login />
-
     </main>
   )
 }
