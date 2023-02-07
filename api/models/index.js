@@ -45,7 +45,7 @@ db.ROLES = ["user", "moderator", "admin"];
     through: "user_roles",
     foreignKey: {
         name: "role_id",
-        type: DataTypes.UUID
+        type: DataTypes.INTEGER
     },
     otherKey: {
         name: "user_id",
@@ -60,7 +60,7 @@ db.ROLES = ["user", "moderator", "admin"];
     },
     otherKey: {
         name: "role_id",
-        type: DataTypes.UUID
+        type: DataTypes.INTEGER
     }
 });
 

@@ -1,8 +1,10 @@
 import { useRef, useState, useEffect, useContext } from "react"
-import AuthContext from "../context/AuthProvider"
-import axios from "../api/axios"
+import { Navigate } from 'react-router-dom'
+import AuthContext from "../../context/AuthProvider"
+import axios from "../../api/axios"
+import { Link } from 'react-router-dom';
 
-const LOGIN_URL = "/auth/login"
+const LOGIN_URL = process.env.REACT_APP_API_URL + "/auth/login"
 
 const Login = () => {
     const { setAuth } = useContext(AuthContext)
@@ -25,18 +27,20 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        const salted = process.env.REACT_APP_S1 + pwd + process.env.REACT_APP_S2;
+
         try {
-            const response = await axios.get(LOGIN_URL, 
-                { params: {username: user, password: pwd}},
+            const response = await axios.get(LOGIN_URL,
+                { params: { username: user, password: salted } },
                 {
-                    headers: {"Content-Type":"application/json"},
+                    headers: { "Content-Type": "application/json" },
                     withCredentials: false
                 }
             )
             console.log(JSON.stringify(response))
             const accessToken = response?.data?.accessToken
 
-            setAuth({ user, pwd, accessToken })
+            setAuth({ user, accessToken })
 
             setUser("")
             setPwd("")
@@ -60,11 +64,7 @@ const Login = () => {
         <>
             {success ? (
                 <section>
-                    <h1>You are logged in!</h1>
-                    <br />
-                    <p>
-                        <a href="#">Go to Home</a>
-                    </p>
+                    <Navigate to="/" />
                 </section>
             ) : (
                 <section>
@@ -99,7 +99,7 @@ const Login = () => {
 
                         <p>
                             Need an Account?<br />
-                            <a href="#"><button className="small-button">Sign Up</button></a>
+                            <Link to="/register"><button className="small-button">Sign Up</button></Link>
                         </p>
                     </form>
                 </section>

@@ -43,7 +43,7 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
-    var salted = process.env.S1 + req.query.password + process.env.S2
+    var salted = process.env.S1 + req.query.password + process.env.S2;
 
     User.findOne({
         where: {

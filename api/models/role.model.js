@@ -3,9 +3,8 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize, Sequelize) => {
     const Role = sequelize.define("roles", {
         id: {
-            type: Sequelize.UUID,
+            type: Sequelize.INTEGER,
             primaryKey: true,
-            defaultValue: DataTypes.UUIDV4,
             allowNull: false
         },
         name: {

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react"
+import { Router, Routes, Route } from 'react-router-dom';
 
-import Register from "./components/Register"
-import Login from "./components/Login"
+import Register from "./components/pages/Register"
+import Login from "./components/pages/Login"
+import Home from "./components/pages/Home"
 import Checkers from "./components/checkers/Checkers"
+import PrivateRoutes from './components/util/PrivateRoutes'
+
+import { AuthProvider } from './context/AuthProvider'
 
 function App() {
-  
+
   /*const [currentView, setCurrentView] = useState("login")
 
   const switchView = (viewName) => {
@@ -56,7 +61,13 @@ function App() {
 
   return (
     <main>
-      <Login />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/" element={<Home />} exact />
+        </Route>
+      </Routes>
     </main>
   )
 }

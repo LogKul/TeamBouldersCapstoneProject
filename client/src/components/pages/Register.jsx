@@ -1,10 +1,11 @@
-import { useRef, useState, useEffect} from "react"
-import axios from "../api/axios"
+import { useRef, useState, useEffect } from "react"
+import axios from "../../api/axios"
+import { Link } from 'react-router-dom';
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
-const REGISTER_URL = "/auth/signup"
+const REGISTER_URL = process.env.REACT_APP_API_URL + "/auth/signup"
 
 const Register = () => {
     const userRef = useRef()
@@ -47,18 +48,20 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         const v1 = USER_REGEX.test(user)
         const v2 = PWD_REGEX.test(pwd)
         if (!v1 || !v2) {
             setErrMsg("Invalid Entry")
             return
         }
+
+        const salted = process.env.REACT_APP_S1 + pwd + process.env.REACT_APP_S2;
+
         try {
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({username: user, password: pwd}),
+                JSON.stringify({ username: user, password: salted }),
                 {
-                    headers: {"Content-Type":"application/json"},
+                    headers: { "Content-Type": "application/json" },
                     withCredentials: false
                 }
             )
@@ -83,7 +86,7 @@ const Register = () => {
                 <section>
                     <h1>Success!</h1>
                     <p>
-                        <a href="#">Sign In</a>
+                        <a href="/login">Sign In</a>
                     </p>
                 </section>
             ) : (
@@ -165,7 +168,7 @@ const Register = () => {
 
                     <p>
                         Already registered?<br />
-                        <a href="#">Sign In</a>
+                        <Link to="/login">Sign In</Link>
                     </p>
                 </section>
             )}

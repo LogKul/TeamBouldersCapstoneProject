@@ -54,9 +54,9 @@ app.use(
     crossOriginResourcePolicy: {
       policy: "same-origin",
     },
-    xssFilter:{},
-    hidePoweredBy:{},
-    noSniff:{},
+    xssFilter: {},
+    hidePoweredBy: {},
+    noSniff: {},
   })
 );
 app.use(cors(corsOptions))
@@ -74,7 +74,8 @@ app.use(
 app.use(limiter);
 
 // DB initialization
-var db = require("./models");
+const db = require("./models");
+
 db.sequelize.sync();
 
 /*
