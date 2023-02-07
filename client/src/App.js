@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import Register from "./components/Register"
 import Login from "./components/Login"
-import Logic from "./components/checkers/Logic"
+import Checkers from "./components/checkers/Checkers"
 
 function App() {
   
