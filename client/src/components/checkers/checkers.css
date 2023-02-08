@@ -5,16 +5,3 @@
     width: 800px;
     height: 800px;
 }
-
-#board .tile {
-    width: 100px;
-    height: 100px;
-}
-
-#board .black-tile {
-    background-color: rgb(23, 14, 14);
-}
-
-#board .red-tile {
-    background-color: rgb(160, 45, 45);
-}

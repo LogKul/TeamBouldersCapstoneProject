@@ -65,7 +65,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route element={<PrivateRoutes />}>
-          <Route path="/" element={<Home />} exact />
+          <Route path="/" element={<Checkers />} exact />
         </Route>
       </Routes>
     </main>

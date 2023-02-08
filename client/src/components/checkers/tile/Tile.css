@@ -1,0 +1,14 @@
+.tile {
+    display: grid;
+    place-content: center;
+    width: 100px;
+    height: 100px;
+}
+
+.black-tile {
+    background-color: rgb(23, 14, 14);
+}
+
+.red-tile {
+    background-color: rgb(160, 45, 45);
+}
