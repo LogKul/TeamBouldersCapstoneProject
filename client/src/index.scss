@@ -134,8 +134,8 @@ button:hover, .small-button:hover {
   color: white;
 }
 .header img {
-  width: 10%;
-  height: 10%;
+  width: 7%;
+  height: 7%;
   transition: all .2s ease-in-out;
 }
 .header img:hover {
@@ -143,20 +143,15 @@ button:hover, .small-button:hover {
 }
 .header-left {
   display: inline-block;
-  width: 33%;
+  width: 50%;
   text-align: left;
-}
-.header-center {
-  display: inline-block;
-  width: 33%;
-  text-align: center;
 }
 .header-right {
   display: inline-block;
-  width: 33%;
+  width: 50%;
   text-align: right;
-  top: 75%;
-  transform: translateY(-75%);
+  top: 100%;
+  transform: translateY(-100%);
 }
 
 .footer {
