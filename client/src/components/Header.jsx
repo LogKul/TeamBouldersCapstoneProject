@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Outlet, Navigate, Link } from 'react-router-dom'
 import AuthContext from '../context/AuthProvider'
+import '../styles/header.scss'
 
 function Header() {
     let { auth, logout } = useContext(AuthContext)
