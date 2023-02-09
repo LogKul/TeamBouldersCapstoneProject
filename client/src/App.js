@@ -67,6 +67,7 @@ function App() {
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<Checkers />} exact />
         </Route>
+        <Route path="home" element={<Home />}/>
       </Routes>
     </main>
   )
