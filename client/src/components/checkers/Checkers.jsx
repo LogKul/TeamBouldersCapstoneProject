@@ -1,40 +1,46 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import Tile from "./tile/Tile"
 import "./Checkers.css"
 
 const vertAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 const horzAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 
-const checkerPiece = {
+const checkersPiece = {
     image: String,
     x: Number,
     y: Number
 }
 
-const pieces = []
+const initialBoardState = []
+const boardState = []
 
 for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
         if ((i + j + 1) % 2 === 0 && i < 3) {
-            pieces.push({...checkerPiece, image: "assets/checkers/black-checker.png", x: i, y: j })
+            initialBoardState.push({...checkersPiece, image: "assets/checkers/black-checker.png", x: i, y: j })
         }
         if ((i + j + 1) % 2 === 0 && i > 4) {
-            pieces.push({...checkerPiece, image: "assets/checkers/red-checker.png", x: i, y: j })
+            initialBoardState.push({...checkersPiece, image: "assets/checkers/red-checker.png", x: i, y: j })
         }
     }
 }
 
 export default function Checkers() {
+    const [activePiece, setActivePiece] = useState(undefined)
+    const [boardState, setBoardState] = useState(initialBoardState)
+    const [gridX, setGridX] = useState()
+    const [gridY, setGridY] = useState()
     const checkersBoardRef = useRef(null)
-
-    let activePiece = undefined
 
     const grabPiece = (e) => {
         e.preventDefault()
 
         const element = e.target
+        const checkersBoard = checkersBoardRef.current
 
-        if (element.classList.contains("checkers-piece")) {
+        if (element.classList.contains("checkers-piece") && checkersBoard) {
+            setGridX(Math.floor((e.clientY - checkersBoard.offsetTop) / 100))
+            setGridY(Math.floor((e.clientX - checkersBoard.offsetLeft) / 100))
 
             const x = e.clientX - 25
             const y = e.clientY - 25
@@ -43,7 +49,7 @@ export default function Checkers() {
             element.style.left = x.toString()+'px'
             element.style.top = y.toString()+'px'
 
-            activePiece = element
+            setActivePiece(element)
         }
     }
 
@@ -83,8 +89,24 @@ export default function Checkers() {
     const dropPiece = (e) => {
         e.preventDefault()
 
-        if (activePiece) {
-            activePiece = undefined
+        const checkersBoard = checkersBoardRef.current
+
+        if (activePiece && checkersBoard) {
+            const y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
+            const x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
+
+            console.log(x, y)
+            setBoardState((value) => {
+                const newBoardState = value.map((p) => {
+                    if (p.x === gridX && p.y === gridY) {
+                        p.x = x
+                        p.y = y
+                    }
+                    return p
+                })
+                return newBoardState
+            })
+            setActivePiece(undefined)
         }
     }
 
@@ -95,7 +117,7 @@ export default function Checkers() {
 
             let image = undefined
 
-            pieces.forEach(p => {
+            boardState?.forEach(p => {
                 if(p.x === i && p.y === j) {
                     image = p.image
                 }
