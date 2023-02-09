@@ -1,14 +1,15 @@
 import React from 'react'
-import TempNav from "../TempNav"
-import { Link } from "react-router-dom"
+import Header from '../Header'
+import Footer from '../Footer'
 
 const Settings = () => {
     return (
         <div>
-            <h1>This will be the Settings page!</h1>
-            <br></br>
-            <br></br>
-            <TempNav />
+            <Header />
+            <div className='content-wrap'>
+                <h1>This will be the Settings page!</h1>
+            </div>
+            <Footer />
         </div>
     )
 }
