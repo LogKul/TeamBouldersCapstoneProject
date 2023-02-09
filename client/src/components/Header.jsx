@@ -1,21 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Outlet, Navigate, Link } from 'react-router-dom'
+import AuthContext from '../context/AuthProvider'
 
 function Header() {
+    let { auth, logout } = useContext(AuthContext)
+
     return(
         <div className='header'>
             <div className='header-left'>
                 <a href="/home">
                     <img src="Checkerboard.ico" alt="Checkers Logo" />
                 </a>
-            </div> 
-            <div className='header-center'>
-                {/* This is a placeholder section for future content. */}
             </div>
             <div className='header-right'>
-                <a href="/home"> Home </a>
-                <a href="#"> Checkers </a>
-                <a href="#"> Leaderboard </a>
-                <a href="#"> Profile </a>
+                <Link to="/">Home</Link>
+                <Link to="/account">Account</Link>
+                <Link to="/games">Game</Link>
+                <Link to="/leaderboard">Leaderboard</Link>
+                <Link to="/recordings">Recording</Link>
+                <Link to="/login" onClick={logout}>LOGOUT</Link>
             </div>
         </div>
     )
