@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import Tile from "./tile/Tile"
 import "./Checkers.css"
+import Logic from "./logic/Logic"
 
 const vertAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 const horzAxis = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -12,7 +13,6 @@ const checkersPiece = {
 }
 
 const initialBoardState = []
-const boardState = []
 
 for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
@@ -31,6 +31,7 @@ export default function Checkers() {
     const [gridX, setGridX] = useState()
     const [gridY, setGridY] = useState()
     const checkersBoardRef = useRef(null)
+    const logic = new Logic()
 
     const grabPiece = (e) => {
         e.preventDefault()
@@ -95,7 +96,8 @@ export default function Checkers() {
             const y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
             const x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
 
-            console.log(x, y)
+            logic.isValidMove()
+
             setBoardState((value) => {
                 const newBoardState = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
