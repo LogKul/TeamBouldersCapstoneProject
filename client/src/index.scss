@@ -58,10 +58,27 @@ body {
   text-align: center;
   margin: auto;
   padding: auto; 
+  min-height: 100vh;
+  position: relative;
+}
+
+.content-wrap {
+  padding-top: 5rem;
+  padding-bottom: 4rem;
 }
 
 a {
   @include font-montserrat(18px, 400, normal);
+  color: black;
+}
+
+p {
+  @include font-montserrat(18px, 400, normal);
+  color: black;
+}
+
+.subtitle {
+  @include font-montserrat(14px, 300, normal);
   color: black;
 }
 
@@ -94,46 +111,4 @@ button:hover, .small-button:hover {
   color: $primary-dark;
   background-color: $secondary-color;
   scale: (1.15);
-}
-
-// FOR REGISTER PAGE
-.instructions {
-  font-size: 0.75rem;
-  border-radius: 0.5rem;
-  background: #000;
-  color: #fff;
-  padding: 0.25rem;
-  position: relative;
-  bottom: -10px;
-}
-
-.instructions > svg {
-  margin-right: 0.25rem;
-}
-
-.offscreen {
-  position: absolute;
-  left: -9999px;
-}
-
-.hide {
-  display: none;
-}
-
-.valid {
-  color: limegreen;
-  margin-left: 0.25rem;
-}
-
-.invalid {
-  color: red;
-  margin-left: 0.25rem;
-}
-
-.errmsg {
-  background-color: lightpink;
-  color: firebrick;
-  font-weight: bold;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
 }

@@ -1,17 +1,18 @@
 import React from 'react'
 import Header from '../Header'
 import Footer from '../Footer'
+import Checkers from "../checkers/Checkers"
 
-const Home = () => {
+const Game = () => {
     return (
         <div>
             <Header />
             <div className='content-wrap'>
-                <p>This will be the homepage!</p>
+                <Checkers />
             </div>
             <Footer />
         </div>
     )
 }
 
-export default Home
+export default Game

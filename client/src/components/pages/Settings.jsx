@@ -2,16 +2,16 @@ import React from 'react'
 import Header from '../Header'
 import Footer from '../Footer'
 
-const Home = () => {
+const Settings = () => {
     return (
         <div>
             <Header />
             <div className='content-wrap'>
-                <p>This will be the homepage!</p>
+                <h1>This will be the Settings page!</h1>
             </div>
             <Footer />
         </div>
     )
 }
 
-export default Home
+export default Settings

@@ -4,6 +4,11 @@ import { Router, Routes, Route } from 'react-router-dom';
 import Register from "./components/pages/Register"
 import Login from "./components/pages/Login"
 import Home from "./components/pages/Home"
+import Account from "./components/pages/Account"
+import Settings from "./components/pages/Settings"
+import Game from "./components/pages/Game"
+import Leaderboard from "./components/pages/Leaderboard"
+import Recording from "./components/pages/Recording"
 import Checkers from "./components/checkers/Checkers"
 import PrivateRoutes from './components/util/PrivateRoutes'
 
@@ -65,7 +70,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route element={<PrivateRoutes />}>
-          <Route path="/" element={<Checkers />} exact />
+          <Route path="/" element={<Home />} exact />
+          <Route path="/account" element={<Account />} />
+          <Route path="/account/settings" element={<Settings />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/games" element={<Game />} />
+          <Route path="/recordings" element={<Recording />} />
         </Route>
       </Routes>
     </main>

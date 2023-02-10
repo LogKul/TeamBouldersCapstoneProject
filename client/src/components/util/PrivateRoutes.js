@@ -3,10 +3,10 @@ import { useContext } from 'react'
 import AuthContext from '../../context/AuthProvider'
 
 const PrivateRoutes = () => {
-    let { auth } = useContext(AuthContext)
+    let { auth, setAuth, refreshToken } = useContext(AuthContext)
 
     return (
-        { auth } ? <Outlet /> : <Navigate to="/login" />
+        auth.accessToken ? <Outlet /> : <Navigate to="/login" />
     )
 }
 
