@@ -1,15 +1,17 @@
 import { useRef, useState } from "react"
 import Tile from "./tile/Tile"
-import "./checkers.css"
+import "./Checkers.css"
 import Logic from "./logic/Logic"
 
 const vertAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 const horzAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 
-const checkersPiece = {
+export const checkersPiece = {
     image: String,
     x: Number,
-    y: Number
+    y: Number,
+    color: Number,
+    king: Boolean
 }
 
 const initialBoardState = []
@@ -17,10 +19,10 @@ const initialBoardState = []
 for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
         if ((i + j + 1) % 2 === 0 && i < 3) {
-            initialBoardState.push({...checkersPiece, image: "assets/checkers/black-checker.png", x: i, y: j })
+            initialBoardState.push({...checkersPiece, image: "assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
         }
         if ((i + j + 1) % 2 === 0 && i > 4) {
-            initialBoardState.push({...checkersPiece, image: "assets/checkers/red-checker.png", x: i, y: j })
+            initialBoardState.push({...checkersPiece, image: "assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
         }
     }
 }
@@ -30,6 +32,7 @@ export default function Checkers() {
     const [boardState, setBoardState] = useState(initialBoardState)
     const [gridX, setGridX] = useState()
     const [gridY, setGridY] = useState()
+    const [currentTurn, setCurrentTurn] = useState(0)
     const checkersBoardRef = useRef(null)
     const logic = new Logic()
 
@@ -47,8 +50,8 @@ export default function Checkers() {
             const y = e.clientY - 25
 
             element.style.position = "absolute"
-            element.style.left = x.toString()+'px'
-            element.style.top = y.toString()+'px'
+            element.style.left = x+'px'
+            element.style.top = y+'px'
 
             setActivePiece(element)
         }
@@ -70,19 +73,19 @@ export default function Checkers() {
             activePiece.style.position = "absolute"
 
             if (x < minX) {
-                activePiece.style.left = minX.toString()+"px"
+                activePiece.style.left = minX+"px"
             } else if (x > maxX) {
-                activePiece.style.left = maxX.toString()+"px"
+                activePiece.style.left = maxX+"px"
             } else {
-                activePiece.style.left = x.toString()+"px"
+                activePiece.style.left = x+"px"
             }
 
             if (y < minY) {
-                activePiece.style.top = minY.toString()+"px"
+                activePiece.style.top = minY+"px"
             } else if (y > maxY) {
-                activePiece.style.top = maxY.toString()+"px"
+                activePiece.style.top = maxY+"px"
             } else {
-                activePiece.style.top = y.toString()+"px"
+                activePiece.style.top = y+"px"
             }
         }
     }
@@ -93,16 +96,25 @@ export default function Checkers() {
         const checkersBoard = checkersBoardRef.current
 
         if (activePiece && checkersBoard) {
-            const y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
             const x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
-
-            logic.isValidMove()
+            const y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
 
             setBoardState((value) => {
                 const newBoardState = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
-                        p.x = x
-                        p.y = y
+                        if (logic.isValidMove(gridX, gridY, x, y, p.color, p.king, currentTurn)) {
+                            p.x = x
+                            p.y = y
+                            if (currentTurn === 0) {
+                                setCurrentTurn(1)
+                            } else {
+                                setCurrentTurn(0)
+                            }
+                        } else {
+                            activePiece.style.position = "relative"
+                            activePiece.style.removeProperty("top")
+                            activePiece.style.removeProperty("left")
+                        }
                     }
                     return p
                 })
