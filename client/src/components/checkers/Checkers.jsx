@@ -102,7 +102,7 @@ export default function Checkers() {
             setBoardState((value) => {
                 const newBoardState = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
-                        if (logic.isValidMove(gridX, gridY, x, y, p.color, p.king, currentTurn)) {
+                        if (logic.isValidMove(gridX, gridY, x, y, p.color, p.king, currentTurn, value)) {
                             p.x = x
                             p.y = y
                             if (currentTurn === 0) {
