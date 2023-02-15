@@ -1,13 +1,15 @@
 import { checkersPiece } from "../Checkers"
 
 export default class Logic {
+    getPieceColor(x, y, boardState) {
+        const piece = boardState.find((p) => p.x === x && p.y === y)
+        return piece.color
+    }
+
     tileIsOccupied(x, y, boardState) {
-        // console.log("Checking if tile is occupied...")
+        const piece = boardState.find((p) => p.x === x && p.y === y)
 
-        const pieceDetected = boardState.find((p) => p.x === x && p.y === y)
-
-        if (pieceDetected) {
-            console.log("Tile is occupied")
+        if (piece) {
             return true
         } else {
             return false
@@ -22,6 +24,8 @@ export default class Logic {
         // console.log("Piece is a king: "+king)
         // console.log("Current Turn: "+currentTurn)
 
+        // color 0 is red
+        // color 1 is black
         if (color === currentTurn) {
             if (currentTurn === 0) {
                 if (king) {
@@ -30,8 +34,22 @@ export default class Logic {
                     if ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1))) {
                         if (this.tileIsOccupied(nx, ny, boardState) === false) {
                             return true
-                        } else {
-                            return false
+                        }
+                    } else if ((px === (nx + 2) && (py === (ny - 2)))) {
+                        if (this.tileIsOccupied(px - 1, py + 1, boardState)) {
+                            if (this.tileIsOccupied(nx, ny, boardState) === false) {
+                                if (this.getPieceColor(px - 1, py + 1, boardState) === 1) {
+                                    return true
+                                }
+                            }
+                        }
+                    } else if (((px === (nx + 2) && py === (ny + 2)))) {
+                        if (this.tileIsOccupied(px - 1, py - 1, boardState)) {
+                            if (this.tileIsOccupied(nx, ny, boardState) === false) {
+                                if (this.getPieceColor(px - 1, py - 1, boardState) === 1) {
+                                    return true
+                                }
+                            }
                         }
                     }
                 }
@@ -42,12 +60,28 @@ export default class Logic {
                     if ((px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1))) {
                         if (this.tileIsOccupied(nx, ny, boardState) === false) {
                             return true
-                        } else {
-                            return false
+                        }
+                    } else if ((px === (nx - 2) && (py === (ny - 2)))) {
+                        if (this.tileIsOccupied(px + 1, py + 1, boardState)) {
+                            if (this.tileIsOccupied(nx, ny, boardState) === false) {
+                                if (this.getPieceColor(px + 1, py + 1, boardState) === 0) {
+                                    return true
+                                }
+                            }
+                        }
+                    } else if (((px === (nx - 2) && py === (ny + 2)))) {
+                        if (this.tileIsOccupied(px + 1, py - 1, boardState)) {
+                            if (this.tileIsOccupied(nx, ny, boardState) === false) {
+                                if (this.getPieceColor(px + 1, py - 1, boardState) === 0) {
+                                    return true
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+        console.log("invalid move")
+        return false
     }
 }
