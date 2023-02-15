@@ -81,7 +81,6 @@ export default class Logic {
                 }
             }
         }
-        console.log("invalid move")
         return false
     }
 }
