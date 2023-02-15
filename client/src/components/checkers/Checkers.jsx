@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import Tile from "./tile/Tile"
-import "./Checkers.css"
+import "./checkers.css"
 import Logic from "./logic/Logic"
 
 const vertAxis = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -19,10 +19,10 @@ const initialBoardState = []
 for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
         if ((i + j + 1) % 2 === 0 && i < 3) {
-            initialBoardState.push({...checkersPiece, image: "assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
+            initialBoardState.push({ ...checkersPiece, image: "assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
         }
         if ((i + j + 1) % 2 === 0 && i > 4) {
-            initialBoardState.push({...checkersPiece, image: "assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
+            initialBoardState.push({ ...checkersPiece, image: "assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
         }
     }
 }
@@ -50,8 +50,8 @@ export default function Checkers() {
             const y = e.clientY - 25
 
             element.style.position = "absolute"
-            element.style.left = x+'px'
-            element.style.top = y+'px'
+            element.style.left = x + 'px'
+            element.style.top = y + 'px'
 
             setActivePiece(element)
         }
@@ -73,19 +73,19 @@ export default function Checkers() {
             activePiece.style.position = "absolute"
 
             if (x < minX) {
-                activePiece.style.left = minX+"px"
+                activePiece.style.left = minX + "px"
             } else if (x > maxX) {
-                activePiece.style.left = maxX+"px"
+                activePiece.style.left = maxX + "px"
             } else {
-                activePiece.style.left = x+"px"
+                activePiece.style.left = x + "px"
             }
 
             if (y < minY) {
-                activePiece.style.top = minY+"px"
+                activePiece.style.top = minY + "px"
             } else if (y > maxY) {
-                activePiece.style.top = maxY+"px"
+                activePiece.style.top = maxY + "px"
             } else {
-                activePiece.style.top = y+"px"
+                activePiece.style.top = y + "px"
             }
         }
     }
@@ -132,24 +132,24 @@ export default function Checkers() {
             let image = undefined
 
             boardState?.forEach(p => {
-                if(p.x === i && p.y === j) {
+                if (p.x === i && p.y === j) {
                     image = p.image
                 }
             })
 
-            board.push(<Tile key={i.toString()+j.toString()+"propkey"} number={i + j + 1} piece={image} />)
+            board.push(<Tile key={i.toString() + j.toString() + "propkey"} number={i + j + 1} piece={image} />)
         }
     }
 
     return (
         <>
-            <div 
-                onMouseMove={e => movePiece(e)} 
-                onMouseDown={e => grabPiece(e)} 
+            <div
+                onMouseMove={e => movePiece(e)}
+                onMouseDown={e => grabPiece(e)}
                 onMouseUp={e => dropPiece(e)}
                 id="board"
                 ref={checkersBoardRef}>
-                    
+
                 {board}
             </div>
         </>
