@@ -104,7 +104,7 @@ export default function Checkers() {
                 const newBoardState = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
                         if (logic.isValidMove(gridX, gridY, x, y, p.color, p.king, currentTurn, value)) {
-                            if (p.color === 0 && gridX === (x + 2)) {
+                            if (gridX === (x + 2)) {
                                 if (gridY === (y + 2)) {
                                     removeX = x + 1
                                     removeY = y + 1
@@ -115,7 +115,7 @@ export default function Checkers() {
                                     spliceVal = 1
                                 }
                             }
-                            if (p.color === 1 && gridX === (x - 2)) {
+                            if (gridX === (x - 2)) {
                                 if (gridY === (y + 2)) {
                                     removeX = x - 1
                                     removeY = y + 1
@@ -124,6 +124,18 @@ export default function Checkers() {
                                     removeX = x - 1
                                     removeY = y - 1
                                     spliceVal = 1
+                                }
+                            }
+                            if (p.color === 0) {
+                                if (x === 0) {
+                                    p.image = "assets/checkers/red-king.png"
+                                    p.king = true
+                                }
+                            }
+                            if (p.color === 1) {
+                                if (x === 7) {
+                                    p.image = "assets/checkers/black-king.png"
+                                    p.king = true
                                 }
                             }
                             p.x = x
