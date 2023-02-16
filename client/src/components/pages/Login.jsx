@@ -27,11 +27,9 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const salted = process.env.REACT_APP_S1 + pwd + process.env.REACT_APP_S2;
-
         try {
             const response = await axios.get(LOGIN_URL,
-                { params: { username: user, password: salted } },
+                { params: { username: user, password: pwd } },
                 {
                     headers: { "Content-Type": "application/json" },
                     withCredentials: false

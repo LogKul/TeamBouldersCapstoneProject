@@ -27,11 +27,14 @@ function Refresh() {
             console.log(JSON.stringify(response))
             const accessToken = response?.data?.accessToken
             const user = auth.user
+            console.log(response?.status)
             setAuth({ user, accessToken })
-            console.log("CURRENT AUTH: ");
-            console.log(auth);
+
         } catch (err) {
-            setSuccess(false)
+            console.log(err.response.status)
+            if (err.response.status !== 429) {
+                setSuccess(false)
+            }
         }
     }
 
