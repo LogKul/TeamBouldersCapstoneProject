@@ -21,7 +21,7 @@
     "morgan": "^1.10.0",
     "pg": "^8.9.0",
     "pg-hstore": "^2.3.4",
-    "sass": "^1.58.0",
+    "sass": "^1.58.1",
     "sequelize": "^6.28.0"
   },
   "devDependencies": {
