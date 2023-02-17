@@ -32,6 +32,7 @@ export default function Checkers() {
     const [boardState, setBoardState] = useState(initialBoardState)
     const [gridX, setGridX] = useState()
     const [gridY, setGridY] = useState()
+    const [continuedAttack, setContinuedAttack] = useState(false)
     const [currentTurn, setCurrentTurn] = useState(0)
     const checkersBoardRef = useRef(null)
     const logic = new Logic()
@@ -103,7 +104,7 @@ export default function Checkers() {
             setBoardState((value) => {
                 const newBoardState = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
-                        if (logic.isValidMove(gridX, gridY, x, y, p.color, p.king, currentTurn, value)) {
+                        if (logic.isValidMove(gridX, gridY, x, y, p.color, p.king, currentTurn, value, continuedAttack)) {
                             if (gridX === (x + 2)) {
                                 if (gridY === (y + 2)) {
                                     removeX = x + 1
@@ -114,8 +115,7 @@ export default function Checkers() {
                                     removeY = y - 1
                                     spliceVal = 1
                                 }
-                            }
-                            if (gridX === (x - 2)) {
+                            } else if (gridX === (x - 2)) {
                                 if (gridY === (y + 2)) {
                                     removeX = x - 1
                                     removeY = y + 1
@@ -131,8 +131,7 @@ export default function Checkers() {
                                     p.image = "assets/checkers/red-king.png"
                                     p.king = true
                                 }
-                            }
-                            if (p.color === 1) {
+                            } else {
                                 if (x === 7) {
                                     p.image = "assets/checkers/black-king.png"
                                     p.king = true
@@ -140,10 +139,23 @@ export default function Checkers() {
                             }
                             p.x = x
                             p.y = y
-                            if (currentTurn === 0) {
-                                setCurrentTurn(1)
+                            if (gridX === (x + 2) || gridX === (x - 2)) {
+                                if (logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value)) {
+                                    setContinuedAttack(true)
+                                } else {
+                                    setContinuedAttack(false)
+                                    if (currentTurn === 0) {
+                                        setCurrentTurn(1)
+                                    } else {
+                                        setCurrentTurn(0)
+                                    }
+                                }
                             } else {
-                                setCurrentTurn(0)
+                                if (currentTurn === 0) {
+                                    setCurrentTurn(1)
+                                } else {
+                                    setCurrentTurn(0)
+                                }
                             }
                         } else {
                             activePiece.style.position = "relative"

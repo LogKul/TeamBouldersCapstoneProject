@@ -14,15 +14,16 @@ export default class Logic {
         }
     }
 
-    isValidMove(px, py, nx, ny, color, king, currentTurn, boardState) {
+    isValidMove(px, py, nx, ny, color, king, currentTurn, boardState, continuedAttack) {
         if (color === currentTurn) {
             if (currentTurn === 0) {
                 if (king) {
-                    if ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1) || (px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1)))) {
+                    if (continuedAttack === false && ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1) || (px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1))))) {
                         if (this.tileIsOccupied(nx, ny, boardState) === false) {
                             return true
                         }
                     } else if ((px === (nx + 2) && (py === (ny - 2)))) {
+                        // console.log("bottom left to top right")
                         if (this.tileIsOccupied(px - 1, py + 1, boardState)) {
                             if (this.tileIsOccupied(nx, ny, boardState) === false) {
                                 if (this.getPieceColor(px - 1, py + 1, boardState) === 1) {
@@ -31,6 +32,7 @@ export default class Logic {
                             }
                         }
                     } else if ((px === (nx + 2) && py === (ny + 2))) {
+                        // console.log("bottom right to top left")
                         if (this.tileIsOccupied(px - 1, py - 1, boardState)) {
                             if (this.tileIsOccupied(nx, ny, boardState) === false) {
                                 if (this.getPieceColor(px - 1, py - 1, boardState) === 1) {
@@ -39,6 +41,7 @@ export default class Logic {
                             }
                         }
                     } else if ((px === (nx - 2) && py === (ny + 2))) {
+                        // console.log("top right to bottom left")
                         if (this.tileIsOccupied(px + 1, py - 1, boardState)) {
                             if (this.tileIsOccupied(nx, ny, boardState) === false) {
                                 if (this.getPieceColor(px + 1, py - 1, boardState) === 1) {
@@ -47,6 +50,7 @@ export default class Logic {
                             }
                         }
                     } else if ((px === (nx - 2) && py === (ny - 2))) {
+                        // console.log("top left to bottom right")
                         if (this.tileIsOccupied(px + 1, py + 1, boardState)) {
                             if (this.tileIsOccupied(nx, ny, boardState) === false) {
                                 if (this.getPieceColor(px + 1, py + 1, boardState) === 1) {
@@ -56,7 +60,7 @@ export default class Logic {
                         }
                     }
                 } else {
-                    if ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1))) {
+                    if (continuedAttack === false && ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1)))) {
                         if (this.tileIsOccupied(nx, ny, boardState) === false) {
                             return true
                         }
@@ -80,7 +84,7 @@ export default class Logic {
                 }
             } else {
                 if (king) {
-                    if ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1) || (px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1)))) {
+                    if (continuedAttack === false && ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1) || (px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1))))) {
                         if (this.tileIsOccupied(nx, ny, boardState) === false) {
                             return true
                         }
@@ -118,7 +122,7 @@ export default class Logic {
                         }
                     }
                 } else {
-                    if ((px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1))) {
+                    if (continuedAttack === false && ((px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1)))) {
                         if (this.tileIsOccupied(nx, ny, boardState) === false) {
                             return true
                         }
@@ -137,6 +141,67 @@ export default class Logic {
                                     return true
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+        return false
+    }
+    additionalMoveExists(px, py, ox, oy, color, king, boardState) {
+
+        if (king) {
+            if (this.tileIsOccupied(px + 2, py + 2, boardState) === false && (px + 2 !== ox || py + 2 !== oy) && px + 2 < 8 && py + 2 < 8) {
+                if (this.tileIsOccupied(px + 1, py + 1, boardState)) {
+                    if (this.getPieceColor(px + 1, py + 1, boardState) !== color) {
+                        return true
+                    }
+                }
+            } else if (this.tileIsOccupied(px + 2, py - 2, boardState) === false && (px + 2 !== ox || py - 2 !== oy) && px + 2 < 8 && py - 2 >= 0) {
+                if (this.tileIsOccupied(px + 1, py - 1, boardState)) {
+                    if (this.getPieceColor(px + 1, py - 1, boardState) !== color) {
+                        return true
+                    }
+                }
+            } else if (this.tileIsOccupied(px - 2, py - 2, boardState) === false && (px - 2 !== ox || py - 2 !== oy) && px - 2 >= 0 && py - 2 >= 0) {
+                if (this.tileIsOccupied(px - 1, py - 1, boardState)) {
+                    if (this.getPieceColor(px - 1, py - 1, boardState) !== color) {
+                        return true
+                    }
+                }
+            } else if (this.tileIsOccupied(px - 2, py + 2, boardState) === false && (px - 2 !== ox || py + 2 !== oy) && px - 2 >= 0 && py + 2 < 8) {
+                if (this.tileIsOccupied(px - 1, py + 1, boardState)) {
+                    if (this.getPieceColor(px - 1, py + 1, boardState) !== color) {
+                        return true
+                    }
+                }
+            }
+        } else {
+            if (color === 0) {
+                if (this.tileIsOccupied(px - 2, py + 2, boardState) === false && px - 2 >= 0 && py + 2 < 8) {
+                    if (this.tileIsOccupied(px - 1, py + 1, boardState)) {
+                        if (this.getPieceColor(px - 1, py + 1, boardState) !== color) {
+                            return true
+                        }
+                    }
+                } else if (this.tileIsOccupied(px - 2, py - 2, boardState) === false && px - 2 >= 0 && py - 2 >= 0) {
+                    if (this.tileIsOccupied(px - 1, py - 1, boardState)) {
+                        if (this.getPieceColor(px - 1, py - 1, boardState) !== color) {
+                            return true
+                        }
+                    }
+                }
+            } else {
+                if (this.tileIsOccupied(px + 2, py + 2, boardState) === false && px + 2 < 8 && py + 2 < 8) {
+                    if (this.tileIsOccupied(px + 1, py + 1, boardState)) {
+                        if (this.getPieceColor(px + 1, py + 1, boardState) !== color) {
+                            return true
+                        }
+                    }
+                } else if (this.tileIsOccupied(px + 2, py - 2, boardState) === false && px + 2 < 8 && py - 2 >= 0) {
+                    if (this.tileIsOccupied(px + 1, py - 1, boardState)) {
+                        if (this.getPieceColor(px + 1, py - 1, boardState) !== color) {
+                            return true
                         }
                     }
                 }
