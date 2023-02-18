@@ -6,35 +6,38 @@ import Logic from "./logic/Logic"
 const vertAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 const horzAxis = [1, 2, 3, 4, 5, 6, 7, 8]
 
-const checkersPiece = {
+export const checkersPiece = {
     image: String,
     x: Number,
-    y: Number
-}
-
-const initialBoardState = []
-
-for (let i = 0; i < 8; i++) {
-    for (let j = 0; j < 8; j++) {
-        if ((i + j + 1) % 2 === 0 && i < 3) {
-            initialBoardState.push({...checkersPiece, image: "assets/checkers/black-checker.png", x: i, y: j })
-        }
-        if ((i + j + 1) % 2 === 0 && i > 4) {
-            initialBoardState.push({...checkersPiece, image: "assets/checkers/red-checker.png", x: i, y: j })
-        }
-    }
+    y: Number,
+    color: Number,
+    king: Boolean
 }
 
 export default function Checkers() {
+    const initialBoardState = []
+
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            if ((i + j + 1) % 2 === 0 && i < 3) {
+                initialBoardState.push({ ...checkersPiece, image: "assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
+            }
+            if ((i + j + 1) % 2 === 0 && i > 4) {
+                initialBoardState.push({ ...checkersPiece, image: "assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
+            }
+        }
+    }
+
     const [activePiece, setActivePiece] = useState(undefined)
     const [boardState, setBoardState] = useState(initialBoardState)
     const [gridX, setGridX] = useState()
     const [gridY, setGridY] = useState()
+    const [continuedAttack, setContinuedAttack] = useState(false)
+    const [currentTurn, setCurrentTurn] = useState(0)
     const checkersBoardRef = useRef(null)
     const logic = new Logic()
 
     const grabPiece = (e) => {
-        e.preventDefault()
 
         const element = e.target
         const checkersBoard = checkersBoardRef.current
@@ -47,15 +50,14 @@ export default function Checkers() {
             const y = e.clientY - 25
 
             element.style.position = "absolute"
-            element.style.left = x.toString()+'px'
-            element.style.top = y.toString()+'px'
+            element.style.left = x + 'px'
+            element.style.top = y + 'px'
 
             setActivePiece(element)
         }
     }
 
     const movePiece = (e) => {
-        e.preventDefault()
 
         const checkersBoard = checkersBoardRef.current
 
@@ -70,42 +72,101 @@ export default function Checkers() {
             activePiece.style.position = "absolute"
 
             if (x < minX) {
-                activePiece.style.left = minX.toString()+"px"
+                activePiece.style.left = minX + "px"
             } else if (x > maxX) {
-                activePiece.style.left = maxX.toString()+"px"
+                activePiece.style.left = maxX + "px"
             } else {
-                activePiece.style.left = x.toString()+"px"
+                activePiece.style.left = x + "px"
             }
 
             if (y < minY) {
-                activePiece.style.top = minY.toString()+"px"
+                activePiece.style.top = minY + "px"
             } else if (y > maxY) {
-                activePiece.style.top = maxY.toString()+"px"
+                activePiece.style.top = maxY + "px"
             } else {
-                activePiece.style.top = y.toString()+"px"
+                activePiece.style.top = y + "px"
             }
         }
     }
 
     const dropPiece = (e) => {
-        e.preventDefault()
 
         const checkersBoard = checkersBoardRef.current
 
-        if (activePiece && checkersBoard) {
-            const y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
-            const x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
+        var removeX = 0
+        var removeY = 0
+        var spliceVal = 0
 
-            logic.isValidMove()
+        if (activePiece && checkersBoard) {
+            const x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
+            const y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
 
             setBoardState((value) => {
                 const newBoardState = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
-                        p.x = x
-                        p.y = y
+                        if (logic.isValidMove(gridX, gridY, x, y, p.color, p.king, currentTurn, value, continuedAttack)) {
+                            if (gridX === (x + 2)) {
+                                if (gridY === (y + 2)) {
+                                    removeX = x + 1
+                                    removeY = y + 1
+                                    spliceVal = 1
+                                } else {
+                                    removeX = x + 1
+                                    removeY = y - 1
+                                    spliceVal = 1
+                                }
+                            } else if (gridX === (x - 2)) {
+                                if (gridY === (y + 2)) {
+                                    removeX = x - 1
+                                    removeY = y + 1
+                                    spliceVal = 1
+                                } else {
+                                    removeX = x - 1
+                                    removeY = y - 1
+                                    spliceVal = 1
+                                }
+                            }
+                            if (p.color === 0) {
+                                if (x === 0) {
+                                    p.image = "assets/checkers/red-king.png"
+                                    p.king = true
+                                }
+                            } else {
+                                if (x === 7) {
+                                    p.image = "assets/checkers/black-king.png"
+                                    p.king = true
+                                }
+                            }
+                            p.x = x
+                            p.y = y
+                            if (gridX === (x + 2) || gridX === (x - 2)) {
+                                if (logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value)) {
+                                    setContinuedAttack(true)
+                                } else {
+                                    setContinuedAttack(false)
+                                    if (currentTurn === 0) {
+                                        setCurrentTurn(1)
+                                    } else {
+                                        setCurrentTurn(0)
+                                    }
+                                }
+                            } else {
+                                if (currentTurn === 0) {
+                                    setCurrentTurn(1)
+                                } else {
+                                    setCurrentTurn(0)
+                                }
+                            }
+                        } else {
+                            activePiece.style.position = "relative"
+                            activePiece.style.removeProperty("top")
+                            activePiece.style.removeProperty("left")
+                        }
                     }
                     return p
                 })
+                const index = newBoardState.indexOf(newBoardState.find((p) => p.x === removeX && p.y === removeY))
+                newBoardState.splice(index, spliceVal)
                 return newBoardState
             })
             setActivePiece(undefined)
@@ -120,24 +181,24 @@ export default function Checkers() {
             let image = undefined
 
             boardState?.forEach(p => {
-                if(p.x === i && p.y === j) {
+                if (p.x === i && p.y === j) {
                     image = p.image
                 }
             })
 
-            board.push(<Tile key={i.toString()+j.toString()+"propkey"} number={i + j + 1} piece={image} />)
+            board.push(<Tile key={i.toString() + j.toString() + "propkey"} number={i + j + 1} piece={image} />)
         }
     }
 
     return (
         <>
-            <div 
-                onMouseMove={e => movePiece(e)} 
-                onMouseDown={e => grabPiece(e)} 
+            <div
+                onMouseMove={e => movePiece(e)}
+                onMouseDown={e => grabPiece(e)}
                 onMouseUp={e => dropPiece(e)}
                 id="board"
                 ref={checkersBoardRef}>
-                    
+
                 {board}
             </div>
         </>

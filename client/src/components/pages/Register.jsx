@@ -56,11 +56,9 @@ const Register = () => {
             return
         }
 
-        const salted = process.env.REACT_APP_S1 + pwd + process.env.REACT_APP_S2;
-
         try {
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ username: user, password: salted }),
+                JSON.stringify({ username: user, password: pwd }),
                 {
                     headers: { "Content-Type": "application/json" },
                     withCredentials: false

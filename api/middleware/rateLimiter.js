@@ -1,7 +1,7 @@
 const rateLimiter = require("express-rate-limit")
 
 const limiter = rateLimiter({
-    max: 5,
+    max: 15,
     windowMS: 10000,
     message: "Request limit reached."
 });
