@@ -1,0 +1,13 @@
+diff --git a/node_modules/express/lib/application.js b/node_modules/express/lib/application.js
+index ebb30b5..88e5471 100644
+--- a/node_modules/express/lib/application.js
++++ b/node_modules/express/lib/application.js
+@@ -78,7 +78,7 @@ app.defaultConfiguration = function defaultConfiguration() {
+   var env = process.env.NODE_ENV || 'development';
+ 
+   // default settings
+-  this.enable('x-powered-by');
++  //this.enable('x-powered-by');
+   this.set('etag', 'weak');
+   this.set('env', env);
+   this.set('query parser', 'extended');
