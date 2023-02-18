@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-scripts/config/webpackDevServer.config.js b/node_modules/react-scripts/config/webpackDevServer.config.js
+index 522a81b..fe5950d 100644
+--- a/node_modules/react-scripts/config/webpackDevServer.config.js
++++ b/node_modules/react-scripts/config/webpackDevServer.config.js
+@@ -45,6 +45,14 @@ module.exports = function (proxy, allowedHost) {
+     // want to allow setting the allowedHosts manually for more complex setups
+     allowedHosts: disableFirewall ? 'all' : [allowedHost],
+     headers: {
++      //'Content-Security-Policy': "default-src 'self'",
++      'Cross-Origin-Embedder-Policy': 'require-corp',
++      'Cross-Origin-Opener-Policy': 'same-origin',
++      'Cross-Origin-Resource-Policy': 'same-origin',
++      'X-DNS-Prefetch-Control': 'off',
++      'X-Frame-Options': 'SAMEORIGIN',
++      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
++      'X-Download-Options': 'noopen',
+       'Access-Control-Allow-Origin': '*',
+       'Access-Control-Allow-Methods': '*',
+       'Access-Control-Allow-Headers': '*',
