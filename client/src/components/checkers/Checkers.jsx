@@ -2,28 +2,18 @@ import { useRef, useState } from "react"
 import Tile from "./tile/Tile"
 import "./checkers.css"
 import Logic from "./logic/Logic"
+import Opponent from "./logic/Opponent"
 
-const vertAxis = [1, 2, 3, 4, 5, 6, 7, 8]
-const horzAxis = [1, 2, 3, 4, 5, 6, 7, 8]
-
-export const checkersPiece = {
-    image: String,
-    x: Number,
-    y: Number,
-    color: Number,
-    king: Boolean
-}
-
-export default function Checkers() {
+export default function Checkers(props) {
     const initialBoardState = []
 
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             if ((i + j + 1) % 2 === 0 && i < 3) {
-                initialBoardState.push({ ...checkersPiece, image: "assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
+                initialBoardState.push({ image: "assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
             }
             if ((i + j + 1) % 2 === 0 && i > 4) {
-                initialBoardState.push({ ...checkersPiece, image: "assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
+                initialBoardState.push({ image: "assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
             }
         }
     }
@@ -34,6 +24,7 @@ export default function Checkers() {
     const [gridY, setGridY] = useState()
     const [continuedAttack, setContinuedAttack] = useState(false)
     const [currentTurn, setCurrentTurn] = useState(0)
+    const [playerColor, setPlayerColor] = useState(0)
     const checkersBoardRef = useRef(null)
     const logic = new Logic()
 
@@ -175,8 +166,8 @@ export default function Checkers() {
 
     let board = []
 
-    for (let i = 0; i < horzAxis.length; i++) {
-        for (let j = 0; j < vertAxis.length; j++) {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
 
             let image = undefined
 

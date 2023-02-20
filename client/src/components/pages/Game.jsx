@@ -10,7 +10,7 @@ const Game = () => {
             <Refresh />
             <Header />
             <div className='content-wrap'>
-                <Checkers />
+                <Checkers gameMode={0} difficulty={0} />
             </div>
             <Footer />
         </div>
