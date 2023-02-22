@@ -15,90 +15,76 @@ export default class Logic {
     }
 
     isValidMove(px, py, nx, ny, color, king, currentTurn, boardState, continuedAttack) {
-        if (color === currentTurn) {
-            if (king) {
-                if (continuedAttack === false && ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1) || (px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1))))) {
-                    if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                        return true
-                    }
-                } else if ((px === (nx + 2) && (py === (ny - 2)))) {
-                    console.log("bottom left to top right")
-                    if (this.tileIsOccupied(px - 1, py + 1, boardState)) {
-                        if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                            if (this.getPieceColor(px - 1, py + 1, boardState) !== color) {
-                                return true
-                            }
-                        }
-                    }
-                } else if ((px === (nx + 2) && py === (ny + 2))) {
-                    console.log("bottom right to top left")
-                    if (this.tileIsOccupied(px - 1, py - 1, boardState)) {
-                        if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                            if (this.getPieceColor(px - 1, py - 1, boardState) !== color) {
-                                return true
-                            }
-                        }
-                    }
-                } else if ((px === (nx - 2) && py === (ny + 2))) {
-                    console.log("top right to bottom left")
-                    if (this.tileIsOccupied(px + 1, py - 1, boardState)) {
-                        if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                            if (this.getPieceColor(px + 1, py - 1, boardState) !== color) {
-                                return true
-                            }
-                        }
-                    }
-                } else if ((px === (nx - 2) && py === (ny - 2))) {
-                    console.log("top left to bottom right")
-                    if (this.tileIsOccupied(px + 1, py + 1, boardState)) {
-                        if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                            if (this.getPieceColor(px + 1, py + 1, boardState) !== color) {
-                                return true
-                            }
-                        }
-                    }
-                }
-            } else {
-                if (currentTurn === 0) {
-                    if (continuedAttack === false && ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1)))) {
-                        if (this.tileIsOccupied(nx, ny, boardState) === false) {
+        if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+            if (this.tileIsOccupied(nx, ny, boardState) === false) {
+                if (color === currentTurn) {
+                    if (king) {
+                        if (continuedAttack === false && 
+                            ((px === (nx + 1) && py === (ny - 1)) || 
+                            (px === (nx + 1) && py === (ny + 1) || 
+                            (px === (nx - 1) && py === (ny - 1)) || 
+                            (px === (nx - 1) && py === (ny + 1))))) {
                             return true
-                        }
-                    } else if ((px === (nx + 2) && (py === (ny - 2)))) {
-                        if (this.tileIsOccupied(px - 1, py + 1, boardState)) {
-                            if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                                if (this.getPieceColor(px - 1, py + 1, boardState) === 1) {
+                        } else if ((px === (nx + 2) && (py === (ny - 2)))) {
+                            // console.log("bottom left to top right")
+                            if (this.tileIsOccupied(px - 1, py + 1, boardState)) {
+                                if (this.getPieceColor(px - 1, py + 1, boardState) !== color) {
+                                    return true
+                                }
+                            }
+                        } else if ((px === (nx + 2) && py === (ny + 2))) {
+                            // console.log("bottom right to top left")
+                            if (this.tileIsOccupied(px - 1, py - 1, boardState)) {
+                                if (this.getPieceColor(px - 1, py - 1, boardState) !== color) {
+                                    return true
+                                }
+                            }
+                        } else if ((px === (nx - 2) && py === (ny + 2))) {
+                            // console.log("top right to bottom left")
+                            if (this.tileIsOccupied(px + 1, py - 1, boardState)) {
+                                if (this.getPieceColor(px + 1, py - 1, boardState) !== color) {
+                                    return true
+                                }
+                            }
+                        } else if ((px === (nx - 2) && py === (ny - 2))) {
+                            // console.log("top left to bottom right")
+                            if (this.tileIsOccupied(px + 1, py + 1, boardState)) {
+                                if (this.getPieceColor(px + 1, py + 1, boardState) !== color) {
                                     return true
                                 }
                             }
                         }
-                    } else if ((px === (nx + 2) && py === (ny + 2))) {
-                        if (this.tileIsOccupied(px - 1, py - 1, boardState)) {
-                            if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                                if (this.getPieceColor(px - 1, py - 1, boardState) === 1) {
-                                    return true
+                    } else {
+                        if (currentTurn === 0) {
+                            if (continuedAttack === false && ((px === (nx + 1) && py === (ny - 1)) || (px === (nx + 1) && py === (ny + 1)))) {
+                                return true
+                            } else if ((px === (nx + 2) && (py === (ny - 2)))) {
+                                if (this.tileIsOccupied(px - 1, py + 1, boardState)) {
+                                    if (this.getPieceColor(px - 1, py + 1, boardState) === 1) {
+                                        return true
+                                    }
+                                }
+                            } else if ((px === (nx + 2) && py === (ny + 2))) {
+                                if (this.tileIsOccupied(px - 1, py - 1, boardState)) {
+                                    if (this.getPieceColor(px - 1, py - 1, boardState) === 1) {
+                                        return true
+                                    }
                                 }
                             }
-                        }
-                    }
-                } else {
-                    if (continuedAttack === false && ((px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1)))) {
-                        if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                            return true
-                        }
-                    } else if ((px === (nx - 2) && (py === (ny - 2)))) {
-                        if (this.tileIsOccupied(px + 1, py + 1, boardState)) {
-                            if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                                if (this.getPieceColor(px + 1, py + 1, boardState) === 0) {
-                                    return true
+                        } else {
+                            if (continuedAttack === false && ( (px === (nx - 1) && py === (ny - 1)) || (px === (nx - 1) && py === (ny + 1)))) {
+                                return true
+                            } else if ((px === (nx - 2) && (py === (ny - 2)))) {
+                                if (this.tileIsOccupied(px + 1, py + 1, boardState)) {
+                                    if (this.getPieceColor(px + 1, py + 1, boardState) === 0) {
+                                        return true
+                                    }
                                 }
-                            }
-                        }
-                    } else if (((px === (nx - 2) && py === (ny + 2)))) {
-                        if (this.tileIsOccupied(px + 1, py - 1, boardState)) {
-                            if (this.tileIsOccupied(nx, ny, boardState) === false) {
-                                if (this.getPieceColor(px + 1, py - 1, boardState) === 0) {
-                                    return true
+                            } else if (((px === (nx - 2) && py === (ny + 2)))) {
+                                if (this.tileIsOccupied(px + 1, py - 1, boardState)) {
+                                    if (this.getPieceColor(px + 1, py - 1, boardState) === 0) {
+                                        return true
+                                    }
                                 }
                             }
                         }

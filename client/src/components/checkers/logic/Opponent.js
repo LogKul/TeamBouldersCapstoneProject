@@ -1,47 +1,52 @@
+import AILogic from "./AILogic"
+
 export default class Opponent {
-    generateResponse(gameMode, difficulty, boardStateString) {
+    generateResponse(gameMode, difficulty, boardState, oppColor) {
         if (gameMode === 0) {
-            console.log("game mode is against the computer")
             if (difficulty === 0) {
-                console.log("difficulty is easy")
-                return this.encodeBoardState(this.aiEasyMove(this.decodeBoardState(boardStateString)))
+                return this.aiEasyMove(boardState, oppColor)
             } else if (difficulty === 1) {
                 console.log("difficulty is medium")
-                return this.encodeBoardState(this.aiMediumMove(this.decodeBoardState(boardStateString)))
+                return this.aiMediumMove(boardState, oppColor)
             } else {
                 console.log("difficulty is hard")
-                return this.encodeBoardState(this.aiHardMove(this.decodeBoardState(boardStateString)))
+                return this.aiHardMove(boardState, oppColor)
             }
         } else {
             console.log("game mode is online")
-            console.log("sending boardState to opposing player")
+            console.log("sending boardState to opposing player via api")
+            return boardState
         }
     }
 
-    encodeBoardState(boardState) {
-        console.log("encoding board state")
-        // convert array of board state bojects to a board state string
-        return "some string"
-    }
+    aiEasyMove(boardState, oppColor) {
+        const aiLogic = new AILogic()
 
-    decodeBoardState(boardState) {
-        console.log("decoding board state")
-        // convert board state string to array of board state objects
-        return ["game", "objects"]
-    }
+        const possibleMoves = []
+        // [px, py, [[nx, ny],[nx, ny]]]
 
-    aiEasyMove(boardState) {
-        console.log("choosing easy move")
-        return ["game", "objects"]
+        boardState?.forEach(p => {
+                    if (p.color === oppColor) {
+                        possibleMoves.push(aiLogic.findPossibleMove(p.x, p.y, p.color, p.king, boardState))
+                    }
+                })
+
+        console.log(possibleMoves)
+
+        return boardState
     }
 
     aiMediumMove(boardState) {
+        const aiLogic = new AILogic()
+
         console.log("choosing medium move")
-        return ["game", "objects"]
+        return boardState
     }
 
     aiHardMove(boardState) {
+        const aiLogic = new AILogic()
+
         console.log("choosing hard move")
-        return ["game", "objects"]
+        return boardState
     }
 }
