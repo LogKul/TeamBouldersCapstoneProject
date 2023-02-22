@@ -72,7 +72,7 @@ exports.login = (req, res) => {
             }
 
             var token = jwt.sign({ id: user.id }, config.secret, {
-                expiresIn: 1800 // 86400 24 hours
+                expiresIn: 240 // 86400 24 hours
             });
 
             var authorities = [];
@@ -118,7 +118,7 @@ exports.refresh = (req, res) => {
             }
 
             var token = jwt.sign({ id: user.id }, config.secret, {
-                expiresIn: 1800 // 24 hours
+                expiresIn: 240 // 24 hours
             });
 
             res.status(200).send({

@@ -64,7 +64,8 @@ const Register = () => {
                     withCredentials: false
                 }
             )
-            console.log(JSON.stringify(response))
+            // console.log(JSON.stringify(response))
+            console.log("Registered successfully")
             setSuccess(true)
             // clear input fields?
         } catch (err) {

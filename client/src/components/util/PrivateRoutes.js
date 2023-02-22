@@ -1,12 +1,10 @@
 import { Outlet, Navigate } from 'react-router-dom'
-import { useContext } from 'react'
-import AuthContext from '../../context/AuthProvider'
 
 const PrivateRoutes = () => {
-    let { auth, setAuth, refreshToken } = useContext(AuthContext)
+    let accessToken = sessionStorage.getItem("accessToken")
 
     return (
-        auth.accessToken ? <Outlet /> : <Navigate to="/login" />
+        accessToken ? <Outlet /> : <Navigate to="/login" />
     )
 }
 
