@@ -48,27 +48,36 @@ export default class Opponent {
 
         const newBoardState = boardState.map((p) => {
             if (p.x === piecesMoves[randPiece][0] && p.y === piecesMoves[randPiece][1]) {
-                if ((p.x + 2) === x) {
-                    if ((p.y + 2) === y) {
-                        console.log("should update x and y")
+                if (p.x + 2 === x) {
+                    if (p.y + 2 === y) {
                         removeX = p.x + 1
                         removeY = p.y + 1
                         spliceVal = 1
                     } else {
-                        console.log("should update x and y")
                         removeX = p.x + 1
                         removeY = p.y - 1
                         spliceVal = 1
                     }
                 } else if (p.x - 2 === x) {
                     if (p.y + 2 === y) {
-                        removeX = x - 1
-                        removeY = y + 1
+                        removeX = p.x - 1
+                        removeY = p.y + 1
                         spliceVal = 1
                     } else {
-                        removeX = x - 1
-                        removeY = y - 1
+                        removeX = p.x - 1
+                        removeY = p.y - 1
                         spliceVal = 1
+                    }
+                }
+                if (p.color === 0) {
+                    if (x === 0) {
+                        p.image = "assets/checkers/red-king.png"
+                        p.king = true
+                    }
+                } else {
+                    if (x === 7) {
+                        p.image = "assets/checkers/black-king.png"
+                        p.king = true
                     }
                 }
                 p.x = x
