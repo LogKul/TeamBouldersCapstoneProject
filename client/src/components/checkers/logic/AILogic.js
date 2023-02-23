@@ -20,7 +20,7 @@ export default class AILogic {
                 }
             }
         }
-        if (pieceMoves === []) {
+        if (pieceMoves.length === 0) {
             return undefined
         } else {
             return [px, py, pieceMoves]

@@ -22,18 +22,29 @@ export default class Opponent {
     aiEasyMove(boardState, oppColor) {
         const aiLogic = new AILogic()
 
-        const possibleMoves = []
-        // [px, py, [[nx, ny],[nx, ny]]]
+        const piecesMoves = []
 
         boardState?.forEach(p => {
                     if (p.color === oppColor) {
-                        possibleMoves.push(aiLogic.findPossibleMove(p.x, p.y, p.color, p.king, boardState))
+                        const move = aiLogic.findPossibleMove(p.x, p.y, p.color, p.king, boardState)
+                        if (move !== undefined) {
+                            piecesMoves.push(move)
+                        }
                     }
                 })
 
-        console.log(possibleMoves)
+        const randPiece = Math.floor(Math.random() * piecesMoves.length)
+        const randMove = Math.floor(Math.random() * piecesMoves[randPiece][2].length)
 
-        return boardState
+        const newBoardState = boardState.map((p) => {
+            if (p.x === piecesMoves[randPiece][0] && p.y === piecesMoves[randPiece][1]) {
+                p.x = piecesMoves[randPiece][2][randMove][0]
+                p.y = piecesMoves[randPiece][2][randMove][1]
+            }
+            return p
+        })
+
+        return newBoardState
     }
 
     aiMediumMove(boardState) {

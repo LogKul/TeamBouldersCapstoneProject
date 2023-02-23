@@ -20,7 +20,6 @@ export default function Checkers(props) {
 
     const [activePiece, setActivePiece] = useState(undefined)
     const [boardState, setBoardState] = useState(initialBoardState)
-    const [oppBoardState, setOppBoardState] = useState(boardState)
     const [gridX, setGridX] = useState()
     const [gridY, setGridY] = useState()
     const [continuedAttack, setContinuedAttack] = useState(false)
@@ -91,8 +90,6 @@ export default function Checkers(props) {
             const x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
             const y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
 
-
-            // currentTurn === playerColor
             if (currentTurn === playerColor) {
                 var removeX = 0
                 var removeY = 0
@@ -144,20 +141,15 @@ export default function Checkers(props) {
                                         setContinuedAttack(false)
                                         if (currentTurn === 0) {
                                             setCurrentTurn(1)
-                                            // temp
-                                            setPlayerColor(1)
                                         } else {
                                             setCurrentTurn(0)
-                                            setPlayerColor(0)
                                         }
                                     }
                                 } else {
                                     if (currentTurn === 0) {
                                         setCurrentTurn(1)
-                                        setPlayerColor(1)
                                     } else {
                                         setCurrentTurn(0)
-                                        setPlayerColor(0)
                                     }
                                 }
                             } else {
@@ -192,21 +184,17 @@ export default function Checkers(props) {
         return () => clearInterval(timer)
     })
 
-    if (running) {
-        /*if (currentTurn !== playerColor) {
+    useEffect(() => {
+        if (currentTurn !== playerColor) {
             if (seconds >= 5) {
                 setSeconds(0)
-                if (JSON.stringify(boardState) === JSON.stringify(oppBoardState)) {
-                    console.log("Awaiting Response")
-                    setOppBoardState(opponent.generateResponse(props.gameMode, props.difficulty, boardState, 1))
-                    setCurrentTurn(playerColor)
-                } else {
-                    console.log("Response Received")
-                    setBoardState(oppBoardState)
-                    setCurrentTurn(playerColor)
-                }
+                setBoardState(opponent.generateResponse(props.gameMode, props.difficulty, boardState, 1))
+                setCurrentTurn(playerColor)
             }
-        }*/
+        }
+    })
+
+    if (running) {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
     
