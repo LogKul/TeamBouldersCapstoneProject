@@ -7,10 +7,44 @@ export default class AILogic {
         const pieceMoves = []
 
         if (king) {
-            console.log("piece is a king. looking for king moves")
+            if (logic.isValidMove(px, py, px + 1, py + 1, color, king, color, boardState, false)) {
+                pieceMoves.push([px + 1, py + 1])
+            }
+            if (logic.isValidMove(px, py, px + 1, py - 1, color, king, color, boardState, false)) {
+                pieceMoves.push([px + 1, py - 1])
+            }
+            if (logic.isValidMove(px, py, px - 1, py + 1, color, king, color, boardState, false)) {
+                pieceMoves.push([px - 1, py + 1])
+            }
+            if (logic.isValidMove(px, py, px - 1, py - 1, color, king, color, boardState, false)) {
+                pieceMoves.push([px - 1, py - 1])
+            }
+            if (logic.isValidMove(px, py, px + 2, py + 2, color, king, color, boardState, false)) {
+                pieceMoves.push([px + 2, py + 2])
+            }
+            if (logic.isValidMove(px, py, px + 2, py - 2, color, king, color, boardState, false)) {
+                pieceMoves.push([px + 2, py - 2])
+            }
+            if (logic.isValidMove(px, py, px - 2, py + 2, color, king, color, boardState, false)) {
+                pieceMoves.push([px - 2, py + 2])
+            }
+            if (logic.isValidMove(px, py, px - 2, py - 2, color, king, color, boardState, false)) {
+                pieceMoves.push([px - 2, py - 2])
+            }
         } else {
             if (color == 0) {
-                console.log("piece is red. looking for possible red piece moves")
+                if (logic.isValidMove(px, py, px - 1, py + 1, color, king, color, boardState, false)) {
+                    pieceMoves.push([px - 1, py + 1])
+                }
+                if (logic.isValidMove(px, py, px - 1, py - 1, color, king, color, boardState, false)) {
+                    pieceMoves.push([px - 1, py - 1])
+                }
+                if (logic.isValidMove(px, py, px - 2, py + 2, color, king, color, boardState, false)) {
+                    pieceMoves.push([px - 2, py + 2])
+                }
+                if (logic.isValidMove(px, py, px - 2, py - 2, color, king, color, boardState, false)) {
+                    pieceMoves.push([px - 2, py - 2])
+                }
             } else {
                 if (logic.isValidMove(px, py, px + 1, py + 1, color, king, color, boardState, false)) {
                     pieceMoves.push([px + 1, py + 1])
