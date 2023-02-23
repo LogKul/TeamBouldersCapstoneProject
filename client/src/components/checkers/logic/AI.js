@@ -70,34 +70,34 @@ export default class AI {
                         removeX = p.x + 1
                         removeY = p.y + 1
                         spliceVal = 1
-                        console.log("ai took x: "+removeX+" y: "+removeY)
+                        console.log("ai took x: " + removeX + " y: " + removeY)
                     } else {
                         removeX = p.x + 1
                         removeY = p.y - 1
                         spliceVal = 1
-                        console.log("ai took x: "+removeX+" y: "+removeY)
+                        console.log("ai took x: " + removeX + " y: " + removeY)
                     }
                 } else if (p.x - 2 === x) {
                     if (p.y + 2 === y) {
                         removeX = p.x - 1
                         removeY = p.y + 1
                         spliceVal = 1
-                        console.log("ai took x: "+removeX+" y: "+removeY)
+                        console.log("ai took x: " + removeX + " y: " + removeY)
                     } else {
                         removeX = p.x - 1
                         removeY = p.y - 1
                         spliceVal = 1
-                        console.log("ai took x: "+removeX+" y: "+removeY)
+                        console.log("ai took x: " + removeX + " y: " + removeY)
                     }
                 }
                 if (p.color === 0) {
                     if (x === 0) {
-                        p.image = "assets/checkers/red-king.png"
+                        p.image = "/assets/checkers/red-king.png"
                         p.king = true
                     }
                 } else {
                     if (x === 7) {
-                        p.image = "assets/checkers/black-king.png"
+                        p.image = "/assets/checkers/black-king.png"
                         p.king = true
                     }
                 }

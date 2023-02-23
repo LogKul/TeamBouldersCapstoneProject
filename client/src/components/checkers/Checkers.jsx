@@ -10,10 +10,10 @@ export default function Checkers(props) {
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             if ((i + j + 1) % 2 === 0 && i < 3) {
-                initialBoardState.push({ image: "assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
+                initialBoardState.push({ image: "/assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
             }
             if ((i + j + 1) % 2 === 0 && i > 4) {
-                initialBoardState.push({ image: "assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
+                initialBoardState.push({ image: "/assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
             }
         }
     }
@@ -123,12 +123,12 @@ export default function Checkers(props) {
                                 }
                                 if (p.color === 0) {
                                     if (x === 0) {
-                                        p.image = "assets/checkers/red-king.png"
+                                        p.image = "/assets/checkers/red-king.png"
                                         p.king = true
                                     }
                                 } else {
                                     if (x === 7) {
-                                        p.image = "assets/checkers/black-king.png"
+                                        p.image = "/assets/checkers/black-king.png"
                                         p.king = true
                                     }
                                 }
@@ -197,15 +197,15 @@ export default function Checkers(props) {
     if (running) {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-    
+
                 let image = undefined
-    
+
                 boardState?.forEach(p => {
                     if (p.x === i && p.y === j) {
                         image = p.image
                     }
                 })
-    
+
                 board.push(<Tile key={i.toString() + j.toString() + "propkey"} number={i + j + 1} piece={image} />)
             }
         }
