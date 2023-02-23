@@ -36,14 +36,48 @@ export default class Opponent {
         const randPiece = Math.floor(Math.random() * piecesMoves.length)
         const randMove = Math.floor(Math.random() * piecesMoves[randPiece][2].length)
 
+        const x = piecesMoves[randPiece][2][randMove][0]
+        const y = piecesMoves[randPiece][2][randMove][1]
+
+        var removeX = 0
+        var removeY = 0
+        var spliceVal = 0
+
+        console.log(x)
+        console.log(y)
+
         const newBoardState = boardState.map((p) => {
             if (p.x === piecesMoves[randPiece][0] && p.y === piecesMoves[randPiece][1]) {
-                p.x = piecesMoves[randPiece][2][randMove][0]
-                p.y = piecesMoves[randPiece][2][randMove][1]
+                if ((p.x + 2) === x) {
+                    if ((p.y + 2) === y) {
+                        console.log("should update x and y")
+                        removeX = p.x + 1
+                        removeY = p.y + 1
+                        spliceVal = 1
+                    } else {
+                        console.log("should update x and y")
+                        removeX = p.x + 1
+                        removeY = p.y - 1
+                        spliceVal = 1
+                    }
+                } else if (p.x - 2 === x) {
+                    if (p.y + 2 === y) {
+                        removeX = x - 1
+                        removeY = y + 1
+                        spliceVal = 1
+                    } else {
+                        removeX = x - 1
+                        removeY = y - 1
+                        spliceVal = 1
+                    }
+                }
+                p.x = x
+                p.y = y
             }
             return p
         })
-
+        const index = newBoardState.indexOf(newBoardState.find((p) => p.x === removeX && p.y === removeY))
+        newBoardState.splice(index, spliceVal)
         return newBoardState
     }
 
