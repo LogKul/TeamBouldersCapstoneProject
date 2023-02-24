@@ -1,21 +1,100 @@
 import React from 'react'
-import { Link } from "react-router-dom"
+import { useRef, useState, useEffect } from "react"
+import { Link, Navigate, useParams } from "react-router-dom"
+import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
 
+const USER_URL = process.env.REACT_APP_API_URL + "/user/update"
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
+
 const Account = () => {
+
+    const userRef = useRef()
+    const errRef = useRef()
+
+    const [user, setUser] = useState("")
+    const [userFocus, setUserFocus] = useState(false)
+    const [pwd, setPwd] = useState("")
+    const [pwdFocus, setPwdFocus] = useState(false)
+    const [validPwd, setValidPwd] = useState(false)
+
+    const [errMsg, setErrMsg] = useState("")
+    const [success, setSuccess] = useState(false)
+
+    const [showUpdateField, setShowUpdateField] = useState(false)
+
+    // useEffect(() => {
+    //     userRef.current.focus()
+    // }, [])
+
+    useEffect(() => {
+        setErrMsg("")
+    }, [pwd])
+
+    const updateUserPassword = async (e) => {
+        e.preventDefault()
+        const v2 = PWD_REGEX.test(pwd)
+        if (!v2) {
+            setErrMsg("Invalid Entry")
+            return
+        }
+
+        try {
+            console.log(pwd)
+            const response = await axios.post(USER_URL,
+                JSON.stringify({ username: sessionStorage.getItem("user", user), password: pwd }),
+                {
+                    headers: { "Content-Type": "application/json"},
+                    withCredentials: false
+                }
+            )
+            console.log(response)
+            console.log("Password Updated Successfully")
+            setSuccess(true)
+        } catch(err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response")
+            } else if (err.response?.status === 401) {
+                setErrMsg("Invalid Password")
+            } else if (err.response?.status === 404) {
+                setErrMsg("User Not Found")
+            } else {
+                setErrMsg("General Failure")
+            }
+            console.log(err?.response)
+            errRef.current.focus() 
+        }
+    }
+
     return (
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>This will be the Account page!</h1>
-                <br></br>
-                <br></br>
-                <h2>This page will include links to:</h2>
-                <ul>
-                    <Link to="/account/settings"><li>Settings</li></Link>
-                    <Link to="/recordings"><li>Game Recordings</li></Link>
-                </ul>
+                <h1>Welcome { sessionStorage.getItem("user", user) }!</h1>
+                <button onClick={()=>setShowUpdateField(true)}>Update Password</button>
+                <br/>
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                {showUpdateField == true &&
+                    <form onSubmit={updateUserPassword}>
+                        <label htmlFor="password">New Password</label>
+                        <input 
+                            type="password"
+                            id="password"
+                            onChange={(e) => setPwd(e.target.value)}
+                            value={pwd}
+                            required
+                        />
+                        {showUpdateField == true &&
+                            <button>Submit</button>
+                        }
+                    </form>
+                }
+                <br/>
+                <h4>Page Links:</h4>
+                <Link to="/account/settings">Settings</Link>
+                <br/>
+                <Link to="/recordings">Game Recordings</Link>
             </div>
             <Footer />
         </div>
