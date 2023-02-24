@@ -12,11 +12,10 @@ function Header() {
                 </a>
             </div>
             <div className='header-right'>
-                <Link to="/">Home</Link>
-                <Link to="/account">Account</Link>
                 <Link to="/play">Play</Link>
                 <Link to="/leaderboard">Leaderboard</Link>
                 <Link to="/recordings">Recording</Link>
+                <Link to="/account">Account</Link>
                 <Link to="/login" onClick={() => { sessionStorage.clear() }}>LOGOUT</Link>
             </div>
         </div>
