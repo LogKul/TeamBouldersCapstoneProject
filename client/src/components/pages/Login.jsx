@@ -63,7 +63,7 @@ const Login = () => {
         <>
             {success ? (
                 <section>
-                    <Navigate to="/" />
+                    <Navigate to="/Home" />
                 </section>
             ) : (
                 <section>
