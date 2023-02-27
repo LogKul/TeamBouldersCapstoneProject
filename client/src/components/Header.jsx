@@ -18,10 +18,10 @@ function Header() {
                 <Link to="/leaderboard">Leaderboard</Link>
                 <Link to="/recordings">Recording</Link>
                 <Link to="/account">Account</Link>
-                {sessionStorage.getItem("user", user) != "" &&
+                {sessionStorage.getItem("user", user) != null &&
                     <Link to="/login" onClick={() => { sessionStorage.clear() }}>LOGOUT</Link>
                 }
-                {sessionStorage.getItem("user", user) == "" &&
+                {sessionStorage.getItem("user", user) == null &&
                     <Link to="/login" onClick={() => { sessionStorage.clear() }}>LOGIN</Link>
                 }
             </div>
