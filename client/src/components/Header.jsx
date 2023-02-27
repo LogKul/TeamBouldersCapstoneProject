@@ -1,22 +1,29 @@
-import React, { useContext } from 'react'
-import { Outlet, Navigate, Link } from 'react-router-dom'
+import React, { useRef, useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import '../styles/header.scss'
 
 function Header() {
 
+    const user = useState("")
+
     return (
         <div className='header'>
             <div className='header-left'>
-                <a href="/">
+                <a href="/Home">
                     <img src="/Checkerboard.ico" alt="Checkers Logo" />
                 </a>
             </div>
             <div className='header-right'>
-                <Link to="/play">Play</Link>
+                <Link to="/start">Play Game</Link>
                 <Link to="/leaderboard">Leaderboard</Link>
                 <Link to="/recordings">Recording</Link>
                 <Link to="/account">Account</Link>
-                <Link to="/login" onClick={() => { sessionStorage.clear() }}>LOGOUT</Link>
+                {sessionStorage.getItem("user", user) != "" &&
+                    <Link to="/login" onClick={() => { sessionStorage.clear() }}>LOGOUT</Link>
+                }
+                {sessionStorage.getItem("user", user) == "" &&
+                    <Link to="/login" onClick={() => { sessionStorage.clear() }}>LOGIN</Link>
+                }
             </div>
         </div>
     )
