@@ -8,6 +8,7 @@ const Home = () => {
             <Header />
             <div className='content-wrap'>
                 <p>This will be the homepage!</p>
+                <a href="/start"><button>Play Game</button></a>
             </div>
             <Footer />
         </div>
