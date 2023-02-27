@@ -1,13 +1,12 @@
-import { useRef, useState, useEffect, useContext } from "react"
+import { useRef, useState, useEffect } from "react"
 import { Navigate } from 'react-router-dom'
-import AuthContext from "../../context/AuthProvider"
 import axios from "../../api/axios"
 import { Link } from 'react-router-dom';
 
 const LOGIN_URL = process.env.REACT_APP_API_URL + "/auth/login"
 
 const Login = () => {
-    const { setAuth } = useContext(AuthContext)
+
     const userRef = useRef()
     const errRef = useRef()
 
@@ -35,10 +34,12 @@ const Login = () => {
                     withCredentials: false
                 }
             )
-            console.log(JSON.stringify(response))
+            //console.log(JSON.stringify(response))
             const accessToken = response?.data?.accessToken
 
-            setAuth({ user, accessToken })
+            sessionStorage.setItem("user", user)
+            sessionStorage.setItem("accessToken", accessToken)
+            console.log("Logged in")
 
             setUser("")
             setPwd("")

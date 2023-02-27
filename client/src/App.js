@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { Router, Routes, Route } from 'react-router-dom';
 
 import Register from "./components/pages/Register"
@@ -6,63 +6,53 @@ import Login from "./components/pages/Login"
 import Home from "./components/pages/Home"
 import Account from "./components/pages/Account"
 import Settings from "./components/pages/Settings"
+import Play from "./components/pages/Play"
 import Game from "./components/pages/Game"
 import Leaderboard from "./components/pages/Leaderboard"
 import Recording from "./components/pages/Recording"
 import Checkers from "./components/checkers/Checkers"
 import PrivateRoutes from './components/util/PrivateRoutes'
 
-import { AuthProvider } from './context/AuthProvider'
+import axios from "./api/axios"
 
 function App() {
 
-  /*const [currentView, setCurrentView] = useState("login")
+  const refreshToken = async (currAccessToken) => {
+    try {
+      const URL = process.env.REACT_APP_API_URL + "/auth/refresh"
+      const user = sessionStorage.getItem("user")
+      const response = await axios.get(URL,
+        {
+          params: {
+            username: user,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": currAccessToken,
+          },
+          withCredentials: false
+        }
+      )
+      // console.log(JSON.stringify(response))
+      const accessToken = response?.data?.accessToken
+      // console.log(response?.status)
+      console.log("REFRESH TOKEN: " + accessToken)
+      sessionStorage.setItem("accessToken", accessToken)
 
-  const switchView = (viewName) => {
-    setCurrentView(viewName)
-  }
-
-  const [currentUser, setCurrentUser] = useState({ username: "", email: "", password: "" })
-
-  const [error, setError] = useState("")
-
-  const [testUser, setTestUser] = useState({ username: "testUser", email: "test@test.test", password: "testPassword" })
-
-  const Register = credentials => {
-    console.log(testUser)
-    setTestUser(credentials)
-  }
-
-  const Login = credentials => {
-    console.log(credentials)
-
-    if (credentials.email == testUser.email && credentials.password == testUser.password) {
-      setCurrentUser({username: credentials.username, email: credentials.email, password: credentials.password})
-      setCurrentView('loggedin')
-      setError("")
-    } else {
-      console.log("Invalid Credentials")
-      setError("Invalid Credentials")
+    } catch (err) {
+      console.log(err.response)
     }
   }
 
-  const Logout = () => {
-    setCurrentUser({username: '', email: '', password: ''})
-    setCurrentView('login')
-  }
-
-  const [backendData, setBackendData] = useState([{}])*/
-
-  /*useEffect(() => {
-    console.log(process.env.REACT_APP_API_URL)
-    fetch(process.env.REACT_APP_API_URL + "/users/all").then(
-      response => response.json()
-    ).then(
-      data => {
-        setBackendData(data)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currAccessToken = sessionStorage.getItem("accessToken")
+      if (currAccessToken) {
+        refreshToken(currAccessToken)
       }
-    )
-  }, [])*/
+    }, 120000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <main>
@@ -74,7 +64,8 @@ function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/account/settings" element={<Settings />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/games" element={<Game />} />
+          <Route path="/play" element={<Play />} />
+          <Route path="/game/:game_mode/:difficulty" element={<Game />} />
           <Route path="/recordings" element={<Recording />} />
         </Route>
       </Routes>
@@ -83,20 +74,3 @@ function App() {
 }
 
 export default App
-
-/*
-
-      {(typeof backendData === 'undefined') ? (
-          <p>Loading...</p>
-        ) : (
-        backendData.map((user, i) => (
-          <p>id: {user.id},
-            username: {user.username}</p>
-        ))
-      )}
-
-
-      {currentView === "login" ? <LoginView Login={Login} error={error} switchView={switchView} /> : 
-      currentView === "register" ? <RegisterView Register={Register} error={error} switchView={switchView} /> : 
-      <LoggedInView Logout={Logout} error={error} />}
-*/
