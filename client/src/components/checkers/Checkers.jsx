@@ -26,6 +26,8 @@ export default function Checkers(props) {
     const [currentTurn, setCurrentTurn] = useState(0)
     const [playerColor, setPlayerColor] = useState(1) // get from props
     const [oppColor, setOppColor] = useState(0) // get from props
+    const [gameID, setGameID] = useState(0) // get from props
+    const [gameOver, setGameOver] = useState(false)
     const checkersBoardRef = useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -195,7 +197,25 @@ export default function Checkers(props) {
     })
 
     useEffect(() => {
-        if (currentTurn !== playerColor) {
+        let bCount = 0
+        let rCount = 0
+
+        boardState?.forEach(p => {
+            if (p.color === 0) {
+                rCount += 1
+            }
+            if (p.color === 1) {
+                bCount += 1
+            }
+        })
+
+        if (bCount === 0 || rCount === 0) {
+            setGameOver(true)
+        }
+    })
+
+    useEffect(() => {
+        if (currentTurn !== playerColor && gameOver === false) {
             if (seconds >= 5) {
                 setSeconds(0)
                 setBoardState(opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor))
@@ -236,17 +256,29 @@ export default function Checkers(props) {
         }
     }
 
-    return (
-        <>
-            <div
-                onMouseMove={e => movePiece(e)}
-                onMouseDown={e => grabPiece(e)}
-                onMouseUp={e => dropPiece(e)}
-                id="board"
-                ref={checkersBoardRef}>
+    
 
-                {board}
+    if (gameOver) {
+        return (
+            <>
+            <div>
+                Game Over!
             </div>
         </>
-    )
+        )
+    } else {
+        return (
+            <>
+                <div
+                    onMouseMove={e => movePiece(e)}
+                    onMouseDown={e => grabPiece(e)}
+                    onMouseUp={e => dropPiece(e)}
+                    id="board"
+                    ref={checkersBoardRef}>
+    
+                    {board}
+                </div>
+            </>
+        )
+    }
 }

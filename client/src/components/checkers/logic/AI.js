@@ -4,13 +4,9 @@ import AILogic from "./AILogic"
 export default class AI {
     aiEasyMove(boardState, oppColor) {
         let pieceMove = undefined
-        let checkMultiMove = true
         let newBoardState = undefined
-        while (checkMultiMove) {
-            pieceMove = this.getRandomMove(this.getMovablePieces(boardState, oppColor))
-            newBoardState = this.movePiece(boardState, pieceMove, oppColor)
-            checkMultiMove = false
-        }
+        pieceMove = this.getRandomMove(this.getMovablePieces(boardState, oppColor))
+        newBoardState = this.movePiece(boardState, pieceMove, oppColor)
         return newBoardState
     }
 
