@@ -24,8 +24,10 @@ export default function Checkers(props) {
     const [gridY, setGridY] = useState()
     const [continuedAttack, setContinuedAttack] = useState(false)
     const [currentTurn, setCurrentTurn] = useState(0)
-    const [playerColor, setPlayerColor] = useState(0)
-    const [running, setRunning] = useState(true)
+    const [playerColor, setPlayerColor] = useState(1) // get from props
+    const [oppColor, setOppColor] = useState(0) // get from props
+    const [gameID, setGameID] = useState(0) // get from props
+    const [gameOver, setGameOver] = useState(false)
     const checkersBoardRef = useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -36,8 +38,13 @@ export default function Checkers(props) {
         const checkersBoard = checkersBoardRef.current
 
         if (element.classList.contains("checkers-piece") && checkersBoard) {
-            setGridX(Math.floor((e.clientY - checkersBoard.offsetTop) / 100))
-            setGridY(Math.floor((e.clientX - checkersBoard.offsetLeft) / 100))
+            if (playerColor === 0) {
+                setGridX(Math.floor((e.clientY - checkersBoard.offsetTop) / 100))
+                setGridY(Math.floor((e.clientX - checkersBoard.offsetLeft) / 100))
+            } else {
+                setGridX(7 - (Math.floor((e.clientY - checkersBoard.offsetTop) / 100)))
+                setGridY(7 - (Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)))
+            }
 
             const x = e.clientX - 25
             const y = e.clientY - 25
@@ -87,8 +94,13 @@ export default function Checkers(props) {
         const checkersBoard = checkersBoardRef.current
 
         if (activePiece && checkersBoard) {
-            const x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
-            const y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
+            let x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
+            let y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
+
+            if (playerColor === 1) {
+                x = 7 - x
+                y = 7 - y
+            }
 
             if (currentTurn === playerColor) {
                 var removeX = 0
@@ -185,16 +197,34 @@ export default function Checkers(props) {
     })
 
     useEffect(() => {
-        if (currentTurn !== playerColor) {
+        let bCount = 0
+        let rCount = 0
+
+        boardState?.forEach(p => {
+            if (p.color === 0) {
+                rCount += 1
+            }
+            if (p.color === 1) {
+                bCount += 1
+            }
+        })
+
+        if (bCount === 0 || rCount === 0) {
+            setGameOver(true)
+        }
+    })
+
+    useEffect(() => {
+        if (currentTurn !== playerColor && gameOver === false) {
             if (seconds >= 5) {
                 setSeconds(0)
-                setBoardState(opponent.generateResponse(props.gameMode, props.difficulty, boardState, 1))
+                setBoardState(opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor))
                 setCurrentTurn(playerColor)
             }
         }
     })
 
-    if (running) {
+    if (playerColor === 0) {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
 
@@ -210,20 +240,45 @@ export default function Checkers(props) {
             }
         }
     } else {
-        console.log("Game is over")
+        for (let i = 7; i >= 0; i--) {
+            for (let j = 7; j >= 0; j--) {
+
+                let image = undefined
+
+                boardState?.forEach(p => {
+                    if (p.x === i && p.y === j) {
+                        image = p.image
+                    }
+                })
+
+                board.push(<Tile key={i.toString() + j.toString() + "propkey"} number={i + j + 1} piece={image} />)
+            }
+        }
     }
 
-    return (
-        <>
-            <div
-                onMouseMove={e => movePiece(e)}
-                onMouseDown={e => grabPiece(e)}
-                onMouseUp={e => dropPiece(e)}
-                id="board"
-                ref={checkersBoardRef}>
+    
 
-                {board}
+    if (gameOver) {
+        return (
+            <>
+            <div>
+                Game Over!
             </div>
         </>
-    )
+        )
+    } else {
+        return (
+            <>
+                <div
+                    onMouseMove={e => movePiece(e)}
+                    onMouseDown={e => grabPiece(e)}
+                    onMouseUp={e => dropPiece(e)}
+                    id="board"
+                    ref={checkersBoardRef}>
+    
+                    {board}
+                </div>
+            </>
+        )
+    }
 }
