@@ -5,7 +5,7 @@ import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
 
-const USER_URL = process.env.REACT_APP_API_URL + "/user/update"
+const USER_URL = process.env.REACT_APP_API_URL + "/users/update?username=" + sessionStorage.getItem("user")
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 const Account = () => {
@@ -41,11 +41,11 @@ const Account = () => {
         }
 
         try {
-            console.log(pwd)
-            const response = await axios.post(USER_URL,
-                JSON.stringify({ username: sessionStorage.getItem("user", user), password: pwd }),
+            const response = await axios.put(USER_URL,
+                { password: pwd },
                 {
-                    headers: { "Content-Type": "application/json"},
+                    headers: { "Content-Type": "application/json", 
+                               "x-access-token": sessionStorage.getItem("accessToken"),},
                     withCredentials: false
                 }
             )
