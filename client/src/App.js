@@ -13,7 +13,7 @@ import Play from "./components/pages/Play"
 import Game from "./components/pages/Game"
 import Leaderboard from "./components/pages/Leaderboard"
 import Recording from "./components/pages/Recording"
-import Checkers from "./components/checkers/Checkers"
+import Matchmaking from "./components/pages/Matchmaking"
 import PrivateRoutes from './components/util/PrivateRoutes'
 
 import axios from "./api/axios"
@@ -70,7 +70,8 @@ function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/start" element={<GameStart />} />
           <Route path="/play" element={<Play />} />
-          <Route path="/game/:game_mode/:difficulty" element={<Game />} />
+          <Route path="/matchmaking" element={<Matchmaking />} />
+          <Route path="/game/:game_mode/:difficulty/:color" element={<Game />} />
           <Route path="over" element={<GameOver />} />
           <Route path="/recordings" element={<Recording />} />
         </Route>

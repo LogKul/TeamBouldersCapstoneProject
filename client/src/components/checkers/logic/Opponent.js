@@ -13,7 +13,7 @@ export default class Opponent {
                 console.log("difficulty is hard")
                 return this.aiHardMove(boardState, oppColor)
             }
-        } else {
+        } else if (gameMode === 1) {
             console.log("game mode is online")
             console.log("sending boardState to opposing player via api")
             return boardState
