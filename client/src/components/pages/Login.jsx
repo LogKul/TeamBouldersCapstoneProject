@@ -40,6 +40,15 @@ const Login = () => {
             const accessToken = response?.data?.accessToken
 
             sessionStorage.setItem("user", user)
+            sessionStorage.setItem("userID", response?.data?.id)
+            sessionStorage.setItem("wins", response?.data?.wins)
+            sessionStorage.setItem("losses", response?.data?.losses)
+            sessionStorage.setItem("mmr", response?.data?.mmr)
+            sessionStorage.setItem("deleted", response?.data?.deleted)
+            sessionStorage.setItem("lightswitch", response?.data?.lightswitch)
+            sessionStorage.setItem("theme", response?.data?.theme)
+            sessionStorage.setItem("banned", response?.data?.banned)
+            sessionStorage.setItem("hideschat", response?.data?.hideschat)
             sessionStorage.setItem("accessToken", accessToken)
             console.log("Logged in")
 
