@@ -160,6 +160,44 @@ Routes Table of Contents
 			Body- {
 				message
 			}
+	---------------------------------------------		
+	GET /games/findopengames
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query-
+			Body-
+		RESPONSE:
+			Body- {
+				{ game_id: 1... },
+				{ game_id: 2... },
+				...
+			}
+	---------------------------------------------		
+	PUT /games/joingame
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- gameid, playerid
+			Body-
+		RESPONSE:
+			Body- {
+				message
+			}
+	---------------------------------------------		
+	DELETE /games/cleanup
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- id (player id)
+			Body-
+		RESPONSE:
+			Body- {
+				message
+			}
 			
 ----------------------------------------------------------------
 /chats

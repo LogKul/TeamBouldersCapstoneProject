@@ -37,7 +37,7 @@ const Login = () => {
                 }
             )
             //console.log(JSON.stringify(response))
-            const accessToken = response?.data?.accessToken
+            //const accessToken = response?.data?.accessToken
 
             sessionStorage.setItem("user", user)
             sessionStorage.setItem("userID", response?.data?.id)
@@ -49,7 +49,7 @@ const Login = () => {
             sessionStorage.setItem("theme", response?.data?.theme)
             sessionStorage.setItem("banned", response?.data?.banned)
             sessionStorage.setItem("hideschat", response?.data?.hideschat)
-            sessionStorage.setItem("accessToken", accessToken)
+            sessionStorage.setItem("accessToken", response?.data?.accessToken)
             console.log("Logged in")
 
             setUser("")
