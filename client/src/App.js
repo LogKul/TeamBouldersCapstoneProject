@@ -3,9 +3,12 @@ import { Router, Routes, Route } from 'react-router-dom';
 
 import Register from "./components/pages/Register"
 import Login from "./components/pages/Login"
+import Landing from "./components/pages/Landing"
 import Home from "./components/pages/Home"
 import Account from "./components/pages/Account"
 import Settings from "./components/pages/Settings"
+import GameStart from "./components/pages/GameStart";
+import GameOver from "./components/pages/GameOver";
 import Play from "./components/pages/Play"
 import Game from "./components/pages/Game"
 import Leaderboard from "./components/pages/Leaderboard"
@@ -59,13 +62,16 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Landing />} />
         <Route element={<PrivateRoutes />}>
-          <Route path="/" element={<Home />} exact />
+          <Route path="/Home" element={<Home />} exact />
           <Route path="/account" element={<Account />} />
           <Route path="/account/settings" element={<Settings />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/start" element={<GameStart />} />
           <Route path="/play" element={<Play />} />
           <Route path="/game/:game_mode/:difficulty" element={<Game />} />
+          <Route path="over" element={<GameOver />} />
           <Route path="/recordings" element={<Recording />} />
         </Route>
       </Routes>

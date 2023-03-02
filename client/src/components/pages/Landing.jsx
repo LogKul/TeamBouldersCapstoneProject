@@ -2,17 +2,18 @@ import React from 'react'
 import Header from '../Header'
 import Footer from '../Footer'
 
-const Home = () => {
+function Landing() {
+
     return (
         <div>
             <Header />
             <div className='content-wrap'>
-                <p>This will be the homepage!</p>
-                <a href="/start"><button>Play Game</button></a>
+                <h1>Welcome To Checkers!</h1>
+                <a href="/Login"><button>Login</button></a>
             </div>
             <Footer />
         </div>
     )
 }
 
-export default Home
+export default Landing

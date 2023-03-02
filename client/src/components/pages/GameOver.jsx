@@ -2,17 +2,17 @@ import React from 'react'
 import Header from '../Header'
 import Footer from '../Footer'
 
-const Home = () => {
-    return (
+function GameOver() {
+    return(
         <div>
             <Header />
             <div className='content-wrap'>
-                <p>This will be the homepage!</p>
-                <a href="/start"><button>Play Game</button></a>
+                <a href="/Play"><button>Play Again</button></a>
+                <a href="/"><button>Back To Home</button></a>
             </div>
             <Footer />
         </div>
     )
 }
 
-export default Home
+export default GameOver

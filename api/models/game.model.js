@@ -10,11 +10,11 @@ module.exports = (sequelize, Sequelize) => {
         },
         player1: {
             type: Sequelize.UUID,
-            allowNull: false
+            allowNull: true
         },
         player2: {
             type: Sequelize.UUID,
-            allowNull: false
+            allowNull: true
         },
         gamestate: {
             type: Sequelize.STRING,

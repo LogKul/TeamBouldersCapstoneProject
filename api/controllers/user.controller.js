@@ -1,6 +1,9 @@
 const db = require("../models");
 const User = db.user;
 
+require('dotenv').config();
+var bcrypt = require("bcryptjs");
+
 exports.read = (req, res) => {
     // Read single User
     User.findOne({
@@ -29,6 +32,8 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res) => {
+    var salted = process.env.S1 + req.body.password + process.env.S2
+
     // Update existing User
     User.findOne({
         where: {
@@ -36,7 +41,11 @@ exports.update = (req, res) => {
         }
     })
         .then(user => {
+            const new_pass = bcrypt.hashSync(salted, 8)
             user.set(req.body);
+            if (new_pass !== 'undefined') {
+                user.set({ password: new_pass });
+            }
             user.save();
 
             res.status(200).send({ message: "User was updated successfully!" });

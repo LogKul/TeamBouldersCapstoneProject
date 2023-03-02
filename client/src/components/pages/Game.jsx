@@ -14,7 +14,13 @@ const Game = () => {
             <div className='content-wrap'>
                 <p>Game Mode: {game_mode}</p>
                 <p>Difficulty: {difficulty}</p>
-                <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} />
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} />
+                </div>
             </div>
             <Footer />
         </div>
