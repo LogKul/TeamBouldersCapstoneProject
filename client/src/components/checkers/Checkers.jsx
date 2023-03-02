@@ -26,7 +26,7 @@ export default function Checkers(props) {
     const [currentTurn, setCurrentTurn] = useState(0)
     const [playerColor, setPlayerColor] = useState(1) // get from props
     const [oppColor, setOppColor] = useState(0) // get from props
-    const [gameID, setGameID] = useState(0) // get from props
+    const [gameID, setGameID] = useState(0) // get from props if game is online
     const [gameOver, setGameOver] = useState(false)
     const checkersBoardRef = useRef(null)
     const logic = new Logic()
@@ -189,6 +189,9 @@ export default function Checkers(props) {
 
     const [seconds, setSeconds] = useState(0)
     var timer
+
+    // timer to be used for preventing a move from ai to occur every 5 seconds
+    // can be changed to async and await
     useEffect(() => {
         timer = setInterval(() => {
             setSeconds(seconds + 1)
@@ -196,6 +199,7 @@ export default function Checkers(props) {
         return () => clearInterval(timer)
     })
 
+    // check to see if there are any pieces left on the board
     useEffect(() => {
         let bCount = 0
         let rCount = 0
@@ -214,6 +218,8 @@ export default function Checkers(props) {
         }
     })
 
+    // get response from ai or other player only if 5 seconds have passed
+    // should be changed to async and await
     useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false) {
             if (seconds >= 5) {
@@ -224,6 +230,7 @@ export default function Checkers(props) {
         }
     })
 
+    // build the board to be rendered with images and tiles
     if (playerColor === 0) {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -256,7 +263,20 @@ export default function Checkers(props) {
         }
     }
 
-    
+    // handle cleanup if game is closed
+    function leavingPageEvent() {
+        console.log("leaving page event being handled...")
+    }
+
+    const links = document.getElementsByTagName("a")
+
+    // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
+    useEffect(() => {
+        for (let link of links) {
+            link.addEventListener('click', leavingPageEvent, false)
+        }
+        window.addEventListener('beforeunload', leavingPageEvent)
+    }, [])
 
     if (gameOver) {
         return (
