@@ -1,4 +1,5 @@
-import { React, useRef, useState, useEffect } from "react"
+import React from "react"
+import PropTypes from "prop-types"
 import Tile from "./tile/Tile"
 import "./checkers.css"
 import Logic from "./logic/Logic"
@@ -20,16 +21,16 @@ export default function Checkers(props) {
 
     const playerColor = props.color
     const oppColor = props.color === 1 ? 0 : 1
-    const gameID = props.game_id
+    // const gameID = props.game_id
 
-    const [activePiece, setActivePiece] = useState(undefined)
-    const [boardState, setBoardState] = useState(initialBoardState)
-    const [gridX, setGridX] = useState()
-    const [gridY, setGridY] = useState()
-    const [continuedAttack, setContinuedAttack] = useState(false)
-    const [currentTurn, setCurrentTurn] = useState(0)
-    const [gameOver, setGameOver] = useState(false)
-    const checkersBoardRef = useRef(null)
+    const [activePiece, setActivePiece] = React.useState(undefined)
+    const [boardState, setBoardState] = React.useState(initialBoardState)
+    const [gridX, setGridX] = React.useState()
+    const [gridY, setGridY] = React.useState()
+    const [continuedAttack, setContinuedAttack] = React.useState(false)
+    const [currentTurn, setCurrentTurn] = React.useState(0)
+    const [gameOver, setGameOver] = React.useState(false)
+    const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
 
@@ -189,7 +190,7 @@ export default function Checkers(props) {
     let board = []
 
     // check to see if there are any pieces left on the board
-    useEffect(() => {
+    React.useEffect(() => {
         let bCount = 0
         let rCount = 0
 
@@ -220,7 +221,7 @@ export default function Checkers(props) {
     }
     // get response from ai or other player only if 5 seconds have passed
     // should be changed to async and await
-    useEffect(() => {
+    React.useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false) {
             getResponse()
         }
@@ -267,7 +268,7 @@ export default function Checkers(props) {
     const links = document.getElementsByTagName("a")
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
-    useEffect(() => {
+    React.useEffect(() => {
         for (let link of links) {
             link.addEventListener('click', leavingPageEvent, false)
         }
@@ -297,4 +298,11 @@ export default function Checkers(props) {
             </>
         )
     }
+}
+
+Checkers.propTypes = {
+    gameMode: PropTypes.number,
+    difficulty: PropTypes.number,
+    game_id: PropTypes.number,
+    color: PropTypes.number
 }
