@@ -1,10 +1,32 @@
-import { React, useState } from "react"
+import { React, useState, useEffect } from "react"
 import Header from '../Header'
 import Footer from '../Footer'
 import Checkers from "../checkers/Checkers"
+import axios from "../../api/axios"
 
 export default function Matchmaking() {
     const [searching, setSearching] = useState(false)
+
+    const REQUEST_URL = process.env.REACT_APP_API_URL + "/games/findopengames"
+
+    const getGames = async () => {
+        try {
+            const response = await axios.get(REQUEST_URL,
+                {
+                    headers: { "Content-Type": "application/json", 
+                               "x-access-token": sessionStorage.getItem("accessToken"),},
+                    withCredentials: false
+                }
+            )
+            console.log(response)
+        } catch(err) {
+            console.log(err?.response)
+        }
+    }
+
+    useEffect(() => {
+        getGames()
+    }, [])
 
     if (searching) {
         // do some searching function here

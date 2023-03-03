@@ -18,15 +18,16 @@ export default function Checkers(props) {
         }
     }
 
+    const playerColor = props.color
+    const oppColor = props.color === 1 ? 0 : 1
+    const gameID = props.game_id
+
     const [activePiece, setActivePiece] = useState(undefined)
     const [boardState, setBoardState] = useState(initialBoardState)
     const [gridX, setGridX] = useState()
     const [gridY, setGridY] = useState()
     const [continuedAttack, setContinuedAttack] = useState(false)
     const [currentTurn, setCurrentTurn] = useState(0)
-    const [playerColor, setPlayerColor] = useState(1) // get from props
-    const [oppColor, setOppColor] = useState(0) // get from props
-    const [gameID, setGameID] = useState(0) // get from props if game is online
     const [gameOver, setGameOver] = useState(false)
     const checkersBoardRef = useRef(null)
     const logic = new Logic()
@@ -187,18 +188,6 @@ export default function Checkers(props) {
 
     let board = []
 
-    const [seconds, setSeconds] = useState(0)
-    var timer
-
-    // timer to be used for preventing a move from ai to occur every 5 seconds
-    // can be changed to async and await
-    useEffect(() => {
-        timer = setInterval(() => {
-            setSeconds(seconds + 1)
-        }, 1000)
-        return () => clearInterval(timer)
-    })
-
     // check to see if there are any pieces left on the board
     useEffect(() => {
         let bCount = 0
@@ -218,15 +207,22 @@ export default function Checkers(props) {
         }
     })
 
+
+    const delay = ms => new Promise(res => setTimeout(res, ms))
+
+    const getResponse = async () => {
+        const oppBoardState = await opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor)
+        await delay(5000)
+        if (oppBoardState !== boardState) {
+            setBoardState(oppBoardState)
+            setCurrentTurn(playerColor)
+        }
+    }
     // get response from ai or other player only if 5 seconds have passed
     // should be changed to async and await
     useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false) {
-            if (seconds >= 5) {
-                setSeconds(0)
-                setBoardState(opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor))
-                setCurrentTurn(playerColor)
-            }
+            getResponse()
         }
     })
 
