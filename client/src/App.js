@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from "react"
-import { Router, Routes, Route } from 'react-router-dom';
+import React from "react"
+import { Routes, Route } from 'react-router-dom';
 
 import Register from "./components/pages/Register"
 import Login from "./components/pages/Login"
@@ -47,7 +47,7 @@ function App() {
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     const interval = setInterval(() => {
       const currAccessToken = sessionStorage.getItem("accessToken")
       if (currAccessToken) {
