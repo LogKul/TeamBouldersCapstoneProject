@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRef, useState, useEffect } from "react"
-import { Link, Navigate, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
@@ -10,23 +10,15 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 const Account = () => {
 
-    const userRef = useRef()
     const errRef = useRef()
 
-    const [user, setUser] = useState("")
-    const [userFocus, setUserFocus] = useState(false)
+    const user = useState("")
     const [pwd, setPwd] = useState("")
-    const [pwdFocus, setPwdFocus] = useState(false)
-    const [validPwd, setValidPwd] = useState(false)
 
     const [errMsg, setErrMsg] = useState("")
-    const [success, setSuccess] = useState(false)
+    const setSuccess = useState(false)
 
     const [showUpdateField, setShowUpdateField] = useState(false)
-
-    // useEffect(() => {
-    //     userRef.current.focus()
-    // }, [])
 
     useEffect(() => {
         setErrMsg("")
