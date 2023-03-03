@@ -1,11 +1,11 @@
-import { React, useState, useEffect } from "react"
+import React from "react"
 import Header from '../Header'
 import Footer from '../Footer'
 import Checkers from "../checkers/Checkers"
 import axios from "../../api/axios"
 
 export default function Matchmaking() {
-    const [searching, setSearching] = useState(false)
+    const [searching, setSearching] = React.useState(false)
 
     const REQUEST_URL = process.env.REACT_APP_API_URL + "/games/findopengames"
 
@@ -24,8 +24,9 @@ export default function Matchmaking() {
         }
     }
 
-    useEffect(() => {
+    React.useEffect(() => {
         getGames()
+        setSearching(false)
     }, [])
 
     if (searching) {
