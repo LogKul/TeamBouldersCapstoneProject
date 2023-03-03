@@ -1,10 +1,11 @@
-import { useRef, useState, useEffect } from "react"
+import { React, useRef, useState, useEffect } from "react"
 import { Navigate } from 'react-router-dom'
 import axios from "../../api/axios"
 import { Link } from 'react-router-dom';
 import Header from '../Header'
 import Footer from '../Footer'
 
+// eslint-disable-next-line no-undef
 const LOGIN_URL = process.env.REACT_APP_API_URL + "/auth/login"
 
 const Login = () => {
