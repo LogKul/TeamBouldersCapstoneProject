@@ -13,7 +13,7 @@ const Leaderboard = () => {
                 <br></br>
                 <h2>This page will include links to:</h2>
                 <ul>
-                    <Link to="/account"><li>Account for viewing a specific player's account</li></Link>
+                    <Link to="/account"><li>Account for viewing a specific player&apos;s account</li></Link>
                 </ul>
             </div>
             <Footer />
