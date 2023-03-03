@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react"
+import { React, useRef, useState, useEffect } from "react"
 import Tile from "./tile/Tile"
 import "./checkers.css"
 import Logic from "./logic/Logic"
