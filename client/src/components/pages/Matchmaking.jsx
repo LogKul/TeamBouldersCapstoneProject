@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { React, useState } from "react"
 import Header from '../Header'
 import Footer from '../Footer'
 import Checkers from "../checkers/Checkers"
