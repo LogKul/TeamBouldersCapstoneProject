@@ -13,6 +13,7 @@ import Play from "./components/pages/Play"
 import Game from "./components/pages/Game"
 import Leaderboard from "./components/pages/Leaderboard"
 import Recording from "./components/pages/Recording"
+import UserRecording from "./components/pages/UserRecording"
 import Matchmaking from "./components/pages/Matchmaking"
 import PrivateRoutes from './components/util/PrivateRoutes'
 
@@ -74,6 +75,7 @@ function App() {
           <Route path="/game/:game_mode/:difficulty/:game_id/:color" element={<Game />} />
           <Route path="over" element={<GameOver />} />
           <Route path="/recordings" element={<Recording />} />
+          <Route path="/recordings/:player_id" element={<UserRecording />} />
         </Route>
       </Routes>
     </main>

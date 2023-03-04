@@ -6,6 +6,79 @@ const Game = db.game;
 
 };*/
 
+exports.find_completed_games = (req, res) => {
+    // Return all current completed games
+    Game.findAll({
+        where: {
+            [Op.and]: [
+                {
+                    player1: {
+                        [Op.not]: null
+                    },
+                },
+                {
+                    player2: {
+                        [Op.not]: null
+                    },
+                },
+                {
+                    winner: {
+                        [Op.not]: null
+                    },
+                }
+            ]
+        }
+    })
+        .then((completed_games) => {
+            res.status(200).send({
+                games: completed_games,
+            });
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+            console.log(err.message)
+        });
+};
+
+exports.find_completed_games_by_user = (req, res) => {
+    // Return all current completed games
+    // containing a particular user
+    Game.findAll({
+        where: {
+            [Op.and]: [
+                {
+                    player1: {
+                        [Op.not]: null
+                    },
+                },
+                {
+                    player2: {
+                        [Op.not]: null
+                    },
+                },
+                {
+                    winner: {
+                        [Op.not]: null
+                    },
+                }
+            ],
+            [Op.or]: [
+                { player1: req.query.playerid },
+                { player2: req.query.playerid },
+            ]
+        }
+    })
+        .then((completed_games) => {
+            res.status(200).send({
+                games: completed_games,
+            });
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+            console.log(err.message)
+        });
+};
+
 exports.find_open_games = (req, res) => {
     // Return all current open games, where at least one
     // player slot is null, creates new empty game if none
