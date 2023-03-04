@@ -64,6 +64,9 @@ exports.join_game = (req, res) => {
                     game.set({ player2: req.query.playerid });
                 }
             }
+            else if (game.player1 == req.query.playerid || game.player2 == req.query.playerid) {
+                return res.status(208).send({ message: "User already in game." });
+            }
             else if (game.player1 == null) {
                 game.set({ player1: req.query.playerid });
             }
