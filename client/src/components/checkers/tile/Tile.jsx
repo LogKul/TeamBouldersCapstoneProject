@@ -20,6 +20,6 @@ export default function Tile(props) {
 }
 
 Tile.propTypes = {
-    piece: PropTypes.element,
+    piece: PropTypes.string,
     number: PropTypes.number
 }
