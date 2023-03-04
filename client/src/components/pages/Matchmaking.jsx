@@ -12,45 +12,51 @@ export default function Matchmaking() {
 
     const [searching, setSearching] = React.useState(true)
     const [gameData, setGameData] = React.useState(undefined)
+    const [color, setColor] = React.useState(undefined)
+    const [oppName, setOppName] = React.useState(undefined)
 
     const delay = ms => new Promise(res => setTimeout(res, ms))
 
     React.useEffect(() => {
-        async function getGameAndJoin() {
-            let localGameData = undefined
-            try {
-                const response = await axios.get(FIND_GAME_URL,
-                    {
-                        headers: { "Content-Type": "application/json", 
-                                "x-access-token": sessionStorage.getItem("accessToken")},
-                        withCredentials: false
-                    }
-                )
-                localGameData = response?.data?.games[0]
-                setGameData(localGameData)
-            } catch(err) {
-                console.log(err?.response)
+        if (gameData === undefined) {
+            const getGameAndJoin = async () => {
+                let localGameData = undefined
+                try {
+                    const response = await axios.get(FIND_GAME_URL,
+                        {
+                            headers: { "Content-Type": "application/json", 
+                                    "x-access-token": sessionStorage.getItem("accessToken")},
+                            withCredentials: false
+                        }
+                    )
+                    console.log(response)
+                    localGameData = response?.data?.games[0]
+                    setGameData(localGameData)
+                } catch(err) {
+                    console.log(err?.response)
+                }
+                try {
+                    const response = await axios.put(JOIN_GAME_URL + localGameData?.id + "&playerid=" + sessionStorage.getItem("userID"),
+                        { params: { gameid: localGameData?.id, playerid: sessionStorage.getItem("userID") } },
+                        {
+                            headers: { "Content-Type": "application/json", 
+                                    "x-access-token": sessionStorage.getItem("accessToken")},
+                            withCredentials: false
+                        }
+                    )
+                    console.log(response)
+                } catch(err) {
+                    console.log(err?.response)
+                }
             }
-            try {
-                await axios.put(JOIN_GAME_URL + localGameData?.id + "&playerid=" + sessionStorage.getItem("userID"),
-                    { params: { gameid: localGameData?.id, playerid: sessionStorage.getItem("userID") } },
-                    {
-                        headers: { "Content-Type": "application/json", 
-                                   "x-access-token": sessionStorage.getItem("accessToken")},
-                        withCredentials: false
-                    }
-                )
-            } catch(err) {
-                console.log(err?.response)
-            }
+            getGameAndJoin()
         }
-        getGameAndJoin()
     }, [])
 
     React.useEffect(() => {
         if (gameData !== undefined && searching) {
             const queryGame = async () => {
-                console.log("will query game in 30 seconds")
+                let localGameData = undefined
                 await delay(30000)
                 try {
                     const response = await axios.get(QUERY_GAME_URL + gameData?.id,
@@ -60,13 +66,21 @@ export default function Matchmaking() {
                             withCredentials: false
                         }
                     )
-                    setGameData(response?.data)
+                    localGameData = response?.data
+                    setGameData(localGameData)
                 } catch(err) {
                     console.log(err?.response)
                 }
+                if (localGameData.player1 === sessionStorage.getItem("userID")) {
+                    setColor(0)
+                    setOppName(localGameData.player2)
+                } else {
+                    setColor(1)
+                    setOppName(localGameData.player1)
+                }
             }
             queryGame()
-            console.log("game query complete")
+            console.log("game query completed after 30 seconds")
             if (gameData.player1 !== null && gameData.player2 !== null) {
                 setSearching(false)
             }
@@ -116,13 +130,15 @@ export default function Matchmaking() {
             <div>
             <Header />
             <div className='content-wrap'>
-                <p>Playing Online</p>
+                <p>Playing Online against {oppName}</p>
+                <p>Game Id: {gameData.id}</p>
+                <p>Your color: {color}</p>
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Checkers gameMode={0} difficulty={0} gameID={0} color={0} />
+                    <Checkers gameMode={0} difficulty={0} gameID={gameData.id} color={color} />
                 </div>
             </div>
             <Footer />
