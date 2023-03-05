@@ -5,99 +5,125 @@ import Checkers from "../checkers/Checkers"
 import axios from "../../api/axios"
 
 export default function Matchmaking() {
-    const FIND_GAME_URL = process.env.REACT_APP_API_URL + "/games/findopengames"
-    const QUERY_GAME_URL = process.env.REACT_APP_API_URL + "/games/read?id="
-    const JOIN_GAME_URL = process.env.REACT_APP_API_URL + "/games/joingame?gameid="
-    const DELETE_GAME_URL = process.env.REACT_APP_API_URL + "/games/cleanup?id="
-
     const [searching, setSearching] = React.useState(true)
     const [gameData, setGameData] = React.useState(undefined)
     const [color, setColor] = React.useState(undefined)
     const [oppName, setOppName] = React.useState(undefined)
+    const [rerenderQuery, setRerenderQuery] = React.useState(0)
+    const [rerenderFindGame, setRerenderFindGame] = React.useState(0)
+    const [rerenderJoinGame, setRerenderJoinGame] = React.useState(0)
 
-    const delay = ms => new Promise(res => setTimeout(res, ms))
-
+    // Set interval for query checking for opponenet --- 10000 = 10 seconds
     React.useEffect(() => {
-        if (gameData === undefined) {
-            const getGameAndJoin = async () => {
-                let localGameData = undefined
+        let interval = null
+        interval = setInterval(() => {
+            setRerenderQuery(rerenderQuery => rerenderQuery + 1)
+        }, 10000)
+        return () => clearInterval(interval)
+    }, [rerenderQuery])
+
+    // Set interval after page loads to find a game --- 3000 = 3 second
+    // This prevents the requests from submitting twice due to React.Strict
+    React.useEffect(() => {
+        if (rerenderFindGame < 1) {
+            let interval = null
+            interval = setInterval(() => {
+                setRerenderFindGame(rerenderFindGame => rerenderFindGame + 1)
+            }, 3000)
+            return () => clearInterval(interval)
+        }
+    }, [rerenderFindGame])
+
+    // Set interval after page loads to join the game -- 3000 = 3 seconds
+    // This prevents the requests from submitting twice due to React.Strict
+    React.useEffect(() => {
+        if (rerenderJoinGame < 1) {
+            let interval = null
+            interval = setInterval(() => {
+                setRerenderJoinGame(rerenderJoinGame => rerenderJoinGame + 1)
+            }, 3000)
+            return () => clearInterval(interval)
+        }
+    }, [rerenderJoinGame])
+
+    // Find a game to join
+    React.useEffect(() => {
+        if (rerenderFindGame > 0) {
+            const findGame = async () => {
                 try {
-                    const response = await axios.get(FIND_GAME_URL,
+                    const response = await axios.get("/games/findopengames",
                         {
                             headers: { "Content-Type": "application/json", 
                                     "x-access-token": sessionStorage.getItem("accessToken")},
                             withCredentials: false
                         }
                     )
-                    console.log(response)
-                    localGameData = response?.data?.games[0]
-                    setGameData(localGameData)
+                    setGameData(response.data.games[0] !== undefined ? response.data.games[0] : response.data.games)
                 } catch(err) {
                     console.log(err?.response)
-                }
-                try {
-                    const response = await axios.put(JOIN_GAME_URL + localGameData?.id + "&playerid=" + sessionStorage.getItem("userID"),
-                        { params: { gameid: localGameData?.id, playerid: sessionStorage.getItem("userID") } },
-                        {
-                            headers: { "Content-Type": "application/json", 
-                                    "x-access-token": sessionStorage.getItem("accessToken")},
-                            withCredentials: false
-                        }
-                    )
-                    console.log(response)
-                } catch(err) {
-                    console.log(err?.response)
+                    setRerenderFindGame(0)
                 }
             }
-            getGameAndJoin()
+            findGame()
         }
-    }, [])
+    }, [rerenderFindGame])
 
+    // Join a game
+    React.useEffect(() => {
+        if (rerenderJoinGame > 0) {
+            const joinGame = async () => {
+                try {
+                    await axios.put("/games/joingame?gameid=" + gameData.id + "&playerid=" + sessionStorage.getItem("userID"),
+                        { params: { gameid: gameData.id, playerid: sessionStorage.getItem("userID") } },
+                        {
+                            headers: { "Content-Type": "application/json", 
+                                    "x-access-token": sessionStorage.getItem("accessToken")},
+                            withCredentials: false
+                        }
+                    )
+                } catch(err) {
+                    console.log(err?.response)
+                    setRerenderJoinGame(0)
+                }
+            }
+            joinGame()
+        }
+    }, [rerenderJoinGame])
+
+    // Query game to see if another player has joined yet
     React.useEffect(() => {
         if (gameData !== undefined && searching) {
             const queryGame = async () => {
-                let localGameData = undefined
-                await delay(30000)
                 try {
-                    const response = await axios.get(QUERY_GAME_URL + gameData?.id,
+                    const response = await axios.get("/games/read?id=" + gameData?.id,
                         {
                             headers: { "Content-Type": "application/json", 
                                     "x-access-token": sessionStorage.getItem("accessToken")},
                             withCredentials: false
                         }
                     )
-                    localGameData = response?.data
-                    setGameData(localGameData)
+                    setColor(response?.data.player1 === sessionStorage.getItem("userID") ? 0 : 1)
+                    setOppName(response?.data.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1)
+                    setSearching(response?.data.player1 !== null && response?.data.player2 !== null ? false : true)
                 } catch(err) {
                     console.log(err?.response)
                 }
-                if (localGameData.player1 === sessionStorage.getItem("userID")) {
-                    setColor(0)
-                    setOppName(localGameData.player2)
-                } else {
-                    setColor(1)
-                    setOppName(localGameData.player1)
-                }
             }
             queryGame()
-            console.log("game query completed after 30 seconds")
-            if (gameData.player1 !== null && gameData.player2 !== null) {
-                setSearching(false)
-            }
         }
-    })
-
+    }, [rerenderQuery])
 
     // handle leaving the page
     async function leavingPageEvent() {
         try {
-            await axios.delete(DELETE_GAME_URL + sessionStorage.getItem("userID"),
+            await axios.delete("/games/cleanup?id=" + sessionStorage.getItem("userID"),
                 {
                     headers: { "Content-Type": "application/json", 
                                "x-access-token": sessionStorage.getItem("accessToken")},
                     withCredentials: false
                 }
             )
+            window.removeEventListener('beforeunload', leavingPageEvent)
         } catch(err) {
             console.log(err?.response)
         }
@@ -113,13 +139,30 @@ export default function Matchmaking() {
     }, [])
 
 
-
-    if (searching) {
+    // HTML to render on the page
+    if (rerenderFindGame < 1) {
         return (
             <div>
             <Header />
             <div className='content-wrap'>
-                Searching for Opponent
+                <br/>
+                <br/>
+                <br/>
+                <div><h2>Searching For Game</h2></div>
+            </div>
+            <Footer />
+            </div>
+            )
+    } else if (searching) {
+        return (
+            <div>
+            <Header />
+            <div className='content-wrap'>
+                <br/>
+                <br/>
+                <br/>
+                <div><h2>Searching For Opponent</h2></div>
+                <div>Checking if someone is on the other end every 10 seconds. Checked {rerenderQuery} times.</div>
             </div>
             <Footer />
             </div>
