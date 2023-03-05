@@ -21,7 +21,6 @@ export default function Checkers(props) {
 
     const playerColor = props.color
     const oppColor = props.color === 1 ? 0 : 1
-    // const gameID = props.game_id
 
     const [activePiece, setActivePiece] = React.useState(undefined)
     const [boardState, setBoardState] = React.useState(initialBoardState)
@@ -30,6 +29,7 @@ export default function Checkers(props) {
     const [continuedAttack, setContinuedAttack] = React.useState(false)
     const [currentTurn, setCurrentTurn] = React.useState(0)
     const [gameOver, setGameOver] = React.useState(false)
+    const [rerender, setRerender] = React.useState(0)
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -108,6 +108,7 @@ export default function Checkers(props) {
                 var removeX = 0
                 var removeY = 0
                 var spliceVal = 0
+                var moved = false
 
 
                 setBoardState((value) => {
@@ -166,6 +167,7 @@ export default function Checkers(props) {
                                         setCurrentTurn(0)
                                     }
                                 }
+                                moved = true
                             } else {
                                 activePiece.style.position = "relative"
                                 activePiece.style.removeProperty("top")
@@ -176,6 +178,10 @@ export default function Checkers(props) {
                     })
                     const index = newBoardState.indexOf(newBoardState.find((p) => p.x === removeX && p.y === removeY))
                     newBoardState.splice(index, spliceVal)
+                    if (props.gameMode === 1 && moved) {
+                        opponent.sendResponse(newBoardState, props.gameID)
+                        setRerender(rerender === 0 ? 1 : 0)
+                    }
                     return newBoardState
                 })
             } else {
@@ -211,21 +217,25 @@ export default function Checkers(props) {
 
     const delay = ms => new Promise(res => setTimeout(res, ms))
 
-    const getResponse = async () => {
-        const oppBoardState = await opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor)
-        await delay(5000)
-        if (oppBoardState !== boardState) {
-            setBoardState(oppBoardState)
-            setCurrentTurn(playerColor)
-        }
-    }
-    // get response from ai or other player only if 5 seconds have passed
-    // should be changed to async and await
+    
+    // get response from ai or other player only if 30 seconds have passed
     React.useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false) {
+            const getResponse = async () => {
+                console.log("waiting 30 seconds before checking opponents move")
+                await delay(30000)
+                const oppBoardState = await opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor, props.gameID)
+                console.log("checked for opponents move after 30 seconds")
+                if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
+                    setBoardState(oppBoardState)
+                    setCurrentTurn(playerColor)
+                } else {
+                    setRerender(rerender === 0 ? 1 : 0)
+                }
+            }
             getResponse()
         }
-    })
+    }, [rerender])
 
     // build the board to be rendered with images and tiles
     if (playerColor === 0) {
@@ -303,6 +313,6 @@ export default function Checkers(props) {
 Checkers.propTypes = {
     gameMode: PropTypes.number,
     difficulty: PropTypes.number,
-    game_id: PropTypes.number,
+    gameID: PropTypes.string,
     color: PropTypes.number
 }

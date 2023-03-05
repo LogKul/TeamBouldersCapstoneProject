@@ -138,7 +138,7 @@ export default function Matchmaking() {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Checkers gameMode={0} difficulty={0} gameID={gameData.id} color={color} />
+                    <Checkers gameMode={1} difficulty={0} gameID={gameData.id} color={color} />
                 </div>
             </div>
             <Footer />

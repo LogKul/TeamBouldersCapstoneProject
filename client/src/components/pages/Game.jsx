@@ -19,7 +19,7 @@ const Game = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} gameID={parseInt(game_id)} color={parseInt(color)} />
+                    <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} gameID={game_id} color={parseInt(color)} />
                 </div>
             </div>
             <Footer />
