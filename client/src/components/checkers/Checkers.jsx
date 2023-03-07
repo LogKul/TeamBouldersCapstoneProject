@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import Tile from "./tile/Tile"
-import "./checkers.css"
+import "./Checkers.css"
 import Logic from "./logic/Logic"
 import Opponent from "./logic/Opponent"
 
