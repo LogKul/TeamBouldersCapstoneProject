@@ -75,7 +75,7 @@ const Account = () => {
                 <button onClick={()=>setShowUpdateField(true)}>Update Password</button>
                 <br/>
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                {showUpdateField == true &&
+                {showUpdateField === true &&
                     <form onSubmit={updateUserPassword}>
                         <label htmlFor="password">New Password</label>
                         <input 
@@ -85,7 +85,7 @@ const Account = () => {
                             value={pwd}
                             required
                         />
-                        {showUpdateField == true &&
+                        {showUpdateField === true &&
                             <button>Submit</button>
                         }
                     </form>
