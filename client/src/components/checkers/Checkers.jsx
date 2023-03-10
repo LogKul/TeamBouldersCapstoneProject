@@ -213,11 +213,11 @@ export default function Checkers(props) {
             
             if (playerColor === 0) {
                 if (bCount === 0) {
-                    opponent.updateWinner(gameID, sessionStorage.getItem("userID"))
+                    opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                 }
             } else {
                 if (rCount === 0) {
-                    opponent.updateWinner(gameID, sessionStorage.getItem("userID"))
+                    opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                 }
             }
             setGameOver(true)
