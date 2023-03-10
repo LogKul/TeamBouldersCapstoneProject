@@ -62,6 +62,8 @@ export default class Opponent {
                     withCredentials: false
                 }
             )
+        } catch(err) {
+            console.log(err?.response)
         }
         
     }
