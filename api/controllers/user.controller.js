@@ -31,6 +31,33 @@ exports.read = (req, res) => {
         });
 };
 
+exports.readid = (req, res) => {
+    // Read single User
+    User.findOne({
+        where: {
+            id: req.query.playerid,
+        }
+    })
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
+
+            res.status(200).send({
+                id: user.id,
+                username: user.username,
+                wins: user.wins,
+                losses: user.losses,
+                mmr: user.mmr,
+                deleted: user.deleted,
+            });
+
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+        });
+};
+
 exports.update = (req, res) => {
     var salted = process.env.S1 + req.body.password + process.env.S2
 

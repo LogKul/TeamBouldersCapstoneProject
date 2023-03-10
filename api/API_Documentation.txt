@@ -73,6 +73,23 @@ Routes Table of Contents
 				mmr,
 				deleted			
 			}
+	---------------------------------------------	
+	GET    /users/readid
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- playerid
+			Body-
+		RESPONSE:
+			Body- {
+				id,
+				username,
+				wins,
+				losses,
+				mmr,
+				deleted			
+			}
 	---------------------------------------------		
 	UPDATE /users/update
 		PERMISSIONS:

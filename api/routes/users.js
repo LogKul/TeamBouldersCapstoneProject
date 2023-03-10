@@ -16,6 +16,7 @@ router.use(function (req, res, next) {
 
 /* GET users listing. */
 router.get('/read', [authJwt.verifyToken], controller.read);
+router.get('/readid', [authJwt.verifyToken], controller.readid);
 router.put('/update', [authJwt.verifyToken], controller.update);
 router.delete('/delete', [authJwt.verifyToken, authJwt.isModeratorOrAdmin], controller.delete);
 
