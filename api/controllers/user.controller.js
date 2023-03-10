@@ -68,7 +68,7 @@ exports.update = (req, res) => {
         }
     })
         .then(user => {
-            const new_pass = bcrypt.hashSync(salted, process.env.SROUNDS)
+            const new_pass = bcrypt.hashSync(salted, parseInt(process.env.SROUNDS))
             user.set(req.body);
             if (new_pass !== 'undefined') {
                 user.set({ password: new_pass });
