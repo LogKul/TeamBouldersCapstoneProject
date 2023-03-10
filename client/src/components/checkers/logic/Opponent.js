@@ -51,4 +51,18 @@ export default class Opponent {
             console.log(err?.response)
         }
     }
+
+    async updateWinner(gameID, uuid) {
+        try {
+            await axios.put("/games/update?id=" + gameID,
+                { winner: uuid },
+                {
+                    headers: { "Content-Type": "application/json", 
+                            "x-access-token": sessionStorage.getItem("accessToken")},
+                    withCredentials: false
+                }
+            )
+        }
+        
+    }
 }

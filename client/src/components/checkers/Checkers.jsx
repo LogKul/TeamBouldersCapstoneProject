@@ -210,6 +210,16 @@ export default function Checkers(props) {
         })
 
         if (bCount === 0 || rCount === 0) {
+            
+            if (playerColor === 0) {
+                if (bCount === 0) {
+                    opponent.updateWinner(gameID, sessionStorage.getItem("userID"))
+                }
+            } else {
+                if (rCount === 0) {
+                    opponent.updateWinner(gameID, sessionStorage.getItem("userID"))
+                }
+            }
             setGameOver(true)
         }
     })
@@ -222,10 +232,10 @@ export default function Checkers(props) {
     React.useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false) {
             const getResponse = async () => {
-                console.log("waiting 30 seconds before checking opponents move")
-                await delay(30000)
+                console.log("waiting 5 seconds before checking opponents move")
+                await delay(5000)
                 const oppBoardState = await opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor, props.gameID)
-                console.log("checked for opponents move after 30 seconds")
+                console.log("checked for opponents move after 5 seconds")
                 if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                     setBoardState(oppBoardState)
                     setCurrentTurn(playerColor)
