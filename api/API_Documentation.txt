@@ -73,6 +73,23 @@ Routes Table of Contents
 				mmr,
 				deleted			
 			}
+	---------------------------------------------	
+	GET    /users/readid
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- playerid
+			Body-
+		RESPONSE:
+			Body- {
+				id,
+				username,
+				wins,
+				losses,
+				mmr,
+				deleted			
+			}
 	---------------------------------------------		
 	UPDATE /users/update
 		PERMISSIONS:
@@ -197,6 +214,34 @@ Routes Table of Contents
 		RESPONSE:
 			Body- {
 				message
+			}
+	---------------------------------------------		
+	GET /games/findcompletedgames
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query-
+			Body-
+		RESPONSE:
+			Body- {
+				{ game_id: 1... },
+				{ game_id: 2... },
+				...
+			}
+	---------------------------------------------		
+	GET /games/findusergames
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- playerid
+			Body-
+		RESPONSE:
+			Body- {
+				{ game_id: 1... },
+				{ game_id: 2... },
+				...
 			}
 			
 ----------------------------------------------------------------

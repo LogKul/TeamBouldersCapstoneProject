@@ -15,4 +15,12 @@ export default function Tile(props) {
             </div>
         )
     }
+<<<<<<< HEAD
+=======
+}
+
+Tile.propTypes = {
+    piece: PropTypes.string,
+    number: PropTypes.number
+>>>>>>> 77edc9824c8146e8d6f12eb0617a13278f0e8786
 }

@@ -24,5 +24,7 @@ router.delete('/delete', [authJwt.verifyToken, authJwt.isModeratorOrAdmin], cont
 router.get('/findopengames', [authJwt.verifyToken], controller.find_open_games)
 router.put('/joingame', [authJwt.verifyToken], controller.join_game)
 router.delete('/cleanup', [authJwt.verifyToken], controller.cleanup_on_isle_nine)
+router.get('/findcompletedgames', [authJwt.verifyToken], controller.find_completed_games)
+router.get('/findusergames', [authJwt.verifyToken], controller.find_completed_games_by_user)
 
 module.exports = router;

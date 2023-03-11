@@ -44,15 +44,17 @@ const Account = () => {
             const response = await axios.put(USER_URL,
                 { password: pwd },
                 {
-                    headers: { "Content-Type": "application/json", 
-                               "x-access-token": sessionStorage.getItem("accessToken"),},
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken"),
+                    },
                     withCredentials: false
                 }
             )
             console.log(response)
             console.log("Password Updated Successfully")
             setSuccess(true)
-        } catch(err) {
+        } catch (err) {
             if (!err?.response) {
                 setErrMsg("No Server Response")
             } else if (err.response?.status === 401) {
@@ -63,7 +65,7 @@ const Account = () => {
                 setErrMsg("General Failure")
             }
             console.log(err?.response)
-            errRef.current.focus() 
+            errRef.current.focus()
         }
     }
 
@@ -71,14 +73,14 @@ const Account = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>Welcome { sessionStorage.getItem("user", user) }!</h1>
-                <button onClick={()=>setShowUpdateField(true)}>Update Password</button>
-                <br/>
+                <h1>Welcome {sessionStorage.getItem("user", user)}!</h1>
+                <button onClick={() => setShowUpdateField(true)}>Update Password</button>
+                <br />
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                 {showUpdateField == true &&
                     <form onSubmit={updateUserPassword}>
                         <label htmlFor="password">New Password</label>
-                        <input 
+                        <input
                             type="password"
                             id="password"
                             onChange={(e) => setPwd(e.target.value)}
@@ -90,11 +92,11 @@ const Account = () => {
                         }
                     </form>
                 }
-                <br/>
+                <br />
                 <h4>Page Links:</h4>
                 <Link to="/account/settings">Settings</Link>
-                <br/>
-                <Link to="/recordings">Game Recordings</Link>
+                <br />
+                <Link to={"/recordings/" + sessionStorage.getItem("userID")}>Your Game Recordings</Link>
             </div>
             <Footer />
         </div>
