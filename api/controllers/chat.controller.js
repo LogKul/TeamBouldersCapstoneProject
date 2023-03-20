@@ -4,7 +4,7 @@ const Chat = db.chat;
 exports.create = (req, res) => {
     // Save Chat to Database
     Chat.create({
-        game_id: req.body.game_id,
+        game_id: req.body.gameid,
         chat_text: req.body.chat_text,
         player: req.body.player
     })
@@ -20,7 +20,7 @@ exports.read = (req, res) => {
     // Search for unique chat in database
     Chat.findOne({
         where: {
-            id: req.query.id,
+            id: req.query.chatid,
         }
     })
         .then(chat => {
@@ -46,7 +46,7 @@ exports.update = (req, res) => {
     // Update unique chat in database
     Chat.findOne({
         where: {
-            id: req.query.id,
+            id: req.query.chatid,
         }
     })
         .then(chat => {
@@ -64,7 +64,7 @@ exports.delete = (req, res) => {
     // Delete chat from database
     Chat.destroy({
         where: {
-            id: req.query.id,
+            id: req.query.chatid,
         }
     })
         .then(() => {

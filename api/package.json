@@ -19,14 +19,14 @@
     "jade": "^0.29.0",
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
-    "pg": "^8.9.0",
+    "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
-    "sass": "^1.58.0",
-    "sequelize": "^6.28.0"
+    "sass": "^1.58.3",
+    "sequelize": "^6.29.2"
   },
   "devDependencies": {
     "eslint": "^8.35.0",
     "eslint-plugin-react": "^7.32.2",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.21"
   }
 }

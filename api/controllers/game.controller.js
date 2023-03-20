@@ -166,8 +166,8 @@ exports.cleanup_on_isle_nine = (req, res) => {
     Game.destroy({
         where: {
             [Op.or]: [
-                { player1: null, player2: req.query.id },
-                { player1: req.query.id, player2: null },
+                { player1: null, player2: req.query.playerid },
+                { player1: req.query.playerid, player2: null },
             ]
         }
     })
@@ -198,7 +198,7 @@ exports.read = (req, res) => {
     // Search for unique game in database
     Game.findOne({
         where: {
-            id: req.query.id,
+            id: req.query.gameid,
         }
     })
         .then(game => {
@@ -226,7 +226,7 @@ exports.update = (req, res) => {
     // Update unique game in database
     Game.findOne({
         where: {
-            id: req.query.id,
+            id: req.query.gameid,
         }
     })
         .then(game => {
@@ -244,7 +244,7 @@ exports.delete = (req, res) => {
     // Delete game from database
     Game.destroy({
         where: {
-            id: req.query.id,
+            id: req.query.gameid,
         }
     })
         .then(() => {
