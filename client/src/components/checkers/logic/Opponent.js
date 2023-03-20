@@ -16,10 +16,12 @@ export default class Opponent {
             }
         } else if (gameMode === 1) {
             try {
-                const response = await axios.get("/games/read?id=" + gameID,
+                const response = await axios.get("/games/read?gameid=" + gameID,
                     {
-                        headers: { "Content-Type": "application/json", 
-                                "x-access-token": sessionStorage.getItem("accessToken")},
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
                         withCredentials: false
                     }
                 )
@@ -30,7 +32,7 @@ export default class Opponent {
                     console.log("returned default board because board was undefined")
                     return boardState
                 }
-            } catch(err) {
+            } catch (err) {
                 console.log(err?.response)
                 return boardState
             }
@@ -39,32 +41,36 @@ export default class Opponent {
 
     async sendResponse(boardState, gameID) {
         try {
-            await axios.put("/games/update?id=" + gameID,
+            await axios.put("/games/update?gameid=" + gameID,
                 { gamestate: JSON.stringify(boardState) },
                 {
-                    headers: { "Content-Type": "application/json", 
-                            "x-access-token": sessionStorage.getItem("accessToken")},
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
                     withCredentials: false
                 }
             )
-        } catch(err) {
+        } catch (err) {
             console.log(err?.response)
         }
     }
 
     async updateWinner(gameID, uuid) {
         try {
-            await axios.put("/games/update?id=" + gameID,
+            await axios.put("/games/update?gameid=" + gameID,
                 { winner: uuid },
                 {
-                    headers: { "Content-Type": "application/json", 
-                            "x-access-token": sessionStorage.getItem("accessToken")},
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
                     withCredentials: false
                 }
             )
-        } catch(err) {
+        } catch (err) {
             console.log(err?.response)
         }
-        
+
     }
 }

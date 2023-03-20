@@ -139,7 +139,7 @@ Routes Table of Contents
 			All Users
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- gameid
 			Body-
 		RESPONSE:
 			Body- {
@@ -157,7 +157,7 @@ Routes Table of Contents
 			All Users
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- gameid
 			Body- {
 				[Any updateable game fields]
 			}
@@ -171,7 +171,7 @@ Routes Table of Contents
 			Moderators and Admins
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- gameid
 			Body-
 		RESPONSE:
 			Body- {
@@ -209,7 +209,7 @@ Routes Table of Contents
 			All Users
 		REQUEST:
 			Headers- x-access-token
-			Query- id (player id)
+			Query- playerid
 			Body-
 		RESPONSE:
 			Body- {
@@ -253,7 +253,7 @@ Routes Table of Contents
 			Headers- x-access-token
 			Query- 
 			Body- {
-				game_id,
+				gameid,
 				chat_text,
 				player
 			}
@@ -267,7 +267,7 @@ Routes Table of Contents
 			All Users
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- chatid
 			Body-
 		RESPONSE:
 			Body- {
@@ -283,7 +283,7 @@ Routes Table of Contents
 			All Users
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- chatid
 			Body- {
 				[Any updateable Chat fields]
 			}
@@ -297,7 +297,7 @@ Routes Table of Contents
 			Moderators and Admins
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- chatid
 			Body-
 		RESPONSE:
 			Body- {
@@ -327,7 +327,7 @@ Routes Table of Contents
 			All Users
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- reportid
 			Body-
 		RESPONSE:
 			Body- {
@@ -342,7 +342,7 @@ Routes Table of Contents
 			All Users
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- reportid
 			Body- {
 				[Any updateable Report fields]
 			}
@@ -356,7 +356,7 @@ Routes Table of Contents
 			Moderators and Admins
 		REQUEST:
 			Headers- x-access-token
-			Query- id
+			Query- reportid
 			Body-
 		RESPONSE:
 			Body- {
