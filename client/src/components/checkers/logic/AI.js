@@ -56,10 +56,9 @@ export default class AI {
         let removeY = 0
         let spliceVal = 0
 
-        let newBoardState = undefined
         let newPiece = undefined
 
-        newBoardState = boardState.map((p) => {
+        let newBoardState = boardState.map((p) => {
             if (p.x === pieceMove[0] && p.y === pieceMove[1]) {
                 if (p.x + 2 === x) {
                     if (p.y + 2 === y) {

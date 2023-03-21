@@ -180,8 +180,9 @@ export default function Checkers(props) {
                     newBoardState.splice(index, spliceVal)
                     if (props.gameMode === 1 && moved) {
                         opponent.sendResponse(newBoardState, props.gameID)
-                        setRerender(rerender === 0 ? 1 : 0)
+                        //setRerender(rerender === 0 ? 1 : 0)
                     }
+                    setRerender(rerender === 0 ? 1 : 0)
                     return newBoardState
                 })
             } else {
@@ -211,12 +212,12 @@ export default function Checkers(props) {
 
         if (bCount === 0 || rCount === 0) {
             
-            if (playerColor === 0) {
+            if (playerColor === 0 && props.gameMode === 1) {
                 if (bCount === 0) {
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                 }
             } else {
-                if (rCount === 0) {
+                if (rCount === 0 && props.gameMode === 1) {
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                 }
             }
@@ -228,14 +229,12 @@ export default function Checkers(props) {
     const delay = ms => new Promise(res => setTimeout(res, ms))
 
     
-    // get response from ai or other player only if 30 seconds have passed
+    // get response from ai or other player only if 5 seconds have passed
     React.useEffect(() => {
-        if (currentTurn !== playerColor && gameOver === false) {
+        if (currentTurn !== playerColor && gameOver === false && props.gameMode === 1) {
             const getResponse = async () => {
-                console.log("waiting 5 seconds before checking opponents move")
                 await delay(5000)
-                const oppBoardState = await opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor, props.gameID)
-                console.log("checked for opponents move after 5 seconds")
+                const oppBoardState = await opponent.queryResponse(boardState, props.gameID)
                 if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                     setBoardState(oppBoardState)
                     setCurrentTurn(playerColor)
@@ -244,6 +243,10 @@ export default function Checkers(props) {
                 }
             }
             getResponse()
+        } else if (currentTurn !== playerColor && gameOver === false && props.gameMode === 0) {
+            const oppBoardState = opponent.generateResponse(props.difficulty, boardState, oppColor)
+            setBoardState(oppBoardState)
+            setCurrentTurn(playerColor)
         }
     }, [rerender])
 
