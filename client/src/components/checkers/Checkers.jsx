@@ -109,6 +109,7 @@ export default function Checkers(props) {
                 var removeY = 0
                 var spliceVal = 0
                 var moved = false
+                var allowMove = true
 
 
                 setBoardState((value) => {
@@ -140,19 +141,19 @@ export default function Checkers(props) {
                                     if (x === 0) {
                                         p.image = "/assets/checkers/red-king.png"
                                         p.king = true
-                                        setContinuedAttack(false)
+                                        allowMove = false
                                     }
                                 } else {
                                     if (x === 7) {
                                         p.image = "/assets/checkers/black-king.png"
                                         p.king = true
-                                        setContinuedAttack(false)
+                                        allowMove = false
                                     }
                                 }
                                 p.x = x
                                 p.y = y
                                 if (gridX === (x + 2) || gridX === (x - 2)) {
-                                    if (logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value)) {
+                                    if (logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value) && allowMove) {
                                         setContinuedAttack(true)
                                     } else {
                                         setContinuedAttack(false)
