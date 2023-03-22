@@ -154,6 +154,7 @@ export default function Checkers(props) {
                                         setContinuedAttack(true)
                                     } else {
                                         setContinuedAttack(false)
+                                        moved = true
                                         if (currentTurn === 0) {
                                             setCurrentTurn(1)
                                         } else {
@@ -163,11 +164,13 @@ export default function Checkers(props) {
                                 } else {
                                     if (currentTurn === 0) {
                                         setCurrentTurn(1)
+                                        moved = true
                                     } else {
                                         setCurrentTurn(0)
+                                        moved = true
                                     }
                                 }
-                                moved = true
+                                // moved = true
                             } else {
                                 activePiece.style.position = "relative"
                                 activePiece.style.removeProperty("top")
@@ -196,7 +199,8 @@ export default function Checkers(props) {
 
     let board = []
 
-    // check to see if there are any pieces left on the board
+    // GAMEOVER CHECK: check to see if there are any pieces left on the board
+    // NEED TO ADD: check to see if there are any moves left for player
     React.useEffect(() => {
         let bCount = 0
         let rCount = 0
@@ -251,6 +255,7 @@ export default function Checkers(props) {
     }, [rerender])
 
     // build the board to be rendered with images and tiles
+    // player color determines which direction to render the board
     if (playerColor === 0) {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
