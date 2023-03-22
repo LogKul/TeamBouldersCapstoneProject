@@ -22,7 +22,8 @@
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
     "sass": "^1.58.3",
-    "sequelize": "^6.29.2"
+    "sequelize": "^6.29.2",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "eslint": "^8.35.0",

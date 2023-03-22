@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import Header from '../Header'
 import Footer from '../Footer'
+import WSComponent from '../WSComponent'
 
 const Leaderboard = () => {
     return (
@@ -16,6 +17,7 @@ const Leaderboard = () => {
                     <Link to="/account"><li>Account for viewing a specific player&apos;s account</li></Link>
                 </ul>
             </div>
+            <WSComponent />
             <Footer />
         </div>
     )

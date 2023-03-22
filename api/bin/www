@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('api:server');
 var http = require('http');
+var setupWebSocket = require('../websockets/setupWebSocket')
 var { Pool, Client } = require('pg');
 const { triggerAsyncId } = require('async_hooks');
 require('dotenv').config();
@@ -23,6 +24,11 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/** 
+ * Websocket lmao
+ */
+setupWebSocket(server)
 
 /**
  * Listen on provided port, on all network interfaces.
