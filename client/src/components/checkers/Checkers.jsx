@@ -140,11 +140,13 @@ export default function Checkers(props) {
                                     if (x === 0) {
                                         p.image = "/assets/checkers/red-king.png"
                                         p.king = true
+                                        setContinuedAttack(false)
                                     }
                                 } else {
                                     if (x === 7) {
                                         p.image = "/assets/checkers/black-king.png"
                                         p.king = true
+                                        setContinuedAttack(false)
                                     }
                                 }
                                 p.x = x
