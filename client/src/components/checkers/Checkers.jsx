@@ -30,6 +30,8 @@ export default function Checkers(props) {
     const [currentTurn, setCurrentTurn] = React.useState(0)
     const [gameOver, setGameOver] = React.useState(false)
     const [rerender, setRerender] = React.useState(0)
+    const [renderUnload, setRenderUnload] = React.useState(0)
+    const [moveCount, setMoveCount] = React.useState(0)
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -186,6 +188,7 @@ export default function Checkers(props) {
                     newBoardState.splice(index, spliceVal)
                     if (props.gameMode === 1 && moved) {
                         opponent.sendResponse(newBoardState, props.gameID)
+                        setMoveCount(moveCount => moveCount + 1)
                         //setRerender(rerender === 0 ? 1 : 0)
                     }
                     setRerender(rerender === 0 ? 1 : 0)
@@ -246,6 +249,8 @@ export default function Checkers(props) {
                 await delay(5000)
                 const oppBoardState = await opponent.queryResponse(boardState, props.gameID)
                 if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
+                    setMoveCount(moveCount => moveCount + 1)
+                    console.log(moveCount)
                     setBoardState(oppBoardState)
                     setCurrentTurn(playerColor)
                 } else {
@@ -298,20 +303,39 @@ export default function Checkers(props) {
         }
     }
 
+    //wait 1 second until after page loads to set beforeunload event listener
+    React.useEffect(() => {
+        let interval = null
+        if (renderUnload < 1) {
+            interval = setInterval(() => {
+                setRenderUnload(renderUnload => renderUnload + 1)
+            }, 1000)
+            return () => clearInterval(interval)
+        }
+    }, [renderUnload])
+
     // handle cleanup if game is closed
     function leavingPageEvent() {
-        console.log("leaving page event being handled...")
+        console.log("leaving game internal (no notification before unload)...")
+        //window.onbeforeunload = undefined
     }
+
+    /*window.onbeforeunload = function() {
+        console.log("leaving game external (applies notification before unload)...")
+        return false
+    }*/
 
     const links = document.getElementsByTagName("a")
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
     React.useEffect(() => {
-        for (let link of links) {
-            link.addEventListener('click', leavingPageEvent, false)
+        if (renderUnload > 0) {
+            for (let link of links) {
+                link.addEventListener('click', leavingPageEvent, false)
+            }
+            window.addEventListener('onbeforeunload', leavingPageEvent)
         }
-        window.addEventListener('beforeunload', leavingPageEvent)
-    }, [])
+    }, [renderUnload])
 
     if (gameOver) {
         return (
