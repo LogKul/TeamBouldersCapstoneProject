@@ -8,7 +8,7 @@ export default class Opponent {
             try {
                 return ai.aiEasyMove(boardState, oppColor)
             } catch (err) {
-                return boardState
+                return undefined
             }
         } else if (difficulty === 1) {
             console.log("difficulty is medium")
@@ -36,7 +36,6 @@ export default class Opponent {
                 return boardState
             }
         } catch (err) {
-            console.log(err?.response)
             return boardState
         }
     }

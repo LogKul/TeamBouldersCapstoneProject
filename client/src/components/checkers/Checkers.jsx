@@ -255,8 +255,12 @@ export default function Checkers(props) {
             getResponse()
         } else if (currentTurn !== playerColor && gameOver === false && props.gameMode === 0) {
             const oppBoardState = opponent.generateResponse(props.difficulty, boardState, oppColor)
-            setBoardState(oppBoardState)
-            setCurrentTurn(playerColor)
+            if (oppBoardState !== undefined) {
+                setBoardState(oppBoardState)
+                setCurrentTurn(playerColor)
+            } else {
+                setGameOver(true)
+            }
         }
     }, [rerender])
 
