@@ -164,14 +164,34 @@ exports.join_game = (req, res) => {
                 game.set({ player2: req.query.playerid });
             }
             else {
-                console.log("Holy cow lmao LMFAO");
-                res.status(500).send({ message: "What the fuck" });
+                console.log("This should not be reachable");
+                res.status(500).send({ message: "Game is full" });
             }
 
             game.save();
 
-            res.status(200).send({ message: "Successfully joined game!" });
+            // Original response, can go back to it if we need to
+            //res.status(200).send({ message: "Successfully joined game!" });
 
+            // Find opponent username
+            User.findOne({
+                where: {
+                    id: req.query.playerid,
+                }
+            })
+                .then(user => {
+                    if (!user) {
+                        return res.status(404).send({ message: "Opponent has no username" });
+                    }
+
+                    res.status(200).send({
+                        opponent: opponent_username
+                    });
+
+                })
+                .catch(err => {
+                    res.status(500).send({ message: err.message });
+                });
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
