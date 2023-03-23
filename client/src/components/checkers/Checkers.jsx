@@ -11,10 +11,10 @@ export default function Checkers(props) {
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             if ((i + j + 1) % 2 === 0 && i < 3) {
-                initialBoardState.push({ image: "/assets/checkers/black-checker.png", x: i, y: j, color: 1, king: false })
+                initialBoardState.push({ image: "/assets/checkers/black-checker.svg", x: i, y: j, color: 1, king: false })
             }
             if ((i + j + 1) % 2 === 0 && i > 4) {
-                initialBoardState.push({ image: "/assets/checkers/red-checker.png", x: i, y: j, color: 0, king: false })
+                initialBoardState.push({ image: "/assets/checkers/red-checker.svg", x: i, y: j, color: 0, king: false })
             }
         }
     }
