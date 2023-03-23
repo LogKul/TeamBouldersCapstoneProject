@@ -205,7 +205,7 @@ export default function Checkers(props) {
     // GAMEOVER CHECK: check to see if there are any pieces left on the board
     // NEED TO ADD: check to see if there are any moves left for player
     React.useEffect(() => {
-        if (gameOver !== true) {
+        if (gameOver === false) {
             let bCount = 0
             let rCount = 0
 
@@ -219,14 +219,15 @@ export default function Checkers(props) {
             })
 
             if (bCount === 0 || rCount === 0) {
-                
-                if (playerColor === 0 && props.gameMode === 1) {
-                    if (bCount === 0) {
-                        opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
-                    }
-                } else {
-                    if (rCount === 0 && props.gameMode === 1) {
-                        opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
+                if (props.gameMode === 1) {
+                    if (playerColor === 0) {
+                        if (bCount === 0) {
+                            opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
+                        }
+                    } else {
+                        if (rCount === 0) {
+                            opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
+                        }
                     }
                 }
                 setGameOver(true)

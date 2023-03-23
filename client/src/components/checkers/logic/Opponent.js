@@ -5,7 +5,11 @@ export default class Opponent {
     generateResponse(difficulty, boardState, oppColor) {
         const ai = new AI()
         if (difficulty === 0) {
-            return ai.aiEasyMove(boardState, oppColor)
+            try {
+                return ai.aiEasyMove(boardState, oppColor)
+            } catch (err) {
+                return boardState
+            }
         } else if (difficulty === 1) {
             console.log("difficulty is medium")
             return this.aiMediumMove(boardState, oppColor)
