@@ -1,4 +1,4 @@
-import React from "react"
+import { React, useEffect } from "react"
 import { Routes, Route } from 'react-router-dom';
 
 import Register from "./components/pages/Register"
@@ -45,10 +45,11 @@ function App() {
 
     } catch (err) {
       console.log(err.response)
+      sessionStorage.removeItem("accessToken")
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       const currAccessToken = sessionStorage.getItem("accessToken")
       if (currAccessToken) {
@@ -75,7 +76,7 @@ function App() {
           <Route path="/game/:game_mode/:difficulty/:game_id/:color" element={<Game />} />
           <Route path="over" element={<GameOver />} />
           <Route path="/recordings" element={<Recording />} />
-          <Route path="/recordings/:player_id" element={<UserRecording />} />
+          <Route path="/recordings/:username" element={<UserRecording />} />
         </Route>
       </Routes>
     </main>
