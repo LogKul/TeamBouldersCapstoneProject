@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const db = require("../models");
 const Game = db.game;
+const User = db.user;
 
 /*exports.cull_games = (req, res) => {
 
@@ -41,41 +42,57 @@ exports.find_completed_games = (req, res) => {
 };
 
 exports.find_completed_games_by_user = (req, res) => {
-    // Return all current completed games
-    // containing a particular user
-    Game.findAll({
+    // First, find user id by username
+    User.findOne({
         where: {
-            [Op.and]: [
-                {
-                    player1: {
-                        [Op.not]: null
-                    },
-                },
-                {
-                    player2: {
-                        [Op.not]: null
-                    },
-                },
-                {
-                    winner: {
-                        [Op.not]: null
-                    },
-                }
-            ],
-            [Op.or]: [
-                { player1: req.query.playerid },
-                { player2: req.query.playerid },
-            ]
+            username: req.query.username,
         }
     })
-        .then((completed_games) => {
-            res.status(200).send({
-                games: completed_games,
-            });
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
+
+            // Then return all current completed games
+            // containing a particular user
+            Game.findAll({
+                where: {
+                    [Op.and]: [
+                        {
+                            player1: {
+                                [Op.not]: null
+                            },
+                        },
+                        {
+                            player2: {
+                                [Op.not]: null
+                            },
+                        },
+                        {
+                            winner: {
+                                [Op.not]: null
+                            },
+                        }
+                    ],
+                    [Op.or]: [
+                        { player1: user.id },
+                        { player2: user.id },
+                    ]
+                }
+            })
+                .then((completed_games) => {
+                    res.status(200).send({
+                        games: completed_games,
+                    });
+                })
+                .catch(err => {
+                    res.status(500).send({ message: err.message });
+                    console.log(err.message)
+                });
+
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
-            console.log(err.message)
         });
 };
 

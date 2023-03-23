@@ -56,34 +56,29 @@ export default class AI {
         let removeY = 0
         let spliceVal = 0
 
-        let newBoardState = undefined
         let newPiece = undefined
 
-        newBoardState = boardState.map((p) => {
+        let newBoardState = boardState.map((p) => {
             if (p.x === pieceMove[0] && p.y === pieceMove[1]) {
                 if (p.x + 2 === x) {
                     if (p.y + 2 === y) {
                         removeX = p.x + 1
                         removeY = p.y + 1
                         spliceVal = 1
-                        console.log("ai took x: " + removeX + " y: " + removeY)
                     } else {
                         removeX = p.x + 1
                         removeY = p.y - 1
                         spliceVal = 1
-                        console.log("ai took x: " + removeX + " y: " + removeY)
                     }
                 } else if (p.x - 2 === x) {
                     if (p.y + 2 === y) {
                         removeX = p.x - 1
                         removeY = p.y + 1
                         spliceVal = 1
-                        console.log("ai took x: " + removeX + " y: " + removeY)
                     } else {
                         removeX = p.x - 1
                         removeY = p.y - 1
                         spliceVal = 1
-                        console.log("ai took x: " + removeX + " y: " + removeY)
                     }
                 }
                 if (p.color === 0) {
