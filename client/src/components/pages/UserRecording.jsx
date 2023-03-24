@@ -16,6 +16,7 @@ const UserRecording = () => {
 
     const getGames = async () => {
         try {
+            console.log(username)
             const response = await axios.get("/games/findusergames?username=" + username,
                 {
                     headers: {

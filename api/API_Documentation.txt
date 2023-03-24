@@ -116,6 +116,22 @@ Routes Table of Contents
 			Body- {
 				message
 			}
+	---------------------------------------------		
+	GET /users/rankings
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query-
+			Body- 
+		RESPONSE:
+			Body- {
+				users: [
+					{username: user1},
+					{username: user2},
+					...
+				]
+			}
 			
 ----------------------------------------------------------------
 /games
