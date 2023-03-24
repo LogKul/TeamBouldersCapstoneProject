@@ -19,6 +19,7 @@ router.get('/read', [authJwt.verifyToken], controller.read);
 router.get('/readid', [authJwt.verifyToken], controller.readid);
 router.put('/update', [authJwt.verifyToken], controller.update);
 router.delete('/delete', [authJwt.verifyToken, authJwt.isModeratorOrAdmin], controller.delete);
+router.get('/rankings', [], controller.get_rankings);
 
 
 /* PRE-ORM
