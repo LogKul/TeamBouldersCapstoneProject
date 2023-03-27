@@ -74,4 +74,53 @@ export default class Opponent {
         }
 
     }
+
+    async forfeitGame(gameID, uuid) {
+        try {
+            const response = await axios.get("/games/read?gameid=" + gameID,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
+                    withCredentials: false
+                }
+            )
+            if (response?.data?.winner === null) {
+                if (response?.data?.player1 === uuid) {
+                    try {
+                        await axios.put("/games/update?gameid=" + gameID,
+                            { winner: response?.data?.player2 },
+                            {
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "x-access-token": sessionStorage.getItem("accessToken")
+                                },
+                                withCredentials: false
+                            }
+                        )
+                    } catch (err) {
+                        console.log(err?.response)
+                    }
+                } else {
+                    try {
+                        await axios.put("/games/update?gameid=" + gameID,
+                            { winner: response?.data?.player1 },
+                            {
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "x-access-token": sessionStorage.getItem("accessToken")
+                                },
+                                withCredentials: false
+                            }
+                        )
+                    } catch (err) {
+                        console.log(err?.response)
+                    }
+                }
+            }
+        } catch (err) {
+            console.log(err?.response)
+        }
+    }
 }
