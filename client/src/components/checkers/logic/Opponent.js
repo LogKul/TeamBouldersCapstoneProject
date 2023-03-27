@@ -19,7 +19,7 @@ export default class Opponent {
         }
     }
 
-    async queryResponse(boardState, gameID) {
+    async queryResponse(boardState, gameID, uuid) {
         try {
             const response = await axios.get("/games/read?gameid=" + gameID,
                 {
@@ -31,12 +31,16 @@ export default class Opponent {
                 }
             )
             if (response?.data?.winner !== null) {
-                return "victory"
+                if (response?.data?.winner === uuid) {
+                    return "winner"
+                } else {
+                    return "loser"
+                }
             }
             if (response?.data?.gamestate === "") {
                 return boardState
             } else if (response?.data?.gamestate === "abandon") {
-                console.log(response?.data?.gamestate)
+                //console.log(response?.data?.gamestate)
                 return response?.data?.gamestate
             } else {
                 return JSON.parse(response?.data?.gamestate)
