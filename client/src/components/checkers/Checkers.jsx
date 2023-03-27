@@ -33,6 +33,8 @@ export default function Checkers(props) {
     const [renderUnload, setRenderUnload] = React.useState(0)
     const [playerMoved, setPlayerMoved] = React.useState(false)
     const [oppMoved, setOppMoved] = React.useState(false)
+    const [abandon, setAbandon] = React.useState(false)
+    const [winner, setWinner] = React.useState(false)
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -176,7 +178,6 @@ export default function Checkers(props) {
                                         moved = true
                                     }
                                 }
-                                // moved = true
                             } else {
                                 activePiece.style.position = "relative"
                                 activePiece.style.removeProperty("top")
@@ -225,15 +226,19 @@ export default function Checkers(props) {
             })
 
             if (bCount === 0 || rCount === 0) {
-                if (props.gameMode === 1) {
-                    if (playerColor === 0) {
-                        if (bCount === 0) {
+                if (playerColor === 0) {
+                    if (bCount === 0) {
+                        if (props.gameMode === 1) {
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
-                    } else {
-                        if (rCount === 0) {
+                        setWinner(true)
+                    }
+                } else {
+                    if (rCount === 0) {
+                        if (props.gameMode === 1) {
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
+                        setWinner(true)
                     }
                 }
                 setGameOver(true)
@@ -251,13 +256,22 @@ export default function Checkers(props) {
             const getResponse = async () => {
                 await delay(5000)
                 const oppBoardState = await opponent.queryResponse(boardState, props.gameID)
-                if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
-                    setOppMoved(true)
-                    if (playerMoved && oppMoved && renderUnload !== 2) {
-                        setRenderUnload(2)
+                if (oppBoardState === "abandon") {
+                    setAbandon(true)
+                } else if (oppBoardState === "victory") {
+                    setWinner(true)
+                    setGameOver(true)
+                } else if (oppBoardState !== "") {
+                    if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
+                        setOppMoved(true)
+                        if (playerMoved && oppMoved && renderUnload !== 2) {
+                            setRenderUnload(2)
+                        }
+                        setBoardState(oppBoardState)
+                        setCurrentTurn(playerColor)
+                    } else {
+                        setRerender(rerender === 0 ? 1 : 0)
                     }
-                    setBoardState(oppBoardState)
-                    setCurrentTurn(playerColor)
                 } else {
                     setRerender(rerender === 0 ? 1 : 0)
                 }
@@ -325,16 +339,12 @@ export default function Checkers(props) {
         window.location = event.target.getAttribute('href')
     }
 
-    function externalNaviEarly() {
-        console.log("deleting game since not enough moves were played")
-
+    async function externalNaviEarly() {
+        await opponent.abandonGame(props.gameID)
     }
 
-    function externalNaviLate() {
-        const attemptCleanup = async () => {
-            await opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
-        }
-        attemptCleanup()
+    async function externalNaviLate() {
+        await opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
@@ -348,7 +358,6 @@ export default function Checkers(props) {
                 }
                 window.addEventListener('beforeunload', externalNaviEarly)
             } else {
-                console.log("updating event listeners")
                 window.removeEventListener('beforeunload', externalNaviEarly)
                 window.addEventListener('beforeunload', externalNaviLate)
             }
@@ -356,11 +365,29 @@ export default function Checkers(props) {
         return () => window.removeEventListener('beforeunload', externalNaviEarly)
     }, [renderUnload])
 
-    if (gameOver) {
+    if (gameOver && winner) {
         return (
             <>
             <div>
-                Game Over!
+                Game Over<br/>
+                You won!
+            </div>
+        </>
+        )
+    } else if (gameOver) {
+        return (
+            <>
+            <div>
+                Game Over<br/>
+                You lost.
+            </div>
+        </>
+        )
+    } else if (abandon) {
+        return (
+            <>
+            <div>
+                Your Opponent Left. Try Playing Another!
             </div>
         </>
         )

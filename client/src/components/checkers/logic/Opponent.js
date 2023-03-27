@@ -30,10 +30,16 @@ export default class Opponent {
                     withCredentials: false
                 }
             )
-            if (JSON.parse(response?.data?.gamestate) !== undefined) {
-                return JSON.parse(response?.data?.gamestate)
-            } else {
+            if (response?.data?.winner !== null) {
+                return "victory"
+            }
+            if (response?.data?.gamestate === "") {
                 return boardState
+            } else if (response?.data?.gamestate === "abandon") {
+                console.log(response?.data?.gamestate)
+                return response?.data?.gamestate
+            } else {
+                return JSON.parse(response?.data?.gamestate)
             }
         } catch (err) {
             return boardState
@@ -114,11 +120,30 @@ export default class Opponent {
                                 withCredentials: false
                             }
                         )
+                        return true
                     } catch (err) {
                         console.log(err?.response)
                     }
                 }
             }
+        } catch (err) {
+            console.log(err?.response)
+            return false
+        }
+    }
+
+    async abandonGame(gameID) {
+        try {
+            await axios.put("/games/update?gameid=" + gameID,
+                { gamestate: "abandon" },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
+                    withCredentials: false
+                }
+            )
         } catch (err) {
             console.log(err?.response)
         }
