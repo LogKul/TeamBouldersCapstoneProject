@@ -8,6 +8,38 @@ import axios from "../../api/axios"
 const Leaderboard = () => {
 
     const [users, setUsers] = useState([])
+    const [styles] = useState({
+        table_css: {
+            width: "60%",
+            margin: "auto",
+            border: "1px ridge black"
+        },
+        rank_css: {
+            width: "10%",
+            padding: "4px",
+            border: "1px ridge black"
+        },
+        player_css: {
+            width: "60%",
+            padding: "4px",
+            border: "1px ridge black"
+        },
+        winrate_css: {
+            width: "10%",
+            padding: "4px",
+            border: "1px ridge black"
+        },
+        wins_css: {
+            width: "10%",
+            padding: "4px",
+            border: "1px ridge black"
+        },
+        losses_css: {
+            width: "10%",
+            padding: "4px",
+            border: "1px ridge black"
+        }
+    })
 
     useEffect(() => {
         getUsers()
@@ -39,15 +71,22 @@ const Leaderboard = () => {
                 <h1>Leaderboards</h1>
                 <br></br>
                 <br></br>
-                {users
-                    ? users.map((user, index) => (
-                        <div key={index}>
+                <table style={styles.table_css}>
+                    <tr style={styles.bordering}>
+                        <th style={styles.rank_css}>Rank</th>
+                        <th style={styles.player_css}>Player</th>
+                        <th style={styles.winrate_css}>Winrate</th>
+                        <th style={styles.wins_css}>Wins</th>
+                        <th style={styles.losses_css}>Losses</th>
+                    </tr>
+                    {users
+                        ? users.map((user, index) => (
                             <LeaderboardRow key={index} user={user} index={index} />
-                            <br></br>
-                        </div>
-                    ))
-                    : <p>Loading...</p>
-                }
+                        ))
+                        : <p>Loading...</p>
+                    }
+                </table>
+
                 <br></br>
                 <br></br>
                 <h2>This page will include links to:</h2>
