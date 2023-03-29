@@ -4,6 +4,7 @@ import Tile from "./tile/Tile"
 import "./checkers.css"
 import Logic from "./logic/Logic"
 import Opponent from "./logic/Opponent"
+import Modal from "../Modal"
 
 export default function Checkers(props) {
     const initialBoardState = []
@@ -31,7 +32,12 @@ export default function Checkers(props) {
     const [gameOver, setGameOver] = React.useState(false)
     const [rerender, setRerender] = React.useState(0)
     const [renderUnload, setRenderUnload] = React.useState(0)
-    const [moveCount, setMoveCount] = React.useState(0)
+    const [playerMoved, setPlayerMoved] = React.useState(false)
+    const [oppMoved, setOppMoved] = React.useState(false)
+    const [abandon, setAbandon] = React.useState(false)
+    const [winner, setWinner] = React.useState(false)
+    const [timeoutCounter, setTimeoutCounter] = React.useState(0)
+    const [timeRemaining, setTimeRemaining] = React.useState(60)
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -175,7 +181,6 @@ export default function Checkers(props) {
                                         moved = true
                                     }
                                 }
-                                // moved = true
                             } else {
                                 activePiece.style.position = "relative"
                                 activePiece.style.removeProperty("top")
@@ -188,8 +193,10 @@ export default function Checkers(props) {
                     newBoardState.splice(index, spliceVal)
                     if (props.gameMode === 1 && moved) {
                         opponent.sendResponse(newBoardState, props.gameID)
-                        setMoveCount(moveCount => moveCount + 1)
-                        //setRerender(rerender === 0 ? 1 : 0)
+                        setPlayerMoved(true)
+                        if (playerMoved && oppMoved && renderUnload !== 2) {
+                            setRenderUnload(2)
+                        }
                     }
                     setRerender(rerender === 0 ? 1 : 0)
                     return newBoardState
@@ -204,6 +211,17 @@ export default function Checkers(props) {
     }
 
     let board = []
+
+    //time left to make a move before forfeiting
+    React.useEffect(() => {
+        let interval = null
+        if (timeRemaining > 0) {
+            interval = setInterval(() => {
+                setTimeRemaining(timeRemaining => timeRemaining - 1)
+            }, 1000)
+            return () => clearInterval(interval)
+        }
+    }, [timeRemaining])
 
     // GAMEOVER CHECK: check to see if there are any pieces left on the board
     // NEED TO ADD: check to see if there are any moves left for player
@@ -222,19 +240,28 @@ export default function Checkers(props) {
             })
 
             if (bCount === 0 || rCount === 0) {
-                if (props.gameMode === 1) {
-                    if (playerColor === 0) {
-                        if (bCount === 0) {
+                if (playerColor === 0) {
+                    if (bCount === 0) {
+                        if (props.gameMode === 1) {
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
-                    } else {
-                        if (rCount === 0) {
+                        setWinner(true)
+                    }
+                } else {
+                    if (rCount === 0) {
+                        if (props.gameMode === 1) {
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
+                        setWinner(true)
                     }
                 }
+                setModalIsOpen(true)
                 setGameOver(true)
             }
+        } else if (props.gameMode === 1 && timeRemaining === 0) {
+            opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
+            setModalIsOpen(true)
+            setGameOver(true)
         }
     })
 
@@ -245,16 +272,50 @@ export default function Checkers(props) {
     // get response from ai or other player only if 5 seconds have passed
     React.useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false && props.gameMode === 1) {
+            //opponent has 5*5 seconds to make a move or game will be forfeit/abandon
+            if (timeoutCounter > 11) {
+                console.log("timout reached. player should have moved by now")
+                if (playerMoved === false || oppMoved === false) {
+                    setModalIsOpen(true)
+                    setAbandon(true)
+                } else {
+                    console.log("opponent ran out of time. set winner")
+                    opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
+                    setWinner(true)
+                    setModalIsOpen(true)
+                    setGameOver(true)
+                }
+            }
+            console.log(timeoutCounter)
             const getResponse = async () => {
                 await delay(5000)
-                const oppBoardState = await opponent.queryResponse(boardState, props.gameID)
-                if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
-                    setMoveCount(moveCount => moveCount + 1)
-                    console.log(moveCount)
-                    setBoardState(oppBoardState)
-                    setCurrentTurn(playerColor)
+                const oppBoardState = await opponent.queryResponse(boardState, props.gameID, sessionStorage.getItem("userID"))
+                if (oppBoardState === "abandon") {
+                    setModalIsOpen(true)
+                    setAbandon(true)
+                } else if (oppBoardState === "winner") {
+                    setModalIsOpen(true)
+                    setWinner(true)
+                    setGameOver(true)
+                } else if (oppBoardState === "loser") {
+                    setModalIsOpen(true)
+                    setGameOver(true)
+                } else if (oppBoardState !== "") {
+                    if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
+                        setOppMoved(true)
+                        if (playerMoved && oppMoved && renderUnload !== 2) {
+                            setRenderUnload(2)
+                        }
+                        setBoardState(oppBoardState)
+                        setCurrentTurn(playerColor)
+                        setTimeoutCounter(0)
+                    } else {
+                        setRerender(rerender === 0 ? 1 : 0)
+                        setTimeoutCounter(timeoutCounter + 1)
+                    }
                 } else {
                     setRerender(rerender === 0 ? 1 : 0)
+                    setTimeoutCounter(timeoutCounter + 1)
                 }
             }
             getResponse()
@@ -308,42 +369,105 @@ export default function Checkers(props) {
         let interval = null
         if (renderUnload < 1) {
             interval = setInterval(() => {
-                setRenderUnload(renderUnload => renderUnload + 1)
+                setRenderUnload(1)
             }, 1000)
             return () => clearInterval(interval)
         }
     }, [renderUnload])
 
     // handle cleanup if game is closed
-    function leavingPageEvent() {
-        console.log("leaving game internal (no notification before unload)...")
-        //window.onbeforeunload = undefined
+    function internalNavigation(event) {
+        //opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
+        window.location = event.target.getAttribute('href')
     }
 
-    /*window.onbeforeunload = function() {
-        console.log("leaving game external (applies notification before unload)...")
-        return false
-    }*/
+    async function externalNaviEarly() {
+        await opponent.abandonGame(props.gameID)
+    }
 
-    const links = document.getElementsByTagName("a")
+    async function externalNaviLate() {
+        await opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
+    }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
     React.useEffect(() => {
-        if (renderUnload > 0) {
-            for (let link of links) {
-                link.addEventListener('click', leavingPageEvent, false)
+        if (renderUnload > 0 && props.gameMode === 1) {
+            if (playerMoved === false || oppMoved === false) {
+                const links = document.getElementsByTagName("a")
+                
+                for (let link of links) {
+                    link.addEventListener('click', internalNavigation)
+                }
+                window.addEventListener('beforeunload', externalNaviEarly)
+            } else {
+                window.removeEventListener('beforeunload', externalNaviEarly)
+                window.addEventListener('beforeunload', externalNaviLate)
             }
-            window.addEventListener('onbeforeunload', leavingPageEvent)
         }
+        return () => window.removeEventListener('beforeunload', externalNaviEarly)
     }, [renderUnload])
 
-    if (gameOver) {
+    const [modalIsOpen, setModalIsOpen] = React.useState(false)
+
+    function closeModal() {
+        setModalIsOpen(false);
+    }
+
+    if (gameOver && winner) {
         return (
             <>
             <div>
-                Game Over!
+                <h1>You won!</h1>
+                <Modal isOpen={modalIsOpen} closeModal={closeModal}>
+                    <h1>You won!</h1>
+                    <br/>
+                    <a href="/Play"><button>Play Another</button></a>
+                    <a href="/Home"><button>Return Home</button></a>
+                </Modal>
             </div>
         </>
+        )
+    } else if (gameOver) {
+        return (
+            <>
+            <div>
+                <h1>You lost.</h1>
+                <Modal isOpen={modalIsOpen} closeModal={closeModal}>
+                    <h1>You lost.</h1>
+                    <br/>
+                    <a href="/Play"><button>Play Another</button></a>
+                    <a href="/Home"><button>Return Home</button></a>
+                </Modal>
+            </div>
+        </>
+        )
+    } else if (abandon) {
+        return (
+            <>
+            <div>
+                <h3>Your Opponent Left. Try Playing Another!</h3>
+                <Modal isOpen={modalIsOpen} closeModal={closeModal}>
+                    <h3>Your Opponent Left. Try Playing Another!</h3>
+                    <br/>
+                    <a href="/Play"><button>Play Another</button></a>
+                    <a href="/Home"><button>Return Home</button></a>
+                </Modal>
+            </div>
+        </>
+        )
+    } else if (props.gameMode === 1) {
+        return (
+            <>
+                <div>Time Remaining to Move: {timeRemaining}</div>
+                <div
+                    onMouseMove={e => movePiece(e)}
+                    onMouseDown={e => grabPiece(e)}
+                    onMouseUp={e => dropPiece(e)}
+                    id="board"
+                    ref={checkersBoardRef}>
+                    {board}
+                </div>
+            </>
         )
     } else {
         return (
@@ -354,7 +478,6 @@ export default function Checkers(props) {
                     onMouseUp={e => dropPiece(e)}
                     id="board"
                     ref={checkersBoardRef}>
-    
                     {board}
                 </div>
             </>
