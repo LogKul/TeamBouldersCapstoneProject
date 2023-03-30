@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react'
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Header from '../Header'
 import Footer from '../Footer'
 import GameRecording from '../GameRecording'
@@ -8,6 +8,7 @@ import axios from "../../api/axios"
 const UserRecording = () => {
 
     const [games, setGames] = useState([])
+    const { username } = useParams()
 
     useEffect(() => {
         getGames()
@@ -15,8 +16,8 @@ const UserRecording = () => {
 
     const getGames = async () => {
         try {
-            const response = await axios.get("/games/findusergames",
-                { params: { playerid: sessionStorage.getItem("userID") } },
+            console.log(username)
+            const response = await axios.get("/games/findusergames?username=" + username,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -49,7 +50,7 @@ const UserRecording = () => {
 
                 <h1>Your Games</h1>
                 <hr></hr>
-                {games == []
+                {games
                     ? games.map((game) => (
                         <GameRecording key={game.id} game={game} />
                     ))

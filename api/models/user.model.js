@@ -24,7 +24,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         },
         mmr: {
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            defaultValue: 1000
         },
         deleted: {
             type: Sequelize.BOOLEAN

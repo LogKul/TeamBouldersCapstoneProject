@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from "react"
-import { Router, Routes, Route } from 'react-router-dom';
+import { React, useEffect } from "react"
+import { Routes, Route } from 'react-router-dom';
 
 import Register from "./components/pages/Register"
 import Login from "./components/pages/Login"
@@ -49,6 +49,7 @@ function App() {
 
     } catch (err) {
       console.log(err.response)
+      sessionStorage.removeItem("accessToken")
     }
   }
 
@@ -78,7 +79,7 @@ function App() {
           <Route path="/game/:game_mode/:difficulty" element={<Game />} />
           <Route path="over" element={<GameOver />} />
           <Route path="/recordings" element={<Recording />} />
-          <Route path="/recordings/:player_id" element={<UserRecording />} />
+          <Route path="/recordings/:username" element={<UserRecording />} />
         </Route>
       </Routes>
     </main>

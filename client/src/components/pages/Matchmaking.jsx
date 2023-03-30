@@ -8,18 +8,20 @@ export default function Matchmaking() {
     const [searching, setSearching] = React.useState(true)
     const [gameData, setGameData] = React.useState(undefined)
     const [color, setColor] = React.useState(undefined)
-    const [oppName, setOppName] = React.useState(undefined)
+    const [oppData, setOppData] = React.useState(undefined)
     const [rerenderQuery, setRerenderQuery] = React.useState(0)
     const [rerenderFindGame, setRerenderFindGame] = React.useState(0)
     const [rerenderJoinGame, setRerenderJoinGame] = React.useState(0)
 
     // Set interval for query checking for opponenet --- 10000 = 10 seconds
     React.useEffect(() => {
-        let interval = null
-        interval = setInterval(() => {
-            setRerenderQuery(rerenderQuery => rerenderQuery + 1)
+        if (searching) {
+            let interval = null
+            interval = setInterval(() => {
+                setRerenderQuery(rerenderQuery => rerenderQuery + 1)
         }, 10000)
         return () => clearInterval(interval)
+        }
     }, [rerenderQuery])
 
     // Set interval after page loads to find a game --- 3000 = 3 second
@@ -53,13 +55,15 @@ export default function Matchmaking() {
                 try {
                     const response = await axios.get("/games/findopengames",
                         {
-                            headers: { "Content-Type": "application/json", 
-                                    "x-access-token": sessionStorage.getItem("accessToken")},
+                            headers: {
+                                "Content-Type": "application/json",
+                                "x-access-token": sessionStorage.getItem("accessToken")
+                            },
                             withCredentials: false
                         }
                     )
                     setGameData(response.data.games[0] !== undefined ? response.data.games[0] : response.data.games)
-                } catch(err) {
+                } catch (err) {
                     console.log(err?.response)
                     setRerenderFindGame(0)
                 }
@@ -76,12 +80,14 @@ export default function Matchmaking() {
                     await axios.put("/games/joingame?gameid=" + gameData.id + "&playerid=" + sessionStorage.getItem("userID"),
                         { params: { gameid: gameData.id, playerid: sessionStorage.getItem("userID") } },
                         {
-                            headers: { "Content-Type": "application/json", 
-                                    "x-access-token": sessionStorage.getItem("accessToken")},
+                            headers: {
+                                "Content-Type": "application/json",
+                                "x-access-token": sessionStorage.getItem("accessToken")
+                            },
                             withCredentials: false
                         }
                     )
-                } catch(err) {
+                } catch (err) {
                     console.log(err?.response)
                     setRerenderJoinGame(0)
                 }
@@ -95,17 +101,35 @@ export default function Matchmaking() {
         if (gameData !== undefined && searching) {
             const queryGame = async () => {
                 try {
-                    const response = await axios.get("/games/read?id=" + gameData?.id,
+                    const response = await axios.get("/games/read?gameid=" + gameData?.id,
                         {
-                            headers: { "Content-Type": "application/json", 
-                                    "x-access-token": sessionStorage.getItem("accessToken")},
+                            headers: {
+                                "Content-Type": "application/json",
+                                "x-access-token": sessionStorage.getItem("accessToken")
+                            },
                             withCredentials: false
                         }
                     )
                     setColor(response?.data.player1 === sessionStorage.getItem("userID") ? 0 : 1)
-                    setOppName(response?.data.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1)
-                    setSearching(response?.data.player1 !== null && response?.data.player2 !== null ? false : true)
-                } catch(err) {
+                    if (response?.data.player1 !== null && response?.data.player2 !== null) {
+                        const oppUUID = response?.data.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1
+                        try {
+                            const response = await axios.get("/users/readid?playerid=" + oppUUID,
+                                {
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "x-access-token": sessionStorage.getItem("accessToken")
+                                    },
+                                    withCredentials: false
+                                }
+                            )
+                                setOppData(response?.data)
+                                setSearching(false)
+                        } catch (err) {
+                            console.log(err?.response)
+                        }
+                    }
+                } catch (err) {
                     console.log(err?.response)
                 }
             }
@@ -116,15 +140,17 @@ export default function Matchmaking() {
     // handle leaving the page
     async function leavingPageEvent() {
         try {
-            await axios.delete("/games/cleanup?id=" + sessionStorage.getItem("userID"),
+            await axios.delete("/games/cleanup?playerid=" + sessionStorage.getItem("userID"),
                 {
-                    headers: { "Content-Type": "application/json", 
-                               "x-access-token": sessionStorage.getItem("accessToken")},
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
                     withCredentials: false
                 }
             )
             window.removeEventListener('beforeunload', leavingPageEvent)
-        } catch(err) {
+        } catch (err) {
             console.log(err?.response)
         }
     }
@@ -143,48 +169,46 @@ export default function Matchmaking() {
     if (rerenderFindGame < 1) {
         return (
             <div>
-            <Header />
-            <div className='content-wrap'>
-                <br/>
-                <br/>
-                <br/>
-                <div><h2>Searching For Game</h2></div>
+                <Header />
+                <div className='content-wrap'>
+                    <br />
+                    <br />
+                    <br />
+                    <div><h2>Searching For Game</h2></div>
+                </div>
+                <Footer />
             </div>
-            <Footer />
-            </div>
-            )
+        )
     } else if (searching) {
         return (
             <div>
-            <Header />
-            <div className='content-wrap'>
-                <br/>
-                <br/>
-                <br/>
-                <div><h2>Searching For Opponent</h2></div>
-                <div>Checking if someone is on the other end every 10 seconds. Checked {rerenderQuery} times.</div>
-            </div>
-            <Footer />
+                <Header />
+                <div className='content-wrap'>
+                    <br />
+                    <br />
+                    <br />
+                    <div><h2>Searching For Opponent</h2></div>
+                    <div>Checking if someone is on the other end every 10 seconds. Checked {rerenderQuery} times.</div>
+                </div>
+                <Footer />
             </div>
         )
     } else {
         // load the checkers engine with online props passed through
         return (
             <div>
-            <Header />
-            <div className='content-wrap'>
-                <p>Playing Online against {oppName}</p>
-                <p>Game Id: {gameData.id}</p>
-                <p>Your color: {color}</p>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    <Checkers gameMode={1} difficulty={0} gameID={gameData.id} color={color} />
+                <Header />
+                <div className='content-wrap'>
+                    <p>Playing Online against {oppData.username}</p>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                        <Checkers gameMode={1} difficulty={0} gameID={gameData.id} color={color} oppData={oppData} />
+                    </div>
                 </div>
-            </div>
-            <Footer />
+                <Footer />
             </div>
         )
     }

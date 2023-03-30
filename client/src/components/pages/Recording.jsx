@@ -48,7 +48,7 @@ const Recording = () => {
 
                 <h2>Your Games</h2>
                 <hr></hr>
-                {games == []
+                {games
                     ? games.map((game) => (
                         <GameRecording key={game.id} game={game} />
                     ))
