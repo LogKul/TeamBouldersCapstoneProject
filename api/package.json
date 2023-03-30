@@ -21,12 +21,12 @@
     "morgan": "^1.10.0",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
-    "sass": "^1.59.3",
-    "sequelize": "^6.29.3"
+    "sass": "^1.60.0",
+    "sequelize": "^6.30.0"
   },
   "devDependencies": {
-    "eslint": "^8.36.0",
+    "eslint": "^8.37.0",
     "eslint-plugin-react": "^7.32.2",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.22"
   }
 }
