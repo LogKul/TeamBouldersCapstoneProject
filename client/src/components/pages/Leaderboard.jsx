@@ -20,7 +20,12 @@ const Leaderboard = () => {
             border: "1px ridge black"
         },
         player_css: {
-            width: "60%",
+            width: "50%",
+            padding: "4px",
+            border: "1px ridge black"
+        },
+        mmr_css: {
+            width: "10%",
             padding: "4px",
             border: "1px ridge black"
         },
@@ -75,6 +80,7 @@ const Leaderboard = () => {
                     <tr style={styles.bordering}>
                         <th style={styles.rank_css}>Rank</th>
                         <th style={styles.player_css}>Player</th>
+                        <th style={styles.mmr_css}>MMR</th>
                         <th style={styles.winrate_css}>Winrate</th>
                         <th style={styles.wins_css}>Wins</th>
                         <th style={styles.losses_css}>Losses</th>

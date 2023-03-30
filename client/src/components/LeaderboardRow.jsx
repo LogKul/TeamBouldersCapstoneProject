@@ -65,6 +65,7 @@ function LeaderboardRow({ user, index }) {
         <tr style={rank_style} >
             <td style={cell_style}>{index + 1}</td>
             <td style={cell_style}><Link to={"/recordings/" + user.username}>{user.username}</Link></td>
+            <td style={cell_style}>{user.mmr}</td>
             {user.losses == 0
                 ? <td style={cell_style}>Perfect</td>
                 : <td style={cell_style}>{(user.wins / user.losses).toFixed(2)}</td>
