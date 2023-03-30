@@ -1,0 +1,28 @@
+.tile {
+    display: flexbox;
+    place-content: center;
+}
+
+.black-tile {
+    background-color: rgb(23, 14, 14);
+}
+
+.red-tile {
+    background-color: rgb(160, 45, 45);
+}
+
+.tile .checkers-piece {
+    width: 5rem;
+    height: 5rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 7rem;
+}
+
+.tile .checkers-piece:hover {
+    cursor: grab;
+}
+
+.tile .checkers-piece:active {
+    cursor: grabbing;
+}
