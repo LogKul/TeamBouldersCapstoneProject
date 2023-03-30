@@ -9,17 +9,20 @@ export default function Matchmaking() {
     const [gameData, setGameData] = React.useState(undefined)
     const [color, setColor] = React.useState(undefined)
     const [oppName, setOppName] = React.useState(undefined)
+    const [oppUUID, setOppUUID] = React.useState(undefined)
     const [rerenderQuery, setRerenderQuery] = React.useState(0)
     const [rerenderFindGame, setRerenderFindGame] = React.useState(0)
     const [rerenderJoinGame, setRerenderJoinGame] = React.useState(0)
 
     // Set interval for query checking for opponenet --- 10000 = 10 seconds
     React.useEffect(() => {
-        let interval = null
-        interval = setInterval(() => {
-            setRerenderQuery(rerenderQuery => rerenderQuery + 1)
+        if (searching) {
+            let interval = null
+            interval = setInterval(() => {
+                setRerenderQuery(rerenderQuery => rerenderQuery + 1)
         }, 10000)
         return () => clearInterval(interval)
+        }
     }, [rerenderQuery])
 
     // Set interval after page loads to find a game --- 3000 = 3 second
@@ -109,8 +112,25 @@ export default function Matchmaking() {
                         }
                     )
                     setColor(response?.data.player1 === sessionStorage.getItem("userID") ? 0 : 1)
-                    setOppName(response?.data.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1)
-                    setSearching(response?.data.player1 !== null && response?.data.player2 !== null ? false : true)
+                    if (response?.data.player1 !== null && response?.data.player2 !== null) {
+                        const oppUUID = response?.data.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1
+                        setOppUUID(oppUUID)
+                        try {
+                            const response = await axios.get("/users/readid?playerid=" + oppUUID,
+                                {
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "x-access-token": sessionStorage.getItem("accessToken")
+                                    },
+                                    withCredentials: false
+                                }
+                            )
+                                setOppName(response?.data.username)
+                                setSearching(false)
+                        } catch (err) {
+                            console.log(err?.response)
+                        }
+                    }
                 } catch (err) {
                     console.log(err?.response)
                 }
@@ -182,14 +202,12 @@ export default function Matchmaking() {
                 <Header />
                 <div className='content-wrap'>
                     <p>Playing Online against {oppName}</p>
-                    <p>Game Id: {gameData.id}</p>
-                    <p>Your color: {color}</p>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                        <Checkers gameMode={1} difficulty={0} gameID={gameData.id} color={color} />
+                        <Checkers gameMode={1} difficulty={0} gameID={gameData.id} color={color} oppUUID={oppUUID} />
                     </div>
                 </div>
                 <Footer />

@@ -104,7 +104,7 @@ exports.get_rankings = (req, res) => {
     })
         .then((users) => {
 
-            // Sort by framerate
+            // Sort by winrate
             users.sort((a, b) => ((a.wins / a.losses) < (b.wins / b.losses)) ? 1 : ((a.wins / a.losses) != (b.wins / b.losses)) ? -1 : ((a.wins + a.losses) < (b.wins + b.losses)) ? 1 : -1)
 
             res.status(200).send({

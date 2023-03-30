@@ -85,6 +85,71 @@ export default class Opponent {
 
     }
 
+    async updateMMR(opponent_uuid, win) {
+        try {
+            const response = await axios.get("/users/readid",
+                { params: { playerid: opponent_uuid } },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
+                    withCredentials: false
+                }
+            )
+
+            const opp_data = response?.data
+
+            const mmr = parseInt(sessionStorage.getItem("mmr"))
+            const wins = parseInt(sessionStorage.getItem("wins"))
+            const losses = parseInt(sessionStorage.getItem("losses"))
+
+            const player_transformed = Math.pow(10, (mmr / 400))
+            const opp_transformed = Math.pow(10, (opp_data.mmr / 400))
+
+            const expected_score_player = player_transformed / (player_transformed + opp_transformed)
+            //const expected_score_opp = opp_transformed / (player_transformed + opp_transformed)
+
+            let s = 0
+            win == true ? s = 1 : s = 0
+            const k = 32
+
+            if (win == true) {
+                await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
+                    {
+                        wins: wins + 1,
+                        mmr: mmr + k * (s - expected_score_player)
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
+                    }
+                )
+            }
+            else if (win == false) {
+                await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
+                    {
+                        losses: losses + 1,
+                        mmr: (opp_data.mmr + 400 * (wins - losses - 1)) / (wins + losses + 1)
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
+                    }
+                )
+            }
+        } catch (err) {
+            console.log(err?.response)
+        }
+
+    }
+
     async forfeitGame(gameID, uuid) {
         try {
             const response = await axios.get("/games/read?gameid=" + gameID,

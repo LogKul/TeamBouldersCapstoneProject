@@ -37,7 +37,7 @@ export default function Checkers(props) {
     const [abandon, setAbandon] = React.useState(false)
     const [winner, setWinner] = React.useState(false)
     const [timeoutCounter, setTimeoutCounter] = React.useState(0)
-    const [timeRemaining, setTimeRemaining] = React.useState(60)
+    const [timeRemaining, setTimeRemaining] = React.useState(playerColor === 0 ? 60 : 600)
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -243,22 +243,30 @@ export default function Checkers(props) {
                 if (playerColor === 0) {
                     if (bCount === 0) {
                         if (props.gameMode === 1) {
+                            opponent.updateMMR(props.oppUUID, true)
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setWinner(true)
+                    } else {
+                        opponent.updateMMR(props.oppUUID, false)
                     }
                 } else {
                     if (rCount === 0) {
                         if (props.gameMode === 1) {
+                            opponent.updateMMR(props.oppUUID, true)
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setWinner(true)
+                    } else {
+                        opponent.updateMMR(props.oppUUID, false)
                     }
                 }
                 setModalIsOpen(true)
                 setGameOver(true)
             }
-        } else if (props.gameMode === 1 && timeRemaining === 0) {
+        }
+        if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
+            opponent.updateMMR(props.oppUUID, false)
             opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
             setModalIsOpen(true)
             setGameOver(true)
@@ -273,20 +281,18 @@ export default function Checkers(props) {
     React.useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false && props.gameMode === 1) {
             //opponent has 5*5 seconds to make a move or game will be forfeit/abandon
-            if (timeoutCounter > 11) {
-                console.log("timout reached. player should have moved by now")
+            if (timeoutCounter > 20) {
                 if (playerMoved === false || oppMoved === false) {
                     setModalIsOpen(true)
                     setAbandon(true)
                 } else {
-                    console.log("opponent ran out of time. set winner")
+                    opponent.updateMMR(props.oppUUID, true)
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                     setWinner(true)
                     setModalIsOpen(true)
                     setGameOver(true)
                 }
             }
-            console.log(timeoutCounter)
             const getResponse = async () => {
                 await delay(5000)
                 const oppBoardState = await opponent.queryResponse(boardState, props.gameID, sessionStorage.getItem("userID"))
@@ -294,10 +300,12 @@ export default function Checkers(props) {
                     setModalIsOpen(true)
                     setAbandon(true)
                 } else if (oppBoardState === "winner") {
+                    opponent.updateMMR(props.oppUUID, true)
                     setModalIsOpen(true)
                     setWinner(true)
                     setGameOver(true)
                 } else if (oppBoardState === "loser") {
+                    opponent.updateMMR(props.oppUUID, false)
                     setModalIsOpen(true)
                     setGameOver(true)
                 } else if (oppBoardState !== "") {
@@ -364,7 +372,7 @@ export default function Checkers(props) {
         }
     }
 
-    //wait 1 second until after page loads to set beforeunload event listener
+    //wait 1 second until after page loads to set beforeunload event listener to prevent duplicates
     React.useEffect(() => {
         let interval = null
         if (renderUnload < 1) {
@@ -386,6 +394,7 @@ export default function Checkers(props) {
     }
 
     async function externalNaviLate() {
+        await opponent.updateMMR(props.oppUUID, false)
         await opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
     }
 
@@ -455,7 +464,7 @@ export default function Checkers(props) {
             </div>
         </>
         )
-    } else if (props.gameMode === 1) {
+    } else if (props.gameMode === 1 && currentTurn === playerColor) {
         return (
             <>
                 <div>Time Remaining to Move: {timeRemaining}</div>
