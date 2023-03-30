@@ -9,6 +9,7 @@ export default function Matchmaking() {
     const [gameData, setGameData] = React.useState(undefined)
     const [color, setColor] = React.useState(undefined)
     const [oppName, setOppName] = React.useState(undefined)
+    const [oppUUID, setOppUUID] = React.useState(undefined)
     const [rerenderQuery, setRerenderQuery] = React.useState(0)
     const [rerenderFindGame, setRerenderFindGame] = React.useState(0)
     const [rerenderJoinGame, setRerenderJoinGame] = React.useState(0)
@@ -113,6 +114,7 @@ export default function Matchmaking() {
                     setColor(response?.data.player1 === sessionStorage.getItem("userID") ? 0 : 1)
                     if (response?.data.player1 !== null && response?.data.player2 !== null) {
                         const oppUUID = response?.data.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1
+                        setOppUUID(oppUUID)
                         try {
                             const response = await axios.get("/users/readid?playerid=" + oppUUID,
                                 {
@@ -205,7 +207,7 @@ export default function Matchmaking() {
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                        <Checkers gameMode={1} difficulty={0} gameID={gameData.id} color={color} />
+                        <Checkers gameMode={1} difficulty={0} gameID={gameData.id} color={color} oppUUID={oppUUID} />
                     </div>
                 </div>
                 <Footer />
