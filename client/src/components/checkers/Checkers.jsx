@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import Tile from "./tile/Tile"
-import "./checkers.css"
+import "./Checkers.scss"
 import Logic from "./logic/Logic"
 import Opponent from "./logic/Opponent"
 import Modal from "../Modal"
@@ -59,7 +59,7 @@ export default function Checkers(props) {
             const x = e.clientX - 25
             const y = e.clientY - 25
 
-            element.style.position = "absolute"
+            element.style.position = "fixed"
             element.style.left = x + 'px'
             element.style.top = y + 'px'
 
