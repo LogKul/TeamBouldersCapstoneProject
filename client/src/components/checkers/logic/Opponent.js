@@ -112,7 +112,7 @@ export default class Opponent {
 
             let s = 0
             win === true ? s = 1 : s = 0
-            const k = 32
+            const k = 16
 
             const newmmr = Math.round(mmr + k * (s - expected_score_player))
             sessionStorage.setItem("mmr", newmmr)
@@ -146,7 +146,7 @@ export default class Opponent {
                 await axios.put("/users/update?username=" + sessionStorage.getItem("user"),
                     {
                         losses: losses + 1,
-                        mmr: (opp_data.mmr + 400 * (wins - losses - 1)) / (wins + losses + 1)
+                        mmr: newmmr
                     },
                     {
                         headers: {
