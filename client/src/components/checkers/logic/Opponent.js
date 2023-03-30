@@ -100,7 +100,6 @@ export default class Opponent {
 
             const opp_data = response?.data*/
 
-
             console.log("OPP_DATA: " + opp_data.mmr)
 
             const mmr = parseInt(sessionStorage.getItem("mmr"))
@@ -117,15 +116,15 @@ export default class Opponent {
             win === true ? s = 1 : s = 0
             const k = 32
 
-            console.log("About to update MMR...")
-            const newmmr = mmr + k * (s - expected_score_player)
+            const newmmr = Math.round(mmr + k * (s - expected_score_player))
             sessionStorage.setItem("mmr", newmmr)
+            console.log("NEW MMR: " + newmmr)
 
             if (win === true) {
 
                 sessionStorage.setItem("wins", wins + 1)
 
-                await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
+                await axios.put("/users/update?username=" + sessionStorage.getItem("user"),
                     {
                         wins: wins + 1,
                         mmr: newmmr
@@ -138,13 +137,12 @@ export default class Opponent {
                         withCredentials: false
                     }
                 )
-                console.log("Updating player MMR...")
             }
             else if (win === false) {
 
                 sessionStorage.setItem("losses", losses + 1)
 
-                await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
+                await axios.put("/users/update?username=" + sessionStorage.getItem("user"),
                     {
                         losses: losses + 1,
                         mmr: (opp_data.mmr + 400 * (wins - losses - 1)) / (wins + losses + 1)
@@ -157,7 +155,6 @@ export default class Opponent {
                         withCredentials: false
                     }
                 )
-                console.log("Updating player MMR...")
             }
         } catch (err) {
             console.log(err?.response)
