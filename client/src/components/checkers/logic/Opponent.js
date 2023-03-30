@@ -118,12 +118,17 @@ export default class Opponent {
             const k = 32
 
             console.log("About to update MMR...")
+            const newmmr = mmr + k * (s - expected_score_player)
+            sessionStorage.setItem("mmr", newmmr)
 
             if (win === true) {
+
+                sessionStorage.setItem("wins", wins + 1)
+
                 await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
                     {
                         wins: wins + 1,
-                        mmr: mmr + k * (s - expected_score_player)
+                        mmr: newmmr
                     },
                     {
                         headers: {
@@ -136,6 +141,9 @@ export default class Opponent {
                 console.log("Updating player MMR...")
             }
             else if (win === false) {
+
+                sessionStorage.setItem("losses", losses + 1)
+
                 await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
                     {
                         losses: losses + 1,
