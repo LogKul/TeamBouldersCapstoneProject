@@ -194,6 +194,7 @@ export default function Checkers(props) {
                     if (props.gameMode === 1 && moved) {
                         opponent.sendResponse(newBoardState, props.gameID)
                         setPlayerMoved(true)
+                        setTimeRemaining(600)
                         if (playerMoved && oppMoved && renderUnload !== 2) {
                             setRenderUnload(2)
                         }
@@ -311,6 +312,7 @@ export default function Checkers(props) {
                 } else if (oppBoardState !== "") {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
+                        setTimeRemaining(60)
                         if (playerMoved && oppMoved && renderUnload !== 2) {
                             setRenderUnload(2)
                         }
