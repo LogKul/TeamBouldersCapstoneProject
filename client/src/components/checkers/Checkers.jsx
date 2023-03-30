@@ -393,11 +393,13 @@ export default function Checkers(props) {
 
     async function externalNaviEarly() {
         await opponent.abandonGame(props.gameID)
+        await delay(1000)
     }
 
     async function externalNaviLate() {
         await opponent.updateMMR(props.oppData, false)
         await opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
+        await delay(1000)
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
