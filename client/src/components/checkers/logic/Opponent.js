@@ -85,6 +85,59 @@ export default class Opponent {
 
     }
 
+    async updateMMR(opponent_uuid, win) {
+        try {
+            const response = await axios.get("/users/readid",
+                { params: { playerid: opponent_uuid } },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
+                    withCredentials: false
+                }
+            )
+
+            const opp_data = response?.data
+            const wins = parseInt(sessionStorage.getItem("wins"))
+            const losses = parseInt(sessionStorage.getItem("losses"))
+
+            if (win == true) {
+                await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
+                    {
+                        wins: wins + 1,
+                        mmr: (opp_data.mmr + 400 * (wins - losses + 1)) / (wins + losses + 1)
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
+                    }
+                )
+            }
+            else if (win == false) {
+                await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
+                    {
+                        losses: losses + 1,
+                        mmr: (opp_data.mmr + 400 * (wins - losses - 1)) / (wins + losses + 1)
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
+                    }
+                )
+            }
+        } catch (err) {
+            console.log(err?.response)
+        }
+
+    }
+
     async forfeitGame(gameID, uuid) {
         try {
             const response = await axios.get("/games/read?gameid=" + gameID,

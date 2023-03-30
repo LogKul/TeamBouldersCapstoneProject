@@ -14,7 +14,7 @@ function Header() {
                 </a>
             </div>
             <div className='header-right'>
-                <Link to="/start">Play Game</Link>
+                <Link to="/play">Play Game</Link>
                 <Link to="/leaderboard">Leaderboard</Link>
                 <Link to="/recordings">Recording</Link>
                 <Link to="/account">Account</Link>
