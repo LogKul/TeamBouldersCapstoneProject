@@ -59,8 +59,6 @@ exports.readid = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    var salted = process.env.S1 + req.body.password + process.env.S2
-
     // Update existing User
     User.findOne({
         where: {
@@ -68,9 +66,10 @@ exports.update = (req, res) => {
         }
     })
         .then(user => {
-            const new_pass = bcrypt.hashSync(salted, parseInt(process.env.SROUNDS))
             user.set(req.body);
-            if (new_pass !== 'undefined') {
+            if (req.body.password) {
+                const salted = process.env.S1 + req.body.password + process.env.S2
+                const new_pass = bcrypt.hashSync(salted, parseInt(process.env.SROUNDS))
                 user.set({ password: new_pass });
             }
             user.save();
@@ -105,7 +104,7 @@ exports.get_rankings = (req, res) => {
         .then((users) => {
 
             // Sort by winrate
-            users.sort((a, b) => ((a.wins / a.losses) < (b.wins / b.losses)) ? 1 : ((a.wins / a.losses) != (b.wins / b.losses)) ? -1 : ((a.wins + a.losses) < (b.wins + b.losses)) ? -1 : 1)
+            users.sort((a, b) => ((a.mmr) < (b.mmr)) ? 1 : -1)
 
             res.status(200).send({
                 users: users,

@@ -100,8 +100,6 @@ export default class Opponent {
 
             const opp_data = response?.data*/
 
-            console.log("OPP_DATA: " + opp_data.mmr)
-
             const mmr = parseInt(sessionStorage.getItem("mmr"))
             const wins = parseInt(sessionStorage.getItem("wins"))
             const losses = parseInt(sessionStorage.getItem("losses"))
@@ -114,10 +112,13 @@ export default class Opponent {
 
             let s = 0
             win === true ? s = 1 : s = 0
-            const k = 32
+            const k = 16
 
             const newmmr = Math.round(mmr + k * (s - expected_score_player))
             sessionStorage.setItem("mmr", newmmr)
+
+            console.log("OPP MMR: " + opp_data.mmr)
+            console.log("OLD MMR: " + mmr)
             console.log("NEW MMR: " + newmmr)
 
             if (win === true) {
@@ -145,7 +146,7 @@ export default class Opponent {
                 await axios.put("/users/update?username=" + sessionStorage.getItem("user"),
                     {
                         losses: losses + 1,
-                        mmr: (opp_data.mmr + 400 * (wins - losses - 1)) / (wins + losses + 1)
+                        mmr: newmmr
                     },
                     {
                         headers: {
