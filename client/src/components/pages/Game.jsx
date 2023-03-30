@@ -6,21 +6,20 @@ import Checkers from "../checkers/Checkers"
 
 const Game = () => {
 
-    const { game_mode, difficulty, color } = useParams();
+    const { game_mode, difficulty, game_id, color } = useParams();
 
     return (
         <div>
             <Header />
             <div className='content-wrap'>
-                <p>Game Mode: {game_mode}</p>
-                <p>Difficulty: {difficulty}</p>
-                <p>Color: {color}</p>
+                <p>Game Mode: {game_mode}    Difficulty {difficulty}</p>
+                <p>Color: {color}    Game ID: {game_id}</p>
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} color={parseInt(color)} />
+                    <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} gameID={game_id} color={parseInt(color)} />
                 </div>
             </div>
             <Footer />

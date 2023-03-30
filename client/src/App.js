@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from "react"
-import { Router, Routes, Route } from 'react-router-dom';
+import { React, useEffect } from "react"
+import { Routes, Route } from 'react-router-dom';
 
 import Register from "./components/pages/Register"
 import Login from "./components/pages/Login"
@@ -13,6 +13,7 @@ import Play from "./components/pages/Play"
 import Game from "./components/pages/Game"
 import Leaderboard from "./components/pages/Leaderboard"
 import Recording from "./components/pages/Recording"
+import UserRecording from "./components/pages/UserRecording"
 import Matchmaking from "./components/pages/Matchmaking"
 import PrivateRoutes from './components/util/PrivateRoutes'
 
@@ -44,6 +45,7 @@ function App() {
 
     } catch (err) {
       console.log(err.response)
+      sessionStorage.removeItem("accessToken")
     }
   }
 
@@ -71,9 +73,10 @@ function App() {
           <Route path="/start" element={<GameStart />} />
           <Route path="/play" element={<Play />} />
           <Route path="/matchmaking" element={<Matchmaking />} />
-          <Route path="/game/:game_mode/:difficulty/:color" element={<Game />} />
+          <Route path="/game/:game_mode/:difficulty/:game_id/:color" element={<Game />} />
           <Route path="over" element={<GameOver />} />
           <Route path="/recordings" element={<Recording />} />
+          <Route path="/recordings/:username" element={<UserRecording />} />
         </Route>
       </Routes>
     </main>

@@ -31,9 +31,34 @@ exports.read = (req, res) => {
         });
 };
 
-exports.update = (req, res) => {
-    var salted = process.env.S1 + req.body.password + process.env.S2
+exports.readid = (req, res) => {
+    // Read single User
+    User.findOne({
+        where: {
+            id: req.query.playerid,
+        }
+    })
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
 
+            res.status(200).send({
+                id: user.id,
+                username: user.username,
+                wins: user.wins,
+                losses: user.losses,
+                mmr: user.mmr,
+                deleted: user.deleted,
+            });
+
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+        });
+};
+
+exports.update = (req, res) => {
     // Update existing User
     User.findOne({
         where: {
@@ -41,9 +66,10 @@ exports.update = (req, res) => {
         }
     })
         .then(user => {
-            const new_pass = bcrypt.hashSync(salted, parseInt(process.env.SROUNDS))
             user.set(req.body);
-            if (new_pass !== 'undefined') {
+            if (req.body.password) {
+                const salted = process.env.S1 + req.body.password + process.env.S2
+                const new_pass = bcrypt.hashSync(salted, parseInt(process.env.SROUNDS))
                 user.set({ password: new_pass });
             }
             user.save();
@@ -67,5 +93,26 @@ exports.delete = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
+        });
+};
+
+exports.get_rankings = (req, res) => {
+    // Return all players, ranked by win/loss ratio
+    User.findAll({
+        attributes: ["username", "mmr", "wins", "losses"]
+    })
+        .then((users) => {
+
+            // Sort by winrate
+            users.sort((a, b) => ((a.mmr) < (b.mmr)) ? 1 : -1)
+
+            res.status(200).send({
+                users: users,
+            });
+
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+            console.log(err.message)
         });
 };

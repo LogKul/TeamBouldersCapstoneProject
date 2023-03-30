@@ -20,7 +20,7 @@ exports.read = (req, res) => {
     // Search for unique report in database
     Report.findOne({
         where: {
-            id: req.query.id,
+            id: req.query.reportid,
         }
     })
         .then(report => {
@@ -45,7 +45,7 @@ exports.update = (req, res) => {
     // Update unique report in database
     Report.findOne({
         where: {
-            id: req.query.id,
+            id: req.query.reportid,
         }
     })
         .then(report => {
@@ -63,7 +63,7 @@ exports.delete = (req, res) => {
     // Delete report from database
     Report.destroy({
         where: {
-            id: req.query.id,
+            id: req.query.reportid,
         }
     })
         .then(() => {

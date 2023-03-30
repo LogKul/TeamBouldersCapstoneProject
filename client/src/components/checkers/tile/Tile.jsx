@@ -1,4 +1,6 @@
 import "./Tile.css"
+import React from "react"
+import PropTypes from "prop-types"
 
 export default function Tile(props) {
     let piece = props.piece
@@ -15,4 +17,9 @@ export default function Tile(props) {
             </div>
         )
     }
+}
+
+Tile.propTypes = {
+    piece: PropTypes.string,
+    number: PropTypes.number
 }

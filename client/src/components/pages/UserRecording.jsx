@@ -1,13 +1,14 @@
 import { React, useEffect, useState } from 'react'
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Header from '../Header'
 import Footer from '../Footer'
 import GameRecording from '../GameRecording'
 import axios from "../../api/axios"
 
-const Recording = () => {
+const UserRecording = () => {
 
     const [games, setGames] = useState([])
+    const { username } = useParams()
 
     useEffect(() => {
         getGames()
@@ -15,7 +16,8 @@ const Recording = () => {
 
     const getGames = async () => {
         try {
-            const response = await axios.get("/games/findcompletedgames",
+            console.log(username)
+            const response = await axios.get("/games/findusergames?username=" + username,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -24,7 +26,7 @@ const Recording = () => {
                     withCredentials: false
                 }
             )
-            console.log(response?.data?.games)
+            console.log(response)
             const localGameData = response?.data?.games
             setGames(localGameData)
         } catch (err) {
@@ -38,7 +40,7 @@ const Recording = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>This will be the All Game Recordings page!</h1>
+                <h1>This will be the User&apos;s Game Recording page!</h1>
                 <br></br>
                 <br></br>
                 <h2>This page will include links to:</h2>
@@ -46,7 +48,7 @@ const Recording = () => {
                     <Link to="/account"><li>Accounts of both players</li></Link>
                 </ul>
 
-                <h2>Your Games</h2>
+                <h1>Your Games</h1>
                 <hr></hr>
                 {games
                     ? games.map((game) => (
@@ -60,4 +62,4 @@ const Recording = () => {
     )
 }
 
-export default Recording
+export default UserRecording
