@@ -107,7 +107,16 @@ button {
   background-color: $primary-dark;
   transition: all .2s ease-in-out;
 }
-button:hover, .small-button:hover {
+.large-button {
+  @include font-montserrat(20px, bold, normal); 
+  margin: 2rem;
+  padding: 1rem 2.5rem 1rem 2.5rem;
+  border-radius: 2rem;
+  color: white;
+  background-color: $primary-dark;
+  transition: all .2s ease-in-out;
+}
+button:hover, .small-button:hover, .large-button:hover {
   color: $primary-dark;
   background-color: $secondary-color;
   scale: (1.15);
