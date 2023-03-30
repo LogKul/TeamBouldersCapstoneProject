@@ -112,12 +112,12 @@ export default class Opponent {
             //const expected_score_opp = opp_transformed / (player_transformed + opp_transformed)
 
             let s = 0
-            win == true ? s = 1 : s = 0
+            win === true ? s = 1 : s = 0
             const k = 32
 
             console.log("About to update MMR...")
 
-            if (win == true) {
+            if (win === true) {
                 await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
                     {
                         wins: wins + 1,
@@ -133,7 +133,7 @@ export default class Opponent {
                 )
                 console.log("Updating player MMR...")
             }
-            else if (win == false) {
+            else if (win === false) {
                 await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
                     {
                         losses: losses + 1,
