@@ -38,6 +38,7 @@ export default function Checkers(props) {
     const [winner, setWinner] = React.useState(false)
     const [timeoutCounter, setTimeoutCounter] = React.useState(0)
     const [timeRemaining, setTimeRemaining] = React.useState(playerColor === 0 ? 60 : 600)
+    const [moveCounter, setMoveCounter] = React.useState(0)
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -195,6 +196,7 @@ export default function Checkers(props) {
                         opponent.sendResponse(newBoardState, props.gameID)
                         setPlayerMoved(true)
                         setTimeRemaining(600)
+                        setMoveCounter(moveCounter + 1)
                         if (playerMoved && oppMoved && renderUnload !== 2) {
                             setRenderUnload(2)
                         }
@@ -267,12 +269,11 @@ export default function Checkers(props) {
             }
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
-            opponent.updateMMR(props.oppData, false)
-            opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
+            opponent.forfeitGame(props.gameID, props.oppData)
             setModalIsOpen(true)
             setGameOver(true)
         }
-    })
+    }, [moveCounter])
 
 
     const delay = ms => new Promise(res => setTimeout(res, ms))
@@ -313,6 +314,7 @@ export default function Checkers(props) {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
                         setTimeRemaining(60)
+                        setMoveCounter(moveCounter + 1)
                         if (playerMoved && oppMoved && renderUnload !== 2) {
                             setRenderUnload(2)
                         }
@@ -393,13 +395,10 @@ export default function Checkers(props) {
 
     async function externalNaviEarly() {
         await opponent.abandonGame(props.gameID)
-        await delay(1000)
     }
 
     async function externalNaviLate() {
-        await opponent.updateMMR(props.oppData, false)
-        await opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
-        await delay(1000)
+        await opponent.forfeitGame(props.gameID, props.oppData)
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
