@@ -244,22 +244,22 @@ export default function Checkers(props) {
                 if (playerColor === 0) {
                     if (bCount === 0) {
                         if (props.gameMode === 1) {
-                            opponent.updateMMR(props.oppUUID, true)
+                            opponent.updateMMR(props.oppData, true)
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setWinner(true)
                     } else {
-                        opponent.updateMMR(props.oppUUID, false)
+                        opponent.updateMMR(props.oppData, false)
                     }
                 } else {
                     if (rCount === 0) {
                         if (props.gameMode === 1) {
-                            opponent.updateMMR(props.oppUUID, true)
+                            opponent.updateMMR(props.oppData, true)
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setWinner(true)
                     } else {
-                        opponent.updateMMR(props.oppUUID, false)
+                        opponent.updateMMR(props.oppData, false)
                     }
                 }
                 setModalIsOpen(true)
@@ -267,7 +267,7 @@ export default function Checkers(props) {
             }
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
-            opponent.updateMMR(props.oppUUID, false)
+            opponent.updateMMR(props.oppData, false)
             opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
             setModalIsOpen(true)
             setGameOver(true)
@@ -287,7 +287,7 @@ export default function Checkers(props) {
                     setModalIsOpen(true)
                     setAbandon(true)
                 } else {
-                    opponent.updateMMR(props.oppUUID, true)
+                    opponent.updateMMR(props.oppData, true)
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                     setWinner(true)
                     setModalIsOpen(true)
@@ -301,12 +301,12 @@ export default function Checkers(props) {
                     setModalIsOpen(true)
                     setAbandon(true)
                 } else if (oppBoardState === "winner") {
-                    opponent.updateMMR(props.oppUUID, true)
+                    opponent.updateMMR(props.oppData, true)
                     setModalIsOpen(true)
                     setWinner(true)
                     setGameOver(true)
                 } else if (oppBoardState === "loser") {
-                    opponent.updateMMR(props.oppUUID, false)
+                    opponent.updateMMR(props.oppData, false)
                     setModalIsOpen(true)
                     setGameOver(true)
                 } else if (oppBoardState !== "") {
@@ -396,7 +396,7 @@ export default function Checkers(props) {
     }
 
     async function externalNaviLate() {
-        await opponent.updateMMR(props.oppUUID, false)
+        await opponent.updateMMR(props.oppData, false)
         await opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
     }
 

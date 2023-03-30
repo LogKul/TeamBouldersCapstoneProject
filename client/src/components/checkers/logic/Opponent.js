@@ -85,9 +85,9 @@ export default class Opponent {
 
     }
 
-    async updateMMR(opponent_uuid, win) {
+    async updateMMR(opp_data, win) {
         try {
-            const response = await axios.get("/users/readid",
+            /*const response = await axios.get("/users/readid",
                 { params: { playerid: opponent_uuid } },
                 {
                     headers: {
@@ -98,7 +98,9 @@ export default class Opponent {
                 }
             )
 
-            const opp_data = response?.data
+            const opp_data = response?.data*/
+
+
             console.log("OPP_DATA: " + opp_data.mmr)
 
             const mmr = parseInt(sessionStorage.getItem("mmr"))
