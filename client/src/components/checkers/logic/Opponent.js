@@ -100,8 +100,6 @@ export default class Opponent {
 
             const opp_data = response?.data*/
 
-            console.log("OPP_DATA: " + opp_data.mmr)
-
             const mmr = parseInt(sessionStorage.getItem("mmr"))
             const wins = parseInt(sessionStorage.getItem("wins"))
             const losses = parseInt(sessionStorage.getItem("losses"))
@@ -118,6 +116,9 @@ export default class Opponent {
 
             const newmmr = Math.round(mmr + k * (s - expected_score_player))
             sessionStorage.setItem("mmr", newmmr)
+
+            console.log("OPP MMR: " + opp_data.mmr)
+            console.log("OLD MMR: " + mmr)
             console.log("NEW MMR: " + newmmr)
 
             if (win === true) {
