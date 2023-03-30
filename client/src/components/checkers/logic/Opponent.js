@@ -99,6 +99,7 @@ export default class Opponent {
             )
 
             const opp_data = response?.data
+            console.log("OPP_DATA: " + opp_data.mmr)
 
             const mmr = parseInt(sessionStorage.getItem("mmr"))
             const wins = parseInt(sessionStorage.getItem("wins"))
@@ -114,6 +115,8 @@ export default class Opponent {
             win == true ? s = 1 : s = 0
             const k = 32
 
+            console.log("About to update MMR...")
+
             if (win == true) {
                 await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
                     {
@@ -128,6 +131,7 @@ export default class Opponent {
                         withCredentials: false
                     }
                 )
+                console.log("Updating player MMR...")
             }
             else if (win == false) {
                 await axios.put("/users/update?username=" + sessionStorage.getItem("username"),
@@ -143,6 +147,7 @@ export default class Opponent {
                         withCredentials: false
                     }
                 )
+                console.log("Updating player MMR...")
             }
         } catch (err) {
             console.log(err?.response)
