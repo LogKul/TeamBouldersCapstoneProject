@@ -12,11 +12,11 @@
 }
 
 .tile .checkers-piece {
-    width: 5rem;
-    height: 5rem;
+    width: fill;
+    height: fill;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 7rem;
+    background-size: fill;
 }
 
 .tile .checkers-piece:hover {
@@ -25,4 +25,6 @@
 
 .tile .checkers-piece:active {
     cursor: grabbing;
+    width: 10%;
+    height: 10%;
 }

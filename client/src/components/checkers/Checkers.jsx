@@ -48,16 +48,24 @@ export default function Checkers(props) {
         const checkersBoard = checkersBoardRef.current
 
         if (element.classList.contains("checkers-piece") && checkersBoard) {
+            const boardElementDimensions = document.getElementById('board').getBoundingClientRect()
+            const tileElementDimensions = document.getElementById('.checkers-piece')
+
+            console.log(tileElementDimensions)
+
+            console.log(e.clientX - boardElementDimensions.x)
+            console.log(e.clientY)
+
             if (playerColor === 0) {
-                setGridX(Math.floor((e.clientY - checkersBoard.offsetTop) / 100))
-                setGridY(Math.floor((e.clientX - checkersBoard.offsetLeft) / 100))
+                setGridX(Math.floor((e.clientY - checkersBoard.offsetTop) / ((1/8) * boardElementDimensions.height)))
+                setGridY(Math.floor((e.clientX - checkersBoard.offsetLeft) / ((1/8) * boardElementDimensions.width)))
             } else {
-                setGridX(7 - (Math.floor((e.clientY - checkersBoard.offsetTop) / 100)))
-                setGridY(7 - (Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)))
+                setGridX(7 - (Math.floor((e.clientY - checkersBoard.offsetTop) / ((1/8) * boardElementDimensions.height))))
+                setGridY(7 - (Math.floor((e.clientX - checkersBoard.offsetLeft) / ((1/8) * boardElementDimensions.width))))
             }
 
-            const x = e.clientX - 25
-            const y = e.clientY - 25
+            const x = e.clientX - ((1/11) * boardElementDimensions.height)
+            const y = e.clientY - ((1/13) * boardElementDimensions.height)
 
             element.style.position = "fixed"
             element.style.left = x + 'px'
@@ -68,16 +76,18 @@ export default function Checkers(props) {
     }
 
     const movePiece = (e) => {
+        const boardElementDimensions = document.getElementById('board').getBoundingClientRect()
 
         const checkersBoard = checkersBoardRef.current
 
         if (activePiece && checkersBoard) {
-            const minX = checkersBoard.offsetLeft
-            const minY = checkersBoard.offsetTop
-            const maxX = checkersBoard.offsetLeft + checkersBoard.clientWidth - 50
-            const maxY = checkersBoard.offsetTop + checkersBoard.clientHeight - 50
-            const x = e.clientX - 25
-            const y = e.clientY - 25
+            const minX = boardElementDimensions.left
+            const minY = boardElementDimensions.top
+            const maxX = boardElementDimensions.right - (1/6) * boardElementDimensions.height
+            const maxY = boardElementDimensions.bottom - (1/6) * boardElementDimensions.height
+
+            const x = e.clientX - (1/11) * boardElementDimensions.height
+            const y = e.clientY - (1/13) * boardElementDimensions.width
 
             activePiece.style.position = "absolute"
 
@@ -104,8 +114,13 @@ export default function Checkers(props) {
         const checkersBoard = checkersBoardRef.current
 
         if (activePiece && checkersBoard) {
-            let x = Math.floor((e.clientY - checkersBoard.offsetTop) / 100)
-            let y = Math.floor((e.clientX - checkersBoard.offsetLeft) / 100)
+            const boardElementDimensions = document.getElementById('board').getBoundingClientRect()
+
+            let x = Math.floor((e.clientY - boardElementDimensions.top) / ((1/8) * boardElementDimensions.height))
+            let y = Math.floor((e.clientX - boardElementDimensions.left) / ((1/8) * boardElementDimensions.width))
+
+            console.log("drop at x: "+x)
+            console.log("drop at y: "+y)
 
             if (playerColor === 1) {
                 x = 7 - x
