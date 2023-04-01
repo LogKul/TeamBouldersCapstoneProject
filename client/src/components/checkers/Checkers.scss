@@ -1,10 +1,10 @@
 #board {
     display: grid;
-    grid-template-columns: repeat(8, 12.5%);
-    grid-template-rows: repeat(8, 15%);
+    grid-template-columns: repeat(8, 8vh);
+    grid-template-rows: repeat(8, 8vh);
     justify-content: center;
-    width: 72vh;
-    max-height: 60vh;
+    width: 64vh;
+    height: 64vh;
     margin: auto;
     aspect-ratio: 1/1;
 }
