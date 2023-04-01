@@ -163,54 +163,25 @@ export default class Opponent {
 
     }
 
-    async forfeitGame(gameID, uuid) {
+    async forfeitGame(gameID, opp_data) {
         try {
-            const response = await axios.get("/games/read?gameid=" + gameID,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-access-token": sessionStorage.getItem("accessToken")
-                    },
-                    withCredentials: false
-                }
-            )
-            if (response?.data?.winner === null) {
-                if (response?.data?.player1 === uuid) {
-                    try {
-                        await axios.put("/games/update?gameid=" + gameID,
-                            { winner: response?.data?.player2 },
-                            {
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "x-access-token": sessionStorage.getItem("accessToken")
-                                },
-                                withCredentials: false
-                            }
-                        )
-                    } catch (err) {
-                        console.log(err?.response)
+            try {
+                await axios.put("/games/update?gameid=" + gameID,
+                    { winner: opp_data.id},
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
                     }
-                } else {
-                    try {
-                        await axios.put("/games/update?gameid=" + gameID,
-                            { winner: response?.data?.player1 },
-                            {
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "x-access-token": sessionStorage.getItem("accessToken")
-                                },
-                                withCredentials: false
-                            }
-                        )
-                        return true
-                    } catch (err) {
-                        console.log(err?.response)
-                    }
-                }
+                )
+                this.updateMMR(opp_data, false)
+            } catch (err) {
+                console.log(err?.response)
             }
         } catch (err) {
             console.log(err?.response)
-            return false
         }
     }
 
