@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react"
+import React from "react"
 import axios from "../../api/axios"
 import { Link } from 'react-router-dom';
 import Header from '../Header'
@@ -11,41 +11,41 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 const REGISTER_URL = process.env.REACT_APP_API_URL + "/auth/signup"
 
 const Register = () => {
-    const userRef = useRef()
-    const errRef = useRef()
+    const userRef = React.useRef()
+    const errRef = React.useRef()
 
-    const [user, setUser] = useState("")
-    const [validName, setValidName] = useState(false)
-    const [userFocus, setUserFocus] = useState(false)
+    const [user, setUser] = React.useState("")
+    const [validName, setValidName] = React.useState(false)
+    const [userFocus, setUserFocus] = React.useState(false)
 
-    const [pwd, setPwd] = useState("")
-    const [validPwd, setValidPwd] = useState(false)
-    const [pwdFocus, setPwdFocus] = useState(false)
+    const [pwd, setPwd] = React.useState("")
+    const [validPwd, setValidPwd] = React.useState(false)
+    const [pwdFocus, setPwdFocus] = React.useState(false)
 
-    const [matchPwd, setMatchPwd] = useState("")
-    const [validMatch, setValidMatch] = useState(false)
-    const [matchFocus, setMatchFocus] = useState(false)
+    const [matchPwd, setMatchPwd] = React.useState("")
+    const [validMatch, setValidMatch] = React.useState(false)
+    const [matchFocus, setMatchFocus] = React.useState(false)
 
-    const [errMsg, setErrMsg] = useState("")
-    const [success, setSuccess] = useState(false)
+    const [errMsg, setErrMsg] = React.useState("")
+    const [success, setSuccess] = React.useState(false)
 
-    useEffect(() => {
+    React.useEffect(() => {
         userRef.current.focus()
     }, [])
 
-    useEffect(() => {
+    React.useEffect(() => {
         const result = USER_REGEX.test(user)
         setValidName(result)
     }, [user])
 
-    useEffect(() => {
+    React.useEffect(() => {
         const result = PWD_REGEX.test(pwd)
         setValidPwd(result)
         const match = pwd === matchPwd
         setValidMatch(match)
     }, [pwd, matchPwd])
 
-    useEffect(() => {
+    React.useEffect(() => {
         setErrMsg("")
     }, [user, pwd, matchPwd])
 
@@ -66,9 +66,11 @@ const Register = () => {
                     withCredentials: false
                 }
             )
+            if (response.status === 200) {
+                setSuccess(true)
+            }
             // console.log(JSON.stringify(response))
             console.log("Registered successfully")
-            setSuccess(true)
             // clear input fields?
         } catch (err) {
             if (!err?.response) {

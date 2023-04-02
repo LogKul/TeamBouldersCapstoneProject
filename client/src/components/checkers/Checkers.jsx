@@ -1,4 +1,5 @@
-import { useRef, useState, useEffect } from "react"
+import React from "react"
+import PropTypes from "prop-types"
 import Tile from "./tile/Tile"
 import "./checkers.css"
 import Logic from "./logic/Logic"
@@ -19,19 +20,6 @@ export default function Checkers(props) {
         }
     }
 
-<<<<<<< HEAD
-    const [activePiece, setActivePiece] = useState(undefined)
-    const [boardState, setBoardState] = useState(initialBoardState)
-    const [gridX, setGridX] = useState()
-    const [gridY, setGridY] = useState()
-    const [continuedAttack, setContinuedAttack] = useState(false)
-    const [currentTurn, setCurrentTurn] = useState(0)
-    const [playerColor, setPlayerColor] = useState(1) // get from props
-    const [oppColor, setOppColor] = useState(0) // get from props
-    const [gameID, setGameID] = useState(0) // get from props if game is online
-    const [gameOver, setGameOver] = useState(false)
-    const checkersBoardRef = useRef(null)
-=======
     const playerColor = props.color
     const oppColor = props.color === 1 ? 0 : 1
 
@@ -52,7 +40,6 @@ export default function Checkers(props) {
     const [timeRemaining, setTimeRemaining] = React.useState(playerColor === 0 ? 60 : 600)
     const [moveCounter, setMoveCounter] = React.useState(0)
     const checkersBoardRef = React.useRef(null)
->>>>>>> 77edc9824c8146e8d6f12eb0617a13278f0e8786
     const logic = new Logic()
     const opponent = new Opponent()
 
@@ -228,18 +215,6 @@ export default function Checkers(props) {
 
     let board = []
 
-    const [seconds, setSeconds] = useState(0)
-    var timer
-
-    // timer to be used for preventing a move from ai to occur every 5 seconds
-    // can be changed to async and await
-    useEffect(() => {
-        timer = setInterval(() => {
-            setSeconds(seconds + 1)
-        }, 1000)
-        return () => clearInterval(timer)
-    })
-
     //time left to make a move before forfeiting
     React.useEffect(() => {
         let interval = null
@@ -300,17 +275,6 @@ export default function Checkers(props) {
         }
     }, [moveCounter])
 
-<<<<<<< HEAD
-    // get response from ai or other player only if 5 seconds have passed
-    // should be changed to async and await
-    useEffect(() => {
-        if (currentTurn !== playerColor && gameOver === false) {
-            if (seconds >= 5) {
-                setSeconds(0)
-                setBoardState(opponent.generateResponse(props.gameMode, props.difficulty, boardState, oppColor))
-                setCurrentTurn(playerColor)
-            }
-=======
 
     const delay = ms => new Promise(res => setTimeout(res, ms))
 
@@ -531,8 +495,6 @@ export default function Checkers(props) {
             </>
         )
     }
-<<<<<<< HEAD
-=======
 }
 
 Checkers.propTypes = {
@@ -540,5 +502,4 @@ Checkers.propTypes = {
     difficulty: PropTypes.number,
     gameID: PropTypes.string,
     color: PropTypes.number
->>>>>>> 77edc9824c8146e8d6f12eb0617a13278f0e8786
 }
