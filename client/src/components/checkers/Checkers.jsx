@@ -38,6 +38,7 @@ export default function Checkers(props) {
     const [winner, setWinner] = React.useState(false)
     const [timeoutCounter, setTimeoutCounter] = React.useState(0)
     const [timeRemaining, setTimeRemaining] = React.useState(playerColor === 0 ? 60 : 600)
+    const [moveCounter, setMoveCounter] = React.useState(0)
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -194,6 +195,8 @@ export default function Checkers(props) {
                     if (props.gameMode === 1 && moved) {
                         opponent.sendResponse(newBoardState, props.gameID)
                         setPlayerMoved(true)
+                        setTimeRemaining(600)
+                        setMoveCounter(moveCounter + 1)
                         if (playerMoved && oppMoved && renderUnload !== 2) {
                             setRenderUnload(2)
                         }
@@ -243,22 +246,22 @@ export default function Checkers(props) {
                 if (playerColor === 0) {
                     if (bCount === 0) {
                         if (props.gameMode === 1) {
-                            opponent.updateMMR(props.oppUUID, true)
+                            opponent.updateMMR(props.oppData, true)
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setWinner(true)
                     } else {
-                        opponent.updateMMR(props.oppUUID, false)
+                        opponent.updateMMR(props.oppData, false)
                     }
                 } else {
                     if (rCount === 0) {
                         if (props.gameMode === 1) {
-                            opponent.updateMMR(props.oppUUID, true)
+                            opponent.updateMMR(props.oppData, true)
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setWinner(true)
                     } else {
-                        opponent.updateMMR(props.oppUUID, false)
+                        opponent.updateMMR(props.oppData, false)
                     }
                 }
                 setModalIsOpen(true)
@@ -266,12 +269,11 @@ export default function Checkers(props) {
             }
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
-            opponent.updateMMR(props.oppUUID, false)
-            opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
+            opponent.forfeitGame(props.gameID, props.oppData)
             setModalIsOpen(true)
             setGameOver(true)
         }
-    })
+    }, [moveCounter])
 
 
     const delay = ms => new Promise(res => setTimeout(res, ms))
@@ -286,7 +288,7 @@ export default function Checkers(props) {
                     setModalIsOpen(true)
                     setAbandon(true)
                 } else {
-                    opponent.updateMMR(props.oppUUID, true)
+                    opponent.updateMMR(props.oppData, true)
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                     setWinner(true)
                     setModalIsOpen(true)
@@ -300,17 +302,19 @@ export default function Checkers(props) {
                     setModalIsOpen(true)
                     setAbandon(true)
                 } else if (oppBoardState === "winner") {
-                    opponent.updateMMR(props.oppUUID, true)
+                    opponent.updateMMR(props.oppData, true)
                     setModalIsOpen(true)
                     setWinner(true)
                     setGameOver(true)
                 } else if (oppBoardState === "loser") {
-                    opponent.updateMMR(props.oppUUID, false)
+                    opponent.updateMMR(props.oppData, false)
                     setModalIsOpen(true)
                     setGameOver(true)
                 } else if (oppBoardState !== "") {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
+                        setTimeRemaining(60)
+                        setMoveCounter(moveCounter + 1)
                         if (playerMoved && oppMoved && renderUnload !== 2) {
                             setRenderUnload(2)
                         }
@@ -394,8 +398,7 @@ export default function Checkers(props) {
     }
 
     async function externalNaviLate() {
-        await opponent.updateMMR(props.oppUUID, false)
-        await opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
+        await opponent.forfeitGame(props.gameID, props.oppData)
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
