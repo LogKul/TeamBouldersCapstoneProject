@@ -33,7 +33,7 @@ app.use(
     },
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self' https://shark-app-e6tu3.ondigitalocean.app"],
+        defaultSrc: ["'self'"],
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
         upgradeInsecureRequests: [],
