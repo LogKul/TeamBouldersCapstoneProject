@@ -9,7 +9,7 @@ index 522a81b..0469aab 100644
 -      'Access-Control-Allow-Origin': '*',
 +      'Cache-Control': 'no-store, max-age=0',
 +      //'Clear-Site-Data':'\"cache\",\"cookies\",\"storage\"',
-+      'Content-Security-Policy': "object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",
++      'Content-Security-Policy': "default-src 'self' https://shark-app-e6tu3.ondigitalocean.app/; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",
 +      'Cross-Origin-Embedder-Policy': 'require-corp',
 +      'Cross-Origin-Opener-Policy': 'same-origin',
 +      'Cross-Origin-Resource-Policy': 'same-origin',
