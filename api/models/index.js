@@ -17,7 +17,8 @@ const sequelize = new Sequelize(
         },
         define: {
             timestamps: false
-        }
+        },
+        logging: false
 
         /*pool: {
             max: config.pool.max,

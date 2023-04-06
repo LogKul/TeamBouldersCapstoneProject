@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, DataTypes, Sequelize } = require("sequelize");
 const db = require("../models");
 const Game = db.game;
 const User = db.user;
@@ -31,9 +31,58 @@ exports.find_completed_games = (req, res) => {
         }
     })
         .then((completed_games) => {
-            res.status(200).send({
-                games: completed_games,
+            var output_games = []
+            var promises = []
+
+            var promises = completed_games.map(function (game) {
+                var temp_dict = { id: game.id, time: game.time }
+                User.findOne({
+                    where: {
+                        id: game.winner,
+                    }
+                })
+                    .then(winner => {
+                        temp_dict[winner] = winner.username;
+
+                        var nextPlayer = game.player1
+                        if (game.winner == game.player1) {
+                            nextPlayer = game.player2
+                        }
+
+                        User.findOne({
+                            where: {
+                                id: nextPlayer,
+                            }
+                        })
+                            .then(loser => {
+                                if (nextPlayer == game.player1) {
+                                    temp_dict[player1] = loser.username;
+                                    temp_dict[player2] = winner.username;
+                                }
+                                else {
+                                    temp_dict[player1] = winner.username;
+                                    temp_dict[player2] = loser.username;
+                                }
+
+                                console.log(temp_dict)
+                                output_games.push(temp_dict)
+
+                            })
+                            .catch(err => {
+                                console.log(err.message)
+                            });
+                    })
+                    .catch(err => {
+                        console.log(err.message)
+                    });
             });
+
+            Promise.all(promises).then(() =>
+                res.status(200).send({
+                    games: output_games,
+                })
+            );
+
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
@@ -268,6 +317,9 @@ exports.update = (req, res) => {
     })
         .then(game => {
             game.set(req.body);
+            game.save();
+
+            game.set({ time: DataTypes.NOW })
             game.save();
 
             res.status(200).send({ message: "Game was updated successfully!" });

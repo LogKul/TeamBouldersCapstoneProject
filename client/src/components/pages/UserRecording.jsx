@@ -40,13 +40,6 @@ const UserRecording = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>This will be the User&apos;s Game Recording page!</h1>
-                <br></br>
-                <br></br>
-                <h2>This page will include links to:</h2>
-                <ul>
-                    <Link to="/account"><li>Accounts of both players</li></Link>
-                </ul>
 
                 <h1>Your Games</h1>
                 <hr></hr>

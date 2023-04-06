@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react'
-import { Link } from "react-router-dom"
+//import { Link } from "react-router-dom"
 import Header from '../Header'
 import Footer from '../Footer'
 import GameRecording from '../GameRecording'
@@ -38,26 +38,34 @@ const Recording = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>This will be the All Game Recordings page!</h1>
-                <br></br>
-                <br></br>
-                <h2>This page will include links to:</h2>
-                <ul>
-                    <Link to="/account"><li>Accounts of both players</li></Link>
-                </ul>
 
-                <h2>Your Games</h2>
+                <h1>Global Game History</h1>
                 <hr></hr>
-                {games
-                    ? games.map((game) => (
-                        <GameRecording key={game.id} game={game} />
-                    ))
-                    : <p>No games recorded.</p>
-                }
+                <table>
+                    <tr>
+                        <th>Time Finished</th>
+                        <th>Winner</th>
+                        <th>Red</th>
+                        <th>Black</th>
+                    </tr>
+                    {games
+                        ? games.map((game, index) => (
+                            <GameRecording key={game.id} game={game} index={index} />
+                        ))
+                        : <p>Loading...</p>
+                    }
+                </table>
             </div>
             <Footer />
         </div>
     )
 }
+
+/*{games
+        ? games.map((game) => (
+            <GameRecording key={game.id} game={game} />
+        ))
+        : <p>No games recorded.</p>
+}*/
 
 export default Recording

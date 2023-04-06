@@ -27,6 +27,10 @@ module.exports = (sequelize, Sequelize) => {
         time: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
+            get: function () {
+                return this.getDataValue('time')
+                    .toLocaleString('en-US', { timeZone: 'UTC' });
+            }
         },
         winner: {
             type: Sequelize.UUID,
