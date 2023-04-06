@@ -49,7 +49,6 @@ export default function Checkers(props) {
         const checkersBoard = checkersBoardRef.current
 
         if (element.classList.contains("checkers-piece") && checkersBoard) {
-            const boardElementDimensions = document.getElementById('board').getBoundingClientRect()
 
             if (playerColor === 0) {
                 setGridX(Math.floor((e.clientY - checkersBoard.offsetTop + window.scrollY) / ((1/8) * checkersBoard.offsetHeight)))
@@ -59,15 +58,10 @@ export default function Checkers(props) {
                 setGridY(7 - (Math.floor((e.clientX - checkersBoard.offsetLeft + window.scrollX) / ((1/8) * checkersBoard.offsetWidth))))
             }
 
-            console.log(window.scrollX)
-            console.log(window.scrollY)
+            const x = e.clientX + window.scrollX - ((1/16) * checkersBoard.offsetWidth)
+            const y = e.clientY + window.scrollY - ((1/16) * checkersBoard.offsetHeight)
 
-            console.log(e.offsetLeft)
-
-            const x = e.clientX + window.scrollX - ((1/10) * boardElementDimensions.width)
-            const y = e.clientY + window.scrollY - ((1/12) * boardElementDimensions.height)
-
-            element.style.position = "fixed"
+            element.style.position = "absolute"
             element.style.left = x + 'px'
             element.style.top = y + 'px'
 
@@ -76,18 +70,17 @@ export default function Checkers(props) {
     }
 
     const movePiece = (e) => {
-        const boardElementDimensions = document.getElementById('board').getBoundingClientRect()
 
         const checkersBoard = checkersBoardRef.current
 
         if (activePiece && checkersBoard) {
-            const minX = checkersBoard.offsetLeft - ((1/16) * checkersBoard.offsetWidth)
+            const minX = checkersBoard.offsetLeft - ((1/32) * checkersBoard.offsetWidth)
             const minY = checkersBoard.offsetTop - ((1/32) * checkersBoard.offsetHeight)
-            const maxX = checkersBoard.offsetLeft + checkersBoard.offsetWidth - ((1/8) * checkersBoard.offsetWidth)
-            const maxY = checkersBoard.offsetTop + checkersBoard.offsetHeight - ((1/8) * checkersBoard.offsetHeight)
+            const maxX = checkersBoard.offsetLeft + checkersBoard.offsetWidth - ((1/10) * checkersBoard.offsetWidth)
+            const maxY = checkersBoard.offsetTop + checkersBoard.offsetHeight - ((1/10) * checkersBoard.offsetHeight)
 
-            const x = e.clientX + window.scrollX - ((1/10) * boardElementDimensions.width)
-            const y = e.clientY + window.scrollY - ((1/12) * boardElementDimensions.height)
+            const x = e.clientX + window.scrollX - ((1/16) * checkersBoard.offsetWidth)
+            const y = e.clientY + window.scrollY - ((1/16) * checkersBoard.offsetHeight)
 
             activePiece.style.position = "absolute"
 
@@ -114,7 +107,6 @@ export default function Checkers(props) {
         const checkersBoard = checkersBoardRef.current
 
         if (activePiece && checkersBoard) {
-            //const boardElementDimensions = document.getElementById('board').getBoundingClientRect()
 
             let x = Math.floor((e.clientY - checkersBoard.offsetTop + window.scrollY) / ((1/8) * checkersBoard.offsetHeight))
             let y = Math.floor((e.clientX - checkersBoard.offsetLeft + window.scrollX) / ((1/8) * checkersBoard.offsetWidth))
@@ -136,6 +128,7 @@ export default function Checkers(props) {
                     const newBoardState = value.map((p) => {
                         if (p.x === gridX && p.y === gridY) {
                             if (logic.isValidMove(gridX, gridY, x, y, p.color, p.king, currentTurn, value, continuedAttack)) {
+                                setMoveCounter(moveCounter + 1)
                                 if (gridX === (x + 2)) {
                                     if (gridY === (y + 2)) {
                                         removeX = x + 1
@@ -207,7 +200,6 @@ export default function Checkers(props) {
                         opponent.sendResponse(newBoardState, props.gameID)
                         setPlayerMoved(true)
                         setTimeRemaining(600)
-                        setMoveCounter(moveCounter + 1)
                         if (playerMoved && oppMoved && renderUnload !== 2) {
                             setRenderUnload(2)
                         }
@@ -345,9 +337,12 @@ export default function Checkers(props) {
         } else if (currentTurn !== playerColor && gameOver === false && props.gameMode === 0) {
             const oppBoardState = opponent.generateResponse(props.difficulty, boardState, oppColor)
             if (oppBoardState !== undefined) {
+                setMoveCounter(moveCounter + 1)
                 setBoardState(oppBoardState)
                 setCurrentTurn(playerColor)
             } else {
+                setWinner(true)
+                setModalIsOpen(true)
                 setGameOver(true)
             }
         }
