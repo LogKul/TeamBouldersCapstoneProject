@@ -28,18 +28,18 @@ exports.signup = (req, res) => {
                 }).then(roles => {
                     user.setRoles(roles).then(() => {
                         res.send({ message: "User was registered successfully!" });
-                    });
-                });
+                    }).catch("An unexpected error occured. Error Code 2007");
+                }).catch("An unexpected error occured. Error Code 2008");
             } else {
                 // user role = 1
                 user.setRoles([1]).then(() => {
                     res.send({ message: "User was registered successfully!" });
-                });
+                }).catch("An unexpected error occured. Error Code 2009");
             }
-        })
+        }).catch("An unexpected error occured. Error Code 2010")
         .catch(err => {
             res.status(500).send({ message: err.message });
-        });
+        }).catch("An unexpected error occured. Error Code 2011");
 };
 
 exports.login = (req, res) => {
@@ -94,12 +94,12 @@ exports.login = (req, res) => {
                     roles: authorities,
                     accessToken: token
                 });
-            });
+            }).catch("An unexpected error occured. Error Code 2012");
 
-        })
+        }).catch("An unexpected error occured. Error Code 2013")
         .catch(err => {
             res.status(500).send({ message: err.message });
-        });
+        }).catch("An unexpected error occured. Error Code 2014");
 };
 
 exports.refresh = (req, res) => {

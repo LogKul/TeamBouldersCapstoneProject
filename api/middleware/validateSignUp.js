@@ -15,7 +15,7 @@ validateNoDuplicateUsername = (req, res, next) => {
         }
 
         next();
-    });
+    }).catch("An unexpected error occured. Error Code 2000");
 };
 
 checkRolesExisted = (req, res, next) => {
