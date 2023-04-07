@@ -1,12 +1,16 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function GameRecording({ game }) {
     return (
         <tr>
             <td>{game.time + " UTC"}</td>
-            <td>{game.player1}</td>
-            <td>{game.player2}</td>
-            <td>{game.winner}</td>
+            {(game.winner == game.player1)
+                ? <Link to={"/recordings/" + game.player_1.username}><td>{game.player_1.username}</td></Link>
+                : <Link to={"/recordings/" + game.player_2.username}><td>{game.player_2.username}</td></Link>
+            }
+            <Link to={"/recordings/" + game.player_1.username}><td>{game.player_1.username}</td></Link>
+            <Link to={"/recordings/" + game.player_2.username}><td>{game.player_2.username}</td></Link>
         </tr>
     )
 }

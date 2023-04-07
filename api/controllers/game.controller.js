@@ -10,6 +10,18 @@ const User = db.user;
 exports.find_completed_games = (req, res) => {
     // Return all current completed games
     Game.findAll({
+        include: [
+            {
+                model: User,
+                as: 'player_1',
+                attributes: ['username']
+            },
+            {
+                model: User,
+                as: 'player_2',
+                attributes: ['username']
+            },
+        ],
         where: {
             [Op.and]: [
                 {
@@ -31,57 +43,10 @@ exports.find_completed_games = (req, res) => {
         }
     })
         .then((completed_games) => {
-            var output_games = []
-            var promises = []
 
-            var promises = completed_games.map(function (game) {
-                var temp_dict = { id: game.id, time: game.time }
-                User.findOne({
-                    where: {
-                        id: game.winner,
-                    }
-                })
-                    .then(winner => {
-                        temp_dict[winner] = winner.username;
-
-                        var nextPlayer = game.player1
-                        if (game.winner == game.player1) {
-                            nextPlayer = game.player2
-                        }
-
-                        User.findOne({
-                            where: {
-                                id: nextPlayer,
-                            }
-                        })
-                            .then(loser => {
-                                if (nextPlayer == game.player1) {
-                                    temp_dict[player1] = loser.username;
-                                    temp_dict[player2] = winner.username;
-                                }
-                                else {
-                                    temp_dict[player1] = winner.username;
-                                    temp_dict[player2] = loser.username;
-                                }
-
-                                console.log(temp_dict)
-                                output_games.push(temp_dict)
-
-                            })
-                            .catch(err => {
-                                console.log(err.message)
-                            });
-                    })
-                    .catch(err => {
-                        console.log(err.message)
-                    });
+            res.status(200).send({
+                games: completed_games,
             });
-
-            Promise.all(promises).then(() =>
-                res.status(200).send({
-                    games: output_games,
-                })
-            );
 
         })
         .catch(err => {
@@ -105,6 +70,18 @@ exports.find_completed_games_by_user = (req, res) => {
             // Then return all current completed games
             // containing a particular user
             Game.findAll({
+                include: [
+                    {
+                        model: User,
+                        as: 'player_1',
+                        attributes: ['username']
+                    },
+                    {
+                        model: User,
+                        as: 'player_2',
+                        attributes: ['username']
+                    },
+                ],
                 where: {
                     [Op.and]: [
                         {

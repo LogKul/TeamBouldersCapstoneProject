@@ -42,18 +42,20 @@ const Recording = () => {
                 <h1>Global Game History</h1>
                 <hr></hr>
                 <table>
-                    <tr>
-                        <th>Time Finished</th>
-                        <th>Winner</th>
-                        <th>Red</th>
-                        <th>Black</th>
-                    </tr>
-                    {games
-                        ? games.map((game, index) => (
-                            <GameRecording key={game.id} game={game} index={index} />
-                        ))
-                        : <p>Loading...</p>
-                    }
+                    <tbody>
+                        <tr>
+                            <th>Time Finished</th>
+                            <th>Winner</th>
+                            <th>Red</th>
+                            <th>Black</th>
+                        </tr>
+                        {games
+                            ? games.map((game, index) => (
+                                <GameRecording key={game.id} game={game} index={index} />
+                            ))
+                            : <p>Loading...</p>
+                        }
+                    </tbody>
                 </table>
             </div>
             <Footer />

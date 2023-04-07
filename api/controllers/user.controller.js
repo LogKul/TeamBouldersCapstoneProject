@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.user;
+const Game = db.game;
 
 require('dotenv').config();
 var bcrypt = require("bcryptjs");
