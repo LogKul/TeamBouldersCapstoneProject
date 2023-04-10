@@ -14,13 +14,7 @@ const Game = () => {
             <div className='content-wrap'>
                 <p>Game Mode: {game_mode}    Difficulty {difficulty}</p>
                 <p>Color: {color}    Game ID: {game_id}</p>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} gameID={game_id} color={parseInt(color)} />
-                </div>
+                <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} gameID={game_id} color={parseInt(color)} />
             </div>
             <Footer />
         </div>

@@ -1,0 +1,34 @@
+//$path: "process.env.PUBLIC_URL";
+
+.first-place {
+    border: 1px solid black;
+    //background-image: url(process.env.PUBLIC_URL + '/assets/gold_shine.jpg'});
+    background-repeat: no-repeat;
+    background-color: gold;
+    background-size: cover;
+}
+
+.second-place {
+    border: 1px solid black;
+    //background-image: url("#{$path}/assets/silver_shine.jpg");
+    background-repeat: no-repeat;
+    background-color: silver;
+    background-size: cover;
+}
+
+.third-place {
+    border: 1px solid black;
+    //backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/bronze_shine.jpg'})`,
+    background-repeat: no-repeat;
+    background-color: darkorange;
+    background-size: cover;
+}
+
+.even-row {
+    border: 1px solid black;
+    background-color: lightgray;
+}
+
+.odd-row {
+    border: 1px solid black;
+}
