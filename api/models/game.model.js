@@ -35,6 +35,10 @@ module.exports = (sequelize, Sequelize) => {
         winner: {
             type: Sequelize.UUID,
         }
+    }, {
+        timestamps: true,
+        createdAt: false,
+        updatedAt: 'finishedTime'
     });
 
     return Game;

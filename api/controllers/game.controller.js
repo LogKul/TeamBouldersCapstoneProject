@@ -40,7 +40,10 @@ exports.find_completed_games = (req, res) => {
                     },
                 }
             ]
-        }
+        },
+        order: [
+            ['finishedTime', 'DESC']
+        ]
     })
         .then((completed_games) => {
 
@@ -104,12 +107,17 @@ exports.find_completed_games_by_user = (req, res) => {
                         { player1: user.id },
                         { player2: user.id },
                     ]
-                }
+                },
+                order: [
+                    ['finishedTime', 'DESC']
+                ]
             })
                 .then((completed_games) => {
+
                     res.status(200).send({
                         games: completed_games,
                     });
+
                 })
                 .catch(err => {
                     res.status(500).send({ message: err.message });
@@ -149,13 +157,14 @@ exports.find_open_games = (req, res) => {
                         res.status(200).send({ games: game });
                     })
                     .catch(err => {
+                        console.log(err.message)
                         res.status(500).send({ message: err.message });
                     });
             }
         })
         .catch(err => {
-            res.status(500).send({ message: err.message });
             console.log(err.message)
+            res.status(500).send({ message: err.message });
         });
 };
 
@@ -294,9 +303,6 @@ exports.update = (req, res) => {
     })
         .then(game => {
             game.set(req.body);
-            game.save();
-
-            game.set({ time: DataTypes.NOW })
             game.save();
 
             res.status(200).send({ message: "Game was updated successfully!" });

@@ -34,14 +34,18 @@ const UserRecording = () => {
         }
     }
 
-
+    console.log(username)
+    console.log(sessionStorage.getItem("user"))
 
     return (
         <div>
             <Header />
             <div className='content-wrap'>
 
-                <h1>Your Games</h1>
+                {(sessionStorage.getItem("user") == username)
+                    ? <h1>Your Games</h1>
+                    : <h1>{username + "'s Games"}</h1>
+                }
                 <hr></hr>
                 <table>
                     <tbody>
