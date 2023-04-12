@@ -228,6 +228,9 @@ export default function Checkers(props) {
             }, 1000)
             return () => clearInterval(interval)
         }
+        if (timeRemaining === 0) {
+            setMoveCounter(moveCounter + 1)
+        }
     }, [timeRemaining])
 
     // GAMEOVER CHECK: check to see if there are any pieces left on the board
@@ -259,8 +262,6 @@ export default function Checkers(props) {
                     }
                 }
             })
-
-            console.log(possiblePlayerMoves)
             if (possiblePlayerMoves.length === 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
