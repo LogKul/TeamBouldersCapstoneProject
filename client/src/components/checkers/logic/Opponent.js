@@ -51,9 +51,9 @@ export default class Opponent {
     }
 
     async sendResponse(boardState, gameID) {
+
         try {
-            await axios.put("/games/update?gameid=" + gameID,
-                { gamestate: JSON.stringify(boardState) },
+            const response = await axios.get("/games/read?gameid=" + gameID,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -62,6 +62,20 @@ export default class Opponent {
                     withCredentials: false
                 }
             )
+            if (response?.data?.winner !== null || response?.data?.gamestate === "abandon") {
+                return
+            } else {
+                await axios.put("/games/update?gameid=" + gameID,
+                    { gamestate: JSON.stringify(boardState) },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
+                    }
+                )
+            }
         } catch (err) {
             console.log(err?.response)
         }
@@ -165,21 +179,17 @@ export default class Opponent {
 
     async forfeitGame(gameID, opp_data) {
         try {
-            try {
-                await axios.put("/games/update?gameid=" + gameID,
-                    { winner: opp_data.id},
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-access-token": sessionStorage.getItem("accessToken")
-                        },
-                        withCredentials: false
-                    }
-                )
-                this.updateMMR(opp_data, false)
-            } catch (err) {
-                console.log(err?.response)
-            }
+            await axios.put("/games/update?gameid=" + gameID,
+                { winner: opp_data.id},
+                {
+                     headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
+                    withCredentials: false
+                }
+            )
+            this.updateMMR(opp_data, false)
         } catch (err) {
             console.log(err?.response)
         }
