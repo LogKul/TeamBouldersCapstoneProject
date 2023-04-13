@@ -35,7 +35,6 @@ const Game = () => {
                         <h1> Choose Your Color</h1>
                         <button onClick={setColorRed}>Play as Red</button>
                         <button onClick={setColorBlack}>Play as Black</button>
-                        <br/>
                     </Modal>
                     <button onClick={openModal}>Choose A Color</button>
                 </div>
@@ -47,8 +46,7 @@ const Game = () => {
             <div>
                 <Header />
                 <div className='content-wrap'>
-                    <p></p>
-                    <p></p>
+                    <br/>
                     <Checkers gameMode={0} difficulty={0} gameID={'empty'} color={color} />
                 </div>
                 <Footer />
