@@ -121,3 +121,13 @@ button:hover, .small-button:hover, .large-button:hover {
   background-color: $secondary-color;
   scale: (1.15);
 }
+
+//Style rules for flex container USE GLOBALLY
+.flex-container {
+  display: flex;
+}
+
+.flex-child {
+  flex: 1;
+  margin: 0.25rem;
+} 
