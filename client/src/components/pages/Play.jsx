@@ -21,7 +21,7 @@ const Play = () => {
                 <h1>Choose Your Opponent</h1>
                 <div className='flex-container'>
                     <div className='flex-child'>
-                        <a href="/game/0/0/0/0"><button className='large-button'>Versus Computer</button></a>
+                        <a href="/game"><button className='large-button'>Versus Computer</button></a>
                     </div>
                     <div className='flex-child'>
                         <a href="/matchmaking"><button className='large-button'>Online Versus</button></a>
