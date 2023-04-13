@@ -318,7 +318,7 @@ export default function Checkers(props) {
     
     // get response from ai or other player only if 5 seconds have passed
     React.useEffect(() => {
-        if (currentTurn !== playerColor && gameOver === false && props.gameMode === 1) {
+        if (currentTurn !== playerColor && gameOver === false && props.gameMode === 1 && renderUnload > 0) {
             //opponent has 5*5 seconds to make a move or game will be forfeit/abandon
             if (timeoutCounter > 20) {
                 if (playerMoved === false || oppMoved === false) {
@@ -368,7 +368,7 @@ export default function Checkers(props) {
                 }
             }
             getResponse()
-        } else if (currentTurn !== playerColor && gameOver === false && props.gameMode === 0) {
+        } else if (currentTurn !== playerColor && gameOver === false && props.gameMode === 0 && renderUnload > 0) {
             const oppBoardState = opponent.generateResponse(props.difficulty, boardState, oppColor)
             if (oppBoardState !== undefined) {
                 setMoveCounter(moveCounter + 1)
@@ -422,6 +422,7 @@ export default function Checkers(props) {
         if (renderUnload < 1) {
             interval = setInterval(() => {
                 setRenderUnload(1)
+                setRerender(1)
             }, 1000)
             return () => clearInterval(interval)
         }

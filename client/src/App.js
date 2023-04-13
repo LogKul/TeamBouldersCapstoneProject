@@ -73,7 +73,7 @@ function App() {
           <Route path="/start" element={<GameStart />} />
           <Route path="/play" element={<Play />} />
           <Route path="/matchmaking" element={<Matchmaking />} />
-          <Route path="/game/:game_mode/:difficulty/:game_id/:color" element={<Game />} />
+          <Route path="/game" element={<Game />} />
           <Route path="over" element={<GameOver />} />
           <Route path="/recordings" element={<Recording />} />
           <Route path="/recordings/:username" element={<UserRecording />} />
