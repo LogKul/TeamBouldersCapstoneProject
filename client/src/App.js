@@ -7,8 +7,6 @@ import Landing from "./components/pages/Landing"
 import Home from "./components/pages/Home"
 import Account from "./components/pages/Account"
 import Settings from "./components/pages/Settings"
-import GameStart from "./components/pages/GameStart";
-import GameOver from "./components/pages/GameOver";
 import Play from "./components/pages/Play"
 import Game from "./components/pages/Game"
 import Leaderboard from "./components/pages/Leaderboard"
@@ -70,11 +68,9 @@ function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/account/settings" element={<Settings />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/start" element={<GameStart />} />
           <Route path="/play" element={<Play />} />
           <Route path="/matchmaking" element={<Matchmaking />} />
           <Route path="/game" element={<Game />} />
-          <Route path="over" element={<GameOver />} />
           <Route path="/recordings" element={<Recording />} />
           <Route path="/recordings/:username" element={<UserRecording />} />
         </Route>
