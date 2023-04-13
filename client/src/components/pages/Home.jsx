@@ -15,10 +15,10 @@ const Home = () => {
                 <a href={"/recordings/" + sessionStorage.getItem("user")}><button>Game History</button></a>
                 <a href="/account"><button>Your Account</button></a>
                 <div className='flex-container'>
-                    <div className='home-mmr-section flex-child'>
-                        <h4>Your Stats:</h4>
+                    <div className='flex-child home-left-section'>
+                        <h3>Your Stats:</h3>
                     </div>
-                    <div className='home-stats-section flex-child'>
+                    <div className='flex-child home-right-section'>
                         <p>MMR: {sessionStorage.getItem("mmr")}</p>
                         <p>Wins: {sessionStorage.getItem("wins")}</p>
                         <p>Losses: {sessionStorage.getItem("losses")}</p>
