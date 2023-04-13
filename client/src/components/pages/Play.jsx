@@ -1,7 +1,6 @@
 import React from 'react'
 import Header from '../Header'
 import Footer from '../Footer'
-import '../../styles/play.scss'
 import { GiCrossedSwords } from "react-icons/gi";
 import { FaRobot } from "react-icons/fa";
 
