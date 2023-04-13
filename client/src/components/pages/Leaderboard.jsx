@@ -37,8 +37,6 @@ const Leaderboard = () => {
             <Header />
             <div className='content-wrap'>
                 <h1>Leaderboard</h1>
-                <br></br>
-                <br></br>
                 <table className='table'>
                     <tbody>
                         <tr className='bordering'>
