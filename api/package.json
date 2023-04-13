@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "set HTTPS=true&&node ./bin/www",
-    "devstart": "set HTTPS=true&&nodemon ./bin/www"
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
