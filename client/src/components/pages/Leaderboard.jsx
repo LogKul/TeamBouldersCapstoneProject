@@ -40,20 +40,22 @@ const Leaderboard = () => {
                 <br></br>
                 <br></br>
                 <table className='table'>
-                    <tr className='bordering'>
-                        <th className='rank'>Rank</th>
-                        <th className='player'>Player</th>
-                        <th className='mmr'>MMR</th>
-                        <th className='winrate'>Winrate</th>
-                        <th className='wins'>Wins</th>
-                        <th className='losses'>Losses</th>
-                    </tr>
-                    {users
-                        ? users.map((user, index) => (
-                            <LeaderboardRow key={index} user={user} index={index} />
-                        ))
-                        : <p>Loading...</p>
-                    }
+                    <tbody>
+                        <tr className='bordering'>
+                            <th className='rank'>Rank</th>
+                            <th className='player'>Player</th>
+                            <th className='mmr'>MMR</th>
+                            <th className='winrate'>Winrate</th>
+                            <th className='wins'>Wins</th>
+                            <th className='losses'>Losses</th>
+                        </tr>
+                        {users
+                            ? users.map((user, index) => (
+                                <LeaderboardRow key={index} user={user} index={index} />
+                            ))
+                            : <p>Loading...</p>
+                        }
+                    </tbody>
                 </table>
             </div>
             <Footer />

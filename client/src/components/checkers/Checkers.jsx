@@ -5,6 +5,7 @@ import "./Checkers.scss"
 import Logic from "./logic/Logic"
 import Opponent from "./logic/Opponent"
 import Modal from "../Modal"
+import AILogic from "./logic/AILogic"
 
 export default function Checkers(props) {
     const initialBoardState = []
@@ -227,6 +228,9 @@ export default function Checkers(props) {
             }, 1000)
             return () => clearInterval(interval)
         }
+        if (timeRemaining === 0) {
+            setMoveCounter(moveCounter + 1)
+        }
     }, [timeRemaining])
 
     // GAMEOVER CHECK: check to see if there are any pieces left on the board
@@ -235,6 +239,9 @@ export default function Checkers(props) {
         if (gameOver === false) {
             let bCount = 0
             let rCount = 0
+            let possiblePlayerMoves = []
+            let possibleOpponentMoves = []
+            const aiLogic = new AILogic()
 
             boardState?.forEach(p => {
                 if (p.color === 0) {
@@ -243,7 +250,34 @@ export default function Checkers(props) {
                 if (p.color === 1) {
                     bCount += 1
                 }
+                if (p.color === playerColor) {
+                    const playerMove = aiLogic.findPossibleMove(p.x, p.y, playerColor, p.king, boardState, continuedAttack)
+                    if (playerMove !== undefined) {
+                        possiblePlayerMoves.push(playerMove)
+                    }
+                } else {
+                    const oppMove = aiLogic.findPossibleMove(p.x, p.y, p.color, p.king, boardState, false)
+                    if (oppMove !== undefined) {
+                        possibleOpponentMoves.push(oppMove)
+                    }
+                }
             })
+            if (possiblePlayerMoves.length === 0) {
+                setModalIsOpen(true)
+                setGameOver(true)
+                if (props.gameMode === 1) {
+                    opponent.updateMMR(props.oppData, false)
+                }
+            }
+            if (possibleOpponentMoves.length === 0) {
+                setModalIsOpen(true)
+                setGameOver(true)
+                setWinner(true)
+                if (props.gameMode === 1) {
+                    opponent.updateMMR(props.oppData, true)
+                    opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
+                }
+            }
 
             if (bCount === 0 || rCount === 0) {
                 if (playerColor === 0) {
