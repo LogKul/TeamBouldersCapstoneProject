@@ -20,6 +20,7 @@ const Game = () => {
             <div>
                 <Header />
                 <div className='content-wrap'>
+                    <h1> Choose Your Color</h1>
                     <button onClick={setColorRed}>Play as Red</button>
                     <button onClick={setColorBlack}>Play as Black</button>
                 </div>
