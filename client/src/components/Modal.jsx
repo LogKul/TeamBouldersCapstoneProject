@@ -9,6 +9,7 @@ function Modal({ isOpen, closeModal, children }) {
             contentLabel="Modal"
         >
             {children}
+            <br/>
             <button onClick={closeModal}>Close</button>
         </ReactModal>
     )
