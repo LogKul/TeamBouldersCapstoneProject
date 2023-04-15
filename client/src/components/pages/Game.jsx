@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../Header'
 import Footer from '../Footer'
+import Modal from '../Modal'
 import Checkers from "../checkers/Checkers"
 
 const Game = () => {
 
-    const [color, setColor] = React.useState(undefined)
+    const [modalIsOpen, setModalIsOpen] = useState(true)
+
+    function openModal() {
+        setModalIsOpen(true);
+    }
+
+    function closeModal() {
+        setModalIsOpen(false);
+    }
+
+    const [color, setColor] = useState(undefined)
 
     function setColorRed() {
         setColor(0)
@@ -20,8 +31,12 @@ const Game = () => {
             <div>
                 <Header />
                 <div className='content-wrap'>
-                    <button onClick={setColorRed}>Play as Red</button>
-                    <button onClick={setColorBlack}>Play as Black</button>
+                    <Modal isOpen={modalIsOpen} closeModal={closeModal}>
+                        <h1> Choose Your Color</h1>
+                        <button onClick={setColorRed}>Play as Red</button>
+                        <button onClick={setColorBlack}>Play as Black</button>
+                    </Modal>
+                    <button onClick={openModal}>Choose A Color</button>
                 </div>
                 <Footer />
             </div>
@@ -31,8 +46,7 @@ const Game = () => {
             <div>
                 <Header />
                 <div className='content-wrap'>
-                    <p></p>
-                    <p></p>
+                    <br/>
                     <Checkers gameMode={0} difficulty={0} gameID={'empty'} color={color} />
                 </div>
                 <Footer />

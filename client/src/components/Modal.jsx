@@ -6,9 +6,11 @@ function Modal({ isOpen, closeModal, children }) {
         <ReactModal
             isOpen={isOpen}
             onRequestClose={closeModal}
+            ariaHideApp={false}
             contentLabel="Modal"
         >
             {children}
+            <br/>
             <button onClick={closeModal}>Close</button>
         </ReactModal>
     )

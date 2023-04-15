@@ -40,6 +40,7 @@ export default function Checkers(props) {
     const [timeoutCounter, setTimeoutCounter] = React.useState(0)
     const [timeRemaining, setTimeRemaining] = React.useState(playerColor === 0 ? 60 : 600)
     const [moveCounter, setMoveCounter] = React.useState(0)
+    const [turnDisplay, setTurnDisplay] = React.useState("Red")
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
@@ -172,6 +173,7 @@ export default function Checkers(props) {
                                     } else {
                                         setContinuedAttack(false)
                                         moved = true
+                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
                                         if (currentTurn === 0) {
                                             setCurrentTurn(1)
                                         } else {
@@ -182,9 +184,11 @@ export default function Checkers(props) {
                                     if (currentTurn === 0) {
                                         setCurrentTurn(1)
                                         moved = true
+                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
                                     } else {
                                         setCurrentTurn(0)
                                         moved = true
+                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
                                     }
                                 }
                             } else {
@@ -350,6 +354,7 @@ export default function Checkers(props) {
                 } else if (oppBoardState !== "") {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
+                        playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
                         setTimeRemaining(60)
                         setMoveCounter(moveCounter + 1)
                         if (playerMoved && oppMoved && renderUnload !== 2) {
@@ -374,6 +379,7 @@ export default function Checkers(props) {
                 setMoveCounter(moveCounter + 1)
                 setBoardState(oppBoardState)
                 setCurrentTurn(playerColor)
+                playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
             } else {
                 setWinner(true)
                 setModalIsOpen(true)
@@ -511,6 +517,9 @@ export default function Checkers(props) {
     } else if (props.gameMode === 1 && currentTurn === playerColor) {
         return (
             <>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <h4>{turnDisplay}'s Turn</h4>
+                <br/>
                 <div>Time Remaining to Move: {timeRemaining}</div>
                 <div
                     onMouseMove={e => movePiece(e)}
@@ -525,6 +534,9 @@ export default function Checkers(props) {
     } else {
         return (
             <>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <h4>{turnDisplay}'s Turn</h4>
+                <br/>
                 <div
                     onMouseMove={e => movePiece(e)}
                     onMouseDown={e => grabPiece(e)}
