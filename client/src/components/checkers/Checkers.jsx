@@ -25,7 +25,6 @@ export default function Checkers(props) {
     const oppColor = props.color === 1 ? 0 : 1
 
     const [activePiece, setActivePiece] = React.useState(undefined)
-    //const [testRef, setTestRef] = React.useRef(null)
     const [boardState, setBoardState] = React.useState(initialBoardState)
     const [gridX, setGridX] = React.useState()
     const [gridY, setGridY] = React.useState()
@@ -168,36 +167,14 @@ export default function Checkers(props) {
                                 }
                                 p.x = x
                                 p.y = y
-                                if (gridX === (x + 2) || gridX === (x - 2)) {
-                                    if (logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value) && allowMove) {
-                                        setContinuedAttack(true)
-                                    } else {
-                                        setContinuedAttack(false)
-                                        moved = true
-                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
-                                        if (currentTurn === 0) {
-                                            setCurrentTurn(1)
-                                        } else {
-                                            setCurrentTurn(0)
-                                        }
-                                    }
+                                if ((gridX === (x + 2) || gridX === (x - 2)) && logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value) && allowMove) {
+                                    setContinuedAttack(true)
                                 } else {
-                                    if (currentTurn === 0) {
-                                        setCurrentTurn(1)
-                                        moved = true
-                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
-                                    } else {
-                                        setCurrentTurn(0)
-                                        moved = true
-                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
-                                    }
+                                    setContinuedAttack(false)
+                                    playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
+                                    setCurrentTurn(currentTurn === 0 ? 1 : 0)
+                                    moved = true
                                 }
-                            } else {
-                                activePiece.style.position = "absolute"
-                                activePiece.style.removeProperty("top")
-                                activePiece.style.removeProperty("left")
-                                setActivePiece(undefined)
-                                //setTestRef(null)
                             }
                         }
                         return p
@@ -215,50 +192,28 @@ export default function Checkers(props) {
                     setRerender(rerender === 0 ? 1 : 0)
                     return newBoardState
                 })
-            } else {
-                activePiece.style.position = "absolute"
-                activePiece.style.removeProperty("top")
-                activePiece.style.removeProperty("left")
             }
             setActivePiece(undefined)
         }
     }
 
+    // handle piece position when mouse button is released
+    // KNOWN BUG: after removing top and left property sometimes the property does not come back to the element causing the piece to not be able to be moved
+    var activeElement = undefined
 
-
-
-
-
-
-
-
-    var mouseDown = 0
-
-    // handle mouse up/down events outside of the board
     React.useEffect(() => {
-        document.body.onmousedown = function() {
-            mouseDown = 1
-            console.log(mouseDown)
+        document.body.onmousedown = function(e) {
+            activeElement = e.target
         }
         document.body.onmouseup = function() {
-            mouseDown = 0
             setActivePiece(undefined)
-            console.log(mouseDown)
+            if (activeElement.className === "checkers-piece") {
+                activeElement.style.position = "absolute"
+                activeElement.style.removeProperty("top")
+                activeElement.style.removeProperty("left")
+            }
         }
     }, [])
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     let board = []
 
