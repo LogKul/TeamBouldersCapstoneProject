@@ -47,6 +47,8 @@ export default function Checkers(props) {
     const logic = new Logic()
     const opponent = new Opponent()
 
+    let gameover = false
+
     const grabPiece = (e) => {
 
         const element = e.target
@@ -267,6 +269,7 @@ export default function Checkers(props) {
             if (possiblePlayerMoves.length === 0 && bCount > 0 && rCount > 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
+                gameover = true
                 setGameOverCondition("You have no remaining moves.")
                 if (props.gameMode === 1) {
                     opponent.updateMMR(props.oppData, false)
@@ -275,6 +278,7 @@ export default function Checkers(props) {
             if (possibleOpponentMoves.length === 0 && bCount > 0 && rCount > 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
+                gameover = true
                 setGameOverCondition("Your opponent has no remaining moves.")
                 setWinner(true)
                 if (props.gameMode === 1) {
@@ -315,6 +319,7 @@ export default function Checkers(props) {
                 }
                 setModalIsOpen(true)
                 setGameOver(true)
+                gameover = true
             }
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
@@ -322,6 +327,7 @@ export default function Checkers(props) {
             setGameOverCondition("You did not play a move in time.")
             setModalIsOpen(true)
             setGameOver(true)
+            gameover = true
         }
     }, [moveCounter])
 
@@ -344,6 +350,7 @@ export default function Checkers(props) {
                     setWinner(true)
                     setModalIsOpen(true)
                     setGameOver(true)
+                    gameover = true
                 }
             }
             const getResponse = async () => {
@@ -358,6 +365,7 @@ export default function Checkers(props) {
                     setModalIsOpen(true)
                     setWinner(true)
                     setGameOver(true)
+                    gameover = true
                 } else if (oppBoardState === "loser") {
                     opponent.updateMMR(props.oppData, false)
                     setModalIsOpen(true)
@@ -397,6 +405,7 @@ export default function Checkers(props) {
                     setWinner(true)
                     setModalIsOpen(true)
                     setGameOver(true)
+                    gameover = true
                 }
             }
             getAIMove()
@@ -460,7 +469,7 @@ export default function Checkers(props) {
     }
 
     async function externalNaviLate() {
-        await opponent.forfeitGame(props.gameID, props.oppData, gameOver)
+        await opponent.forfeitGame(props.gameID, props.oppData, gameover)
         setGameOverCondition("You forfeited the game.")
         setModalIsOpen(true)
         setGameOver(true)
