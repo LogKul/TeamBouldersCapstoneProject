@@ -171,7 +171,7 @@ export default function Checkers(props) {
                                 p.y = y
                                 if ((gridX === (x + 2) || gridX === (x - 2)) && logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value) && allowMove) {
                                     setContinuedAttack(true)
-                                    setMoveAgainText("You must jump the next piece.")
+                                    setMoveAgainText("**You must jump the next piece.**")
                                 } else {
                                     setContinuedAttack(false)
                                     setMoveAgainText("---")
@@ -536,7 +536,25 @@ export default function Checkers(props) {
             <>
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <h4 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{turnDisplay}&apos;s Turn</h4>
-                <h5>Time Remaining to Move: {timeRemaining}</h5>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{moveAgainText}</h5>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>Time Remaining to Move: {timeRemaining}</h5>
+                <div
+                    onMouseMove={e => movePiece(e)}
+                    onMouseDown={e => grabPiece(e)}
+                    onMouseUp={e => dropPiece(e)}
+                    id="board"
+                    ref={checkersBoardRef}>
+                    {board}
+                </div>
+            </>
+        )
+    } else if (props.gameMode === 1 && currentTurn !== playerColor) {
+        return (
+            <>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <h4 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{turnDisplay}&apos;s Turn</h4>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{moveAgainText}</h5>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>Waiting for your opponent to move.</h5>
                 <div
                     onMouseMove={e => movePiece(e)}
                     onMouseDown={e => grabPiece(e)}
@@ -551,8 +569,8 @@ export default function Checkers(props) {
         return (
             <>
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <p style={{paddingBottom: 0 + 'px'}}>{moveAgainText}</p>
                 <h4 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{turnDisplay}&apos;s Turn</h4>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{moveAgainText}</h5>
                 <div
                     onMouseMove={e => movePiece(e)}
                     onMouseDown={e => grabPiece(e)}
