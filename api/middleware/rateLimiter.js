@@ -1,7 +1,7 @@
 const rateLimiter = require("express-rate-limit")
 
 const limiter = rateLimiter({
-    max: 40,
+    max: 50,
     windowMS: 10000,
     message: "Request limit reached."
 });
@@ -12,7 +12,14 @@ const signInLimiter = rateLimiter({
     message: "Too many login attempts."
 });
 
+const MMRLimiter = rateLimiter({
+    max: 2,
+    windowMS: 5000,
+    message: "Fallback for React StrictMode."
+});
+
 module.exports = {
     limiter,
-    signInLimiter
+    signInLimiter,
+    MMRLimiter
 }
