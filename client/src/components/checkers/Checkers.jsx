@@ -29,6 +29,7 @@ export default function Checkers(props) {
     const [gridX, setGridX] = React.useState()
     const [gridY, setGridY] = React.useState()
     const [continuedAttack, setContinuedAttack] = React.useState(false)
+    const [moveAgainText, setMoveAgainText] = React.useState("---")
     const [currentTurn, setCurrentTurn] = React.useState(0)
     const [gameOver, setGameOver] = React.useState(false)
     const [rerender, setRerender] = React.useState(0)
@@ -37,6 +38,7 @@ export default function Checkers(props) {
     const [oppMoved, setOppMoved] = React.useState(false)
     const [abandon, setAbandon] = React.useState(false)
     const [winner, setWinner] = React.useState(false)
+    const [gameOverCondition, setGameOverCondition] = React.useState("")
     const [timeoutCounter, setTimeoutCounter] = React.useState(0)
     const [timeRemaining, setTimeRemaining] = React.useState(playerColor === 0 ? 60 : 600)
     const [moveCounter, setMoveCounter] = React.useState(0)
@@ -167,34 +169,16 @@ export default function Checkers(props) {
                                 }
                                 p.x = x
                                 p.y = y
-                                if (gridX === (x + 2) || gridX === (x - 2)) {
-                                    if (logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value) && allowMove) {
-                                        setContinuedAttack(true)
-                                    } else {
-                                        setContinuedAttack(false)
-                                        moved = true
-                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
-                                        if (currentTurn === 0) {
-                                            setCurrentTurn(1)
-                                        } else {
-                                            setCurrentTurn(0)
-                                        }
-                                    }
+                                if ((gridX === (x + 2) || gridX === (x - 2)) && logic.additionalMoveExists(x, y, gridX, gridY, p.color, p.king, value) && allowMove) {
+                                    setContinuedAttack(true)
+                                    setMoveAgainText("**You must jump the next piece.**")
                                 } else {
-                                    if (currentTurn === 0) {
-                                        setCurrentTurn(1)
-                                        moved = true
-                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
-                                    } else {
-                                        setCurrentTurn(0)
-                                        moved = true
-                                        playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
-                                    }
+                                    setContinuedAttack(false)
+                                    setMoveAgainText("---")
+                                    playerColor === 0 ? setTurnDisplay("Black") : setTurnDisplay("Red")
+                                    setCurrentTurn(currentTurn === 0 ? 1 : 0)
+                                    moved = true
                                 }
-                            } else {
-                                activePiece.style.position = "relative"
-                                activePiece.style.removeProperty("top")
-                                activePiece.style.removeProperty("left")
                             }
                         }
                         return p
@@ -212,14 +196,28 @@ export default function Checkers(props) {
                     setRerender(rerender === 0 ? 1 : 0)
                     return newBoardState
                 })
-            } else {
-                activePiece.style.position = "relative"
-                activePiece.style.removeProperty("top")
-                activePiece.style.removeProperty("left")
             }
             setActivePiece(undefined)
         }
     }
+
+    // handle piece position when mouse button is released
+    // KNOWN BUG: after removing top and left property sometimes the property does not come back to the element causing the piece to not be able to be moved
+    var activeElement = undefined
+
+    React.useEffect(() => {
+        document.body.onmousedown = function(e) {
+            activeElement = e.target
+        }
+        document.body.onmouseup = function() {
+            setActivePiece(undefined)
+            if (activeElement.className === "checkers-piece") {
+                activeElement.style.position = "absolute"
+                activeElement.style.removeProperty("top")
+                activeElement.style.removeProperty("left")
+            }
+        }
+    }, [])
 
     let board = []
 
@@ -269,6 +267,7 @@ export default function Checkers(props) {
             if (possiblePlayerMoves.length === 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
+                setGameOverCondition("You have no remaining moves.")
                 if (props.gameMode === 1) {
                     opponent.updateMMR(props.oppData, false)
                 }
@@ -276,6 +275,7 @@ export default function Checkers(props) {
             if (possibleOpponentMoves.length === 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
+                setGameOverCondition("Your opponent has no remaining moves.")
                 setWinner(true)
                 if (props.gameMode === 1) {
                     opponent.updateMMR(props.oppData, true)
@@ -290,9 +290,13 @@ export default function Checkers(props) {
                             opponent.updateMMR(props.oppData, true)
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
+                        setGameOverCondition("Your opponent has no remaining pieces.")
                         setWinner(true)
                     } else {
-                        opponent.updateMMR(props.oppData, false)
+                        if (props.gameMode === 1) {
+                            opponent.updateMMR(props.oppData, false)
+                        }
+                        setGameOverCondition("You have no remaining pieces.")
                     }
                 } else {
                     if (rCount === 0) {
@@ -300,9 +304,13 @@ export default function Checkers(props) {
                             opponent.updateMMR(props.oppData, true)
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
+                        setGameOverCondition("Your opponent has no remaining pieces.")
                         setWinner(true)
                     } else {
-                        opponent.updateMMR(props.oppData, false)
+                        if (props.gameMode === 1) {
+                            opponent.updateMMR(props.oppData, false)
+                        }
+                        setGameOverCondition("You have no remaining pieces.")
                     }
                 }
                 setModalIsOpen(true)
@@ -311,6 +319,7 @@ export default function Checkers(props) {
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
             opponent.forfeitGame(props.gameID, props.oppData)
+            setGameOverCondition("You did not play a move in time.")
             setModalIsOpen(true)
             setGameOver(true)
         }
@@ -331,6 +340,7 @@ export default function Checkers(props) {
                 } else {
                     opponent.updateMMR(props.oppData, true)
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
+                    setGameOverCondition("Your opponent forfeited the game.")
                     setWinner(true)
                     setModalIsOpen(true)
                     setGameOver(true)
@@ -344,6 +354,7 @@ export default function Checkers(props) {
                     setAbandon(true)
                 } else if (oppBoardState === "winner") {
                     opponent.updateMMR(props.oppData, true)
+                    setGameOverCondition("Your opponent forfeited the game.")
                     setModalIsOpen(true)
                     setWinner(true)
                     setGameOver(true)
@@ -374,17 +385,21 @@ export default function Checkers(props) {
             }
             getResponse()
         } else if (currentTurn !== playerColor && gameOver === false && props.gameMode === 0 && renderUnload > 0) {
-            const oppBoardState = opponent.generateResponse(props.difficulty, boardState, oppColor)
-            if (oppBoardState !== undefined) {
-                setMoveCounter(moveCounter + 1)
-                setBoardState(oppBoardState)
-                setCurrentTurn(playerColor)
-                playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
-            } else {
-                setWinner(true)
-                setModalIsOpen(true)
-                setGameOver(true)
+            const getAIMove = async () => {
+                await delay(1000)
+                const oppBoardState = opponent.generateResponse(props.difficulty, boardState, oppColor)
+                if (oppBoardState !== undefined) {
+                    setMoveCounter(moveCounter + 1)
+                    setBoardState(oppBoardState)
+                    setCurrentTurn(playerColor)
+                    playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
+                } else {
+                    setWinner(true)
+                    setModalIsOpen(true)
+                    setGameOver(true)
+                }
             }
+            getAIMove()
         }
     }, [rerender])
 
@@ -479,6 +494,7 @@ export default function Checkers(props) {
                 <h1>You won!</h1>
                 <Modal isOpen={modalIsOpen} closeModal={closeModal}>
                     <h1>You won!</h1>
+                    <h4>{gameOverCondition}</h4>
                     <br/>
                     <a href="/Play"><button>Play Another</button></a>
                     <a href="/Home"><button>Return Home</button></a>
@@ -493,6 +509,7 @@ export default function Checkers(props) {
                 <h1>You lost.</h1>
                 <Modal isOpen={modalIsOpen} closeModal={closeModal}>
                     <h1>You lost.</h1>
+                    <h4>{gameOverCondition}</h4>
                     <br/>
                     <a href="/Play"><button>Play Another</button></a>
                     <a href="/Home"><button>Return Home</button></a>
@@ -518,9 +535,26 @@ export default function Checkers(props) {
         return (
             <>
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <h4>{turnDisplay}'s Turn</h4>
-                <br/>
-                <div>Time Remaining to Move: {timeRemaining}</div>
+                <h4 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{turnDisplay}&apos;s Turn</h4>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{moveAgainText}</h5>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>Time Remaining to Move: {timeRemaining}</h5>
+                <div
+                    onMouseMove={e => movePiece(e)}
+                    onMouseDown={e => grabPiece(e)}
+                    onMouseUp={e => dropPiece(e)}
+                    id="board"
+                    ref={checkersBoardRef}>
+                    {board}
+                </div>
+            </>
+        )
+    } else if (props.gameMode === 1 && currentTurn !== playerColor) {
+        return (
+            <>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <h4 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{turnDisplay}&apos;s Turn</h4>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{moveAgainText}</h5>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>Waiting for your opponent to move.</h5>
                 <div
                     onMouseMove={e => movePiece(e)}
                     onMouseDown={e => grabPiece(e)}
@@ -535,8 +569,8 @@ export default function Checkers(props) {
         return (
             <>
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <h4>{turnDisplay}'s Turn</h4>
-                <br/>
+                <h4 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{turnDisplay}&apos;s Turn</h4>
+                <h5 style={{paddingBottom: 0 + 'px', paddingTop: 0 + 'px'}}>{moveAgainText}</h5>
                 <div
                     onMouseMove={e => movePiece(e)}
                     onMouseDown={e => grabPiece(e)}
