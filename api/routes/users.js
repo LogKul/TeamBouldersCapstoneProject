@@ -3,7 +3,7 @@ var express = require('express');
 const { user } = require('../models');
 var router = express.Router();
 var controller = require("../controllers/user.controller");
-const { authJwt } = require("../middleware");
+const { authJwt, MMRLimiter } = require("../middleware");
 
 
 router.use(function (req, res, next) {
@@ -18,6 +18,7 @@ router.use(function (req, res, next) {
 router.get('/read', [authJwt.verifyToken], controller.read);
 router.get('/readid', [authJwt.verifyToken], controller.readid);
 router.put('/update', [authJwt.verifyToken], controller.update);
+router.put('/updaterank', [authJwt.verifyToken, MMRLimiter], controller.update_rank);
 router.delete('/delete', [authJwt.verifyToken, authJwt.isModeratorOrAdmin], controller.delete);
 router.get('/rankings', [], controller.get_rankings);
 
