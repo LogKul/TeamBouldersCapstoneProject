@@ -25,6 +25,7 @@ export default function Checkers(props) {
     const oppColor = props.color === 1 ? 0 : 1
 
     const [activePiece, setActivePiece] = React.useState(undefined)
+    //const [testRef, setTestRef] = React.useRef(null)
     const [boardState, setBoardState] = React.useState(initialBoardState)
     const [gridX, setGridX] = React.useState()
     const [gridY, setGridY] = React.useState()
@@ -192,9 +193,11 @@ export default function Checkers(props) {
                                     }
                                 }
                             } else {
-                                activePiece.style.position = "relative"
+                                activePiece.style.position = "absolute"
                                 activePiece.style.removeProperty("top")
                                 activePiece.style.removeProperty("left")
+                                setActivePiece(undefined)
+                                //setTestRef(null)
                             }
                         }
                         return p
@@ -213,13 +216,49 @@ export default function Checkers(props) {
                     return newBoardState
                 })
             } else {
-                activePiece.style.position = "relative"
+                activePiece.style.position = "absolute"
                 activePiece.style.removeProperty("top")
                 activePiece.style.removeProperty("left")
             }
             setActivePiece(undefined)
         }
     }
+
+
+
+
+
+
+
+
+
+    var mouseDown = 0
+
+    // handle mouse up/down events outside of the board
+    React.useEffect(() => {
+        document.body.onmousedown = function() {
+            mouseDown = 1
+            console.log(mouseDown)
+        }
+        document.body.onmouseup = function() {
+            mouseDown = 0
+            setActivePiece(undefined)
+            console.log(mouseDown)
+        }
+    }, [])
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     let board = []
 
@@ -374,17 +413,21 @@ export default function Checkers(props) {
             }
             getResponse()
         } else if (currentTurn !== playerColor && gameOver === false && props.gameMode === 0 && renderUnload > 0) {
-            const oppBoardState = opponent.generateResponse(props.difficulty, boardState, oppColor)
-            if (oppBoardState !== undefined) {
-                setMoveCounter(moveCounter + 1)
-                setBoardState(oppBoardState)
-                setCurrentTurn(playerColor)
-                playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
-            } else {
-                setWinner(true)
-                setModalIsOpen(true)
-                setGameOver(true)
+            const getAIMove = async () => {
+                await delay(1000)
+                const oppBoardState = opponent.generateResponse(props.difficulty, boardState, oppColor)
+                if (oppBoardState !== undefined) {
+                    setMoveCounter(moveCounter + 1)
+                    setBoardState(oppBoardState)
+                    setCurrentTurn(playerColor)
+                    playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
+                } else {
+                    setWinner(true)
+                    setModalIsOpen(true)
+                    setGameOver(true)
+                }
             }
+            getAIMove()
         }
     }, [rerender])
 
