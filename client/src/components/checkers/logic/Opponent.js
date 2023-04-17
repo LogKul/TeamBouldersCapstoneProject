@@ -134,6 +134,7 @@ export default class Opponent {
                 ).then(() => {
                     sessionStorage.setItem("wins", wins + 1)
                 })
+                console.log("updated mmr win")
             }
             else if (win === false) {
 
@@ -152,6 +153,7 @@ export default class Opponent {
                 ).then(() => {
                     sessionStorage.setItem("losses", losses + 1)
                 })
+                console.log("updated mmr loss")
             }
         } catch (err) {
             console.log(err?.response)
@@ -159,21 +161,25 @@ export default class Opponent {
 
     }
 
-    async forfeitGame(gameID, opp_data) {
-        try {
-            await axios.put("/games/update?gameid=" + gameID,
-                { winner: opp_data.id },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-access-token": sessionStorage.getItem("accessToken")
-                    },
-                    withCredentials: false
-                }
-            )
-            this.updateMMR(opp_data, false)
-        } catch (err) {
-            console.log(err?.response)
+    async forfeitGame(gameID, opp_data, gameOver) {
+        console.log(gameOver)
+        if (gameOver === false) {
+            try {
+                await axios.put("/games/update?gameid=" + gameID,
+                    { winner: opp_data.id },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
+                    }
+                )
+                this.updateMMR(opp_data, false)
+                console.log("ran update mmr")
+            } catch (err) {
+                console.log(err?.response)
+            }
         }
     }
 

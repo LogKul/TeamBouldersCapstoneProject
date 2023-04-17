@@ -264,7 +264,7 @@ export default function Checkers(props) {
                     }
                 }
             })
-            if (possiblePlayerMoves.length === 0) {
+            if (possiblePlayerMoves.length === 0 && bCount > 0 && rCount > 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
                 setGameOverCondition("You have no remaining moves.")
@@ -272,7 +272,7 @@ export default function Checkers(props) {
                     opponent.updateMMR(props.oppData, false)
                 }
             }
-            if (possibleOpponentMoves.length === 0) {
+            if (possibleOpponentMoves.length === 0 && bCount > 0 && rCount > 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
                 setGameOverCondition("Your opponent has no remaining moves.")
@@ -460,7 +460,10 @@ export default function Checkers(props) {
     }
 
     async function externalNaviLate() {
-        await opponent.forfeitGame(props.gameID, props.oppData)
+        await opponent.forfeitGame(props.gameID, props.oppData, gameOver)
+        setGameOverCondition("You forfeited the game.")
+        setModalIsOpen(true)
+        setGameOver(true)
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
@@ -546,6 +549,7 @@ export default function Checkers(props) {
                     ref={checkersBoardRef}>
                     {board}
                 </div>
+                <button onClick={externalNaviLate}>Forfeit</button>
             </>
         )
     } else if (props.gameMode === 1 && currentTurn !== playerColor) {
@@ -563,6 +567,7 @@ export default function Checkers(props) {
                     ref={checkersBoardRef}>
                     {board}
                 </div>
+                <button onClick={externalNaviLate}>Forfeit</button>
             </>
         )
     } else {
@@ -579,6 +584,7 @@ export default function Checkers(props) {
                     ref={checkersBoardRef}>
                     {board}
                 </div>
+                <button onClick={externalNaviLate}>Forfeit</button>
             </>
         )
     }
