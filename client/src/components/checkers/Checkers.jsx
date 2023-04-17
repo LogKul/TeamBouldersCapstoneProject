@@ -323,7 +323,7 @@ export default function Checkers(props) {
             }
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
-            opponent.forfeitGame(props.gameID, props.oppData)
+            opponent.forfeitGame(props.gameID, props.oppData, gameover)
             setGameOverCondition("You did not play a move in time.")
             setModalIsOpen(true)
             setGameOver(true)
@@ -370,6 +370,7 @@ export default function Checkers(props) {
                     opponent.updateMMR(props.oppData, false)
                     setModalIsOpen(true)
                     setGameOver(true)
+                    gameover = true
                 } else if (oppBoardState !== "") {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
@@ -465,7 +466,9 @@ export default function Checkers(props) {
     }
 
     async function externalNaviEarly() {
-        await opponent.abandonGame(props.gameID)
+        if (gameover === false) {
+            await opponent.abandonGame(props.gameID)
+        }
     }
 
     async function externalNaviLate() {
@@ -473,6 +476,7 @@ export default function Checkers(props) {
         setGameOverCondition("You forfeited the game.")
         setModalIsOpen(true)
         setGameOver(true)
+        gameover = true
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
