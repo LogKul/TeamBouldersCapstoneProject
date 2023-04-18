@@ -199,8 +199,7 @@ exports.join_game = (req, res) => {
                 game.set({ player2: req.query.playerid });
             }
             else {
-                console.log("This should not be reachable");
-                res.status(500).send({ message: "Game is full" });
+                throw new Error('Game is full.');
             }
 
             game.save();
@@ -220,11 +219,12 @@ exports.join_game = (req, res) => {
                     }
 
                     res.status(200).send({
-                        opponent: opponent_username
+                        opponent: user.username
                     });
 
                 })
                 .catch(err => {
+                    console.log(err.message)
                     res.status(500).send({ message: err.message });
                 });
         })

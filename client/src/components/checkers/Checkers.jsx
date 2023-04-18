@@ -47,6 +47,8 @@ export default function Checkers(props) {
     const logic = new Logic()
     const opponent = new Opponent()
 
+    let gameover = false
+
     const grabPiece = (e) => {
 
         const element = e.target
@@ -264,17 +266,19 @@ export default function Checkers(props) {
                     }
                 }
             })
-            if (possiblePlayerMoves.length === 0) {
+            if (possiblePlayerMoves.length === 0 && bCount > 0 && rCount > 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
+                gameover = true
                 setGameOverCondition("You have no remaining moves.")
                 if (props.gameMode === 1) {
                     opponent.updateMMR(props.oppData, false)
                 }
             }
-            if (possibleOpponentMoves.length === 0) {
+            if (possibleOpponentMoves.length === 0 && bCount > 0 && rCount > 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
+                gameover = true
                 setGameOverCondition("Your opponent has no remaining moves.")
                 setWinner(true)
                 if (props.gameMode === 1) {
@@ -315,13 +319,15 @@ export default function Checkers(props) {
                 }
                 setModalIsOpen(true)
                 setGameOver(true)
+                gameover = true
             }
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
-            opponent.forfeitGame(props.gameID, props.oppData)
+            opponent.forfeitGame(props.gameID, props.oppData, gameover)
             setGameOverCondition("You did not play a move in time.")
             setModalIsOpen(true)
             setGameOver(true)
+            gameover = true
         }
     }, [moveCounter])
 
@@ -344,6 +350,7 @@ export default function Checkers(props) {
                     setWinner(true)
                     setModalIsOpen(true)
                     setGameOver(true)
+                    gameover = true
                 }
             }
             const getResponse = async () => {
@@ -358,10 +365,12 @@ export default function Checkers(props) {
                     setModalIsOpen(true)
                     setWinner(true)
                     setGameOver(true)
+                    gameover = true
                 } else if (oppBoardState === "loser") {
                     opponent.updateMMR(props.oppData, false)
                     setModalIsOpen(true)
                     setGameOver(true)
+                    gameover = true
                 } else if (oppBoardState !== "") {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
@@ -397,6 +406,7 @@ export default function Checkers(props) {
                     setWinner(true)
                     setModalIsOpen(true)
                     setGameOver(true)
+                    gameover = true
                 }
             }
             getAIMove()
@@ -456,11 +466,17 @@ export default function Checkers(props) {
     }
 
     async function externalNaviEarly() {
-        await opponent.abandonGame(props.gameID)
+        if (gameover === false) {
+            await opponent.abandonGame(props.gameID)
+        }
     }
 
     async function externalNaviLate() {
-        await opponent.forfeitGame(props.gameID, props.oppData)
+        await opponent.forfeitGame(props.gameID, props.oppData, gameover)
+        setGameOverCondition("You forfeited the game.")
+        setModalIsOpen(true)
+        setGameOver(true)
+        gameover = true
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
@@ -546,6 +562,7 @@ export default function Checkers(props) {
                     ref={checkersBoardRef}>
                     {board}
                 </div>
+                <button onClick={externalNaviLate}>Forfeit</button>
             </>
         )
     } else if (props.gameMode === 1 && currentTurn !== playerColor) {
@@ -563,6 +580,7 @@ export default function Checkers(props) {
                     ref={checkersBoardRef}>
                     {board}
                 </div>
+                <button onClick={externalNaviLate}>Forfeit</button>
             </>
         )
     } else {
@@ -579,6 +597,7 @@ export default function Checkers(props) {
                     ref={checkersBoardRef}>
                     {board}
                 </div>
+                <button onClick={externalNaviLate}>Forfeit</button>
             </>
         )
     }

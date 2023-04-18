@@ -105,6 +105,21 @@ Routes Table of Contents
 				message
 			}
 	---------------------------------------------		
+	UPDATE /users/updaterank
+		PERMISSIONS:
+			All Users
+		REQUEST:
+			Headers- x-access-token
+			Query- username
+			Body- {
+				won: BOOLEAN,
+				opp_mmr: INT
+			}
+		RESPONSE:
+			Body- {
+				message
+			}
+	---------------------------------------------		
 	DELETE /users/delete
 		PERMISSIONS:
 			Moderators and Admins
