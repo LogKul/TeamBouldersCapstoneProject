@@ -13,8 +13,8 @@ import Leaderboard from "./components/pages/Leaderboard"
 import Recording from "./components/pages/Recording"
 import UserRecording from "./components/pages/UserRecording"
 import Matchmaking from "./components/pages/Matchmaking"
+import Outdated from "./components/pages/Outdated"
 import PrivateRoutes from './components/util/PrivateRoutes'
-
 import axios from "./api/axios"
 
 function App() {
@@ -63,6 +63,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Landing />} />
+        <Route path="/outdatedbrowser" element={<Outdated />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/Home" element={<Home />} exact />
           <Route path="/account" element={<Account />} />
