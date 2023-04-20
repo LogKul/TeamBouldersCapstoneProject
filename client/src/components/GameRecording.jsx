@@ -1,13 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-//const momenttz = require('moment-timezone')
 const moment = require('moment')
 
 function GameRecording({ game }) {
-    //var time = moment.tz(game.finishedTime, "America/Denver")
-    //console.log("GAME: " + String(game))
-    //console.log("TIME: " + String(game.finishedTime))
-    //console.log("FORMATTED TIME: " + time)
 
     return (
         <tr>

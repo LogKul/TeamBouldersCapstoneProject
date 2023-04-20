@@ -37,8 +37,6 @@ const Login = () => {
                     withCredentials: false
                 }
             )
-            //console.log(JSON.stringify(response))
-            //const accessToken = response?.data?.accessToken
 
             sessionStorage.setItem("user", user)
             sessionStorage.setItem("userID", response?.data?.id)
@@ -51,7 +49,7 @@ const Login = () => {
             sessionStorage.setItem("banned", response?.data?.banned)
             sessionStorage.setItem("hideschat", response?.data?.hideschat)
             sessionStorage.setItem("accessToken", response?.data?.accessToken)
-            console.log("Logged in")
+            //console.log("Logged in")
 
             setUser("")
             setPwd("")

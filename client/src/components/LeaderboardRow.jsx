@@ -5,7 +5,7 @@ import { GiCrownedSkull, GiCrownedHeart, GiJewelCrown } from "react-icons/gi"
 
 function LeaderboardRow({ user, index }) {
 
-    const [cell_style, setClass] = useState( "odd-row" )
+    const [cell_style, setClass] = useState("odd-row")
     useEffect(() => {
         if (index == 0) {
             setClass("first-place")
@@ -24,12 +24,10 @@ function LeaderboardRow({ user, index }) {
         }
     }, [])
 
-    console.log(cell_style)
-
     if (index === 0) {
         return (
             <tr>
-                <td className={`${cell_style}`}><GiCrownedSkull/></td>
+                <td className={`${cell_style}`}><GiCrownedSkull /></td>
                 <td className={`${cell_style}`}><Link to={"/recordings/" + user.username}>{user.username}</Link></td>
                 <td className={`${cell_style}`}>{user.mmr}</td>
                 {user.losses == 0
@@ -43,7 +41,7 @@ function LeaderboardRow({ user, index }) {
     } else if (index === 1) {
         return (
             <tr>
-                <td className={`${cell_style}`}><GiCrownedHeart/></td>
+                <td className={`${cell_style}`}><GiCrownedHeart /></td>
                 <td className={`${cell_style}`}><Link to={"/recordings/" + user.username}>{user.username}</Link></td>
                 <td className={`${cell_style}`}>{user.mmr}</td>
                 {user.losses == 0
@@ -57,7 +55,7 @@ function LeaderboardRow({ user, index }) {
     } else if (index === 2) {
         return (
             <tr>
-                <td className={`${cell_style}`}><GiJewelCrown/></td>
+                <td className={`${cell_style}`}><GiJewelCrown /></td>
                 <td className={`${cell_style}`}><Link to={"/recordings/" + user.username}>{user.username}</Link></td>
                 <td className={`${cell_style}`}>{user.mmr}</td>
                 {user.losses == 0

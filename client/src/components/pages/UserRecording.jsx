@@ -26,16 +26,12 @@ const UserRecording = () => {
                     withCredentials: false
                 }
             )
-            console.log(response)
             const localGameData = response?.data?.games
             setGames(localGameData)
         } catch (err) {
             console.log(err?.response)
         }
     }
-
-    console.log(username)
-    console.log(sessionStorage.getItem("user"))
 
     return (
         <div>

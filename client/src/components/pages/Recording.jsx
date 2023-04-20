@@ -24,7 +24,6 @@ const Recording = () => {
                     withCredentials: false
                 }
             )
-            console.log(response?.data?.games)
             const localGameData = response?.data?.games
             setGames(localGameData)
         } catch (err) {
@@ -62,12 +61,5 @@ const Recording = () => {
         </div>
     )
 }
-
-/*{games
-        ? games.map((game) => (
-            <GameRecording key={game.id} game={game} />
-        ))
-        : <p>No games recorded.</p>
-}*/
 
 export default Recording

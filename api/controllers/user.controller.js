@@ -101,7 +101,6 @@ exports.update_rank = (req, res) => {
             const k = 32
 
             const newmmr = Math.round(user.mmr + k * (s - expected_score_player))
-            console.log(req.query.username + ": " + newmmr)
 
             req.body.won
                 ? user.set({
@@ -148,12 +147,6 @@ exports.get_rankings = (req, res) => {
     })
         .then((users) => {
 
-            // Sort by winrate
-            /*users.sort((a, b) => ((a.mmr) < (b.mmr)) ? 1 : -1)
-            for (i = 0; i < users.length; i++) {
-
-            }*/
-
             res.status(200).send({
                 users: users,
             });
@@ -161,6 +154,5 @@ exports.get_rankings = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
-            console.log(err.message)
         });
 };

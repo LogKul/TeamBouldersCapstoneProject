@@ -13,6 +13,7 @@ import Leaderboard from "./components/pages/Leaderboard"
 import Recording from "./components/pages/Recording"
 import UserRecording from "./components/pages/UserRecording"
 import Matchmaking from "./components/pages/Matchmaking"
+import PageNotFound from "./components/pages/PageNotFound"
 import PrivateRoutes from './components/util/PrivateRoutes'
 
 import axios from "./api/axios"
@@ -74,6 +75,7 @@ function App() {
           <Route path="/recordings" element={<Recording />} />
           <Route path="/recordings/:username" element={<UserRecording />} />
         </Route>
+        <Route path='*' exact={true} element={<PageNotFound />} />
       </Routes>
     </main>
   )

@@ -157,13 +157,11 @@ exports.find_open_games = (req, res) => {
                         res.status(200).send({ games: game });
                     })
                     .catch(err => {
-                        console.log(err.message)
                         res.status(500).send({ message: err.message });
                     });
             }
         })
         .catch(err => {
-            console.log(err.message)
             res.status(500).send({ message: err.message });
         });
 };
@@ -204,9 +202,6 @@ exports.join_game = (req, res) => {
 
             game.save();
 
-            // Original response, can go back to it if we need to
-            //res.status(200).send({ message: "Successfully joined game!" });
-
             // Find opponent username
             User.findOne({
                 where: {
@@ -224,7 +219,6 @@ exports.join_game = (req, res) => {
 
                 })
                 .catch(err => {
-                    console.log(err.message)
                     res.status(500).send({ message: err.message });
                 });
         })
@@ -258,7 +252,6 @@ exports.create = (req, res) => {
         player2: req.body.player2,
     })
         .then(game => {
-            //res.status(200).send({ message: "Game created successfully!" });
             res.status(200).send({ id: game.id });
         })
         .catch(err => {
