@@ -131,24 +131,31 @@ export default function Matchmaking() {
                             withCredentials: false
                         }
                     )
-                    setColor(response?.data.player1 === sessionStorage.getItem("userID") ? 0 : 1)
-                    if (response?.data.player1 !== null && response?.data.player2 !== null) {
-                        const oppUUID = response?.data.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1
-                        try {
-                            const response = await axios.get("/users/readid?playerid=" + oppUUID,
-                                {
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "x-access-token": sessionStorage.getItem("accessToken")
-                                    },
-                                    withCredentials: false
-                                }
-                            )
-                                setOppData(response?.data)
-                                setSearching(false)
-                        } catch (err) {
-                            console.log(err?.response)
+                    if (response?.data.player1 === sessionStorage.getItem("userID") || response?.data.player2 === sessionStorage.getItem("userID")) {
+                        const oppUUID = response.data?.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1
+                        if (oppUUID) {
+                            try {
+                                const next_response = await axios.get("/users/readid?playerid=" + oppUUID,
+                                    {
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "x-access-token": sessionStorage.getItem("accessToken")
+                                        },
+                                        withCredentials: false
+                                    }
+                                )
+                                    setColor(response?.data?.player1 === sessionStorage.getItem("userID") ? 0 : 1)
+                                    setOppData(next_response?.data)
+                                    setSearching(false)
+                            } catch (err) {
+                                console.log(err?.response)
+                            }
                         }
+                    } else {
+                        setGameData(undefined)
+                        setRerenderFindGame(0)
+                        setRerenderJoinGame(0)
+                        setRerenderQuery(0)
                     }
                 } catch (err) {
                     console.log(err?.response)

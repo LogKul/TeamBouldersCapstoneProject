@@ -339,7 +339,7 @@ export default function Checkers(props) {
     React.useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false && props.gameMode === 1 && renderUnload > 0) {
             //opponent has 5*5 seconds to make a move or game will be forfeit/abandon
-            if (timeoutCounter > 20) {
+            if (timeoutCounter > 30) {
                 if (playerMoved === false || oppMoved === false) {
                     setModalIsOpen(true)
                     setAbandon(true)
@@ -481,7 +481,7 @@ export default function Checkers(props) {
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
     React.useEffect(() => {
-        if (renderUnload > 0 && props.gameMode === 1) {
+        if (renderUnload > 0 && props.gameMode === 1 && gameOver === false) {
             if (playerMoved === false || oppMoved === false) {
                 const links = document.getElementsByTagName("a")
                 
