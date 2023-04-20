@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.user;
+const Game = db.game;
 
 require('dotenv').config();
 var bcrypt = require("bcryptjs");
@@ -81,6 +82,45 @@ exports.update = (req, res) => {
         });
 };
 
+exports.update_rank = (req, res) => {
+    // Update existing User
+    User.findOne({
+        where: {
+            username: req.query.username,
+        }
+    })
+        .then(user => {
+
+            const player_transformed = Math.pow(10, (user.mmr / 400))
+            const opp_transformed = Math.pow(10, (req.body.opp_mmr / 400))
+
+            const expected_score_player = player_transformed / (player_transformed + opp_transformed)
+
+            let s = 0
+            req.body.won == true ? s = 1 : s = 0
+            const k = 32
+
+            const newmmr = Math.round(user.mmr + k * (s - expected_score_player))
+
+            req.body.won
+                ? user.set({
+                    mmr: newmmr,
+                    wins: parseInt(user.wins) + 1,
+                })
+                : user.set({
+                    mmr: newmmr,
+                    losses: parseInt(user.losses) + 1,
+                });
+
+            user.save();
+
+            res.status(200).send({ message: "User was updated successfully!" });
+        })
+        .catch(err => {
+            res.status(500).send({ message: err.message });
+        });
+};
+
 exports.delete = (req, res) => {
     // Delete User from Database
     User.destroy({
@@ -99,12 +139,13 @@ exports.delete = (req, res) => {
 exports.get_rankings = (req, res) => {
     // Return all players, ranked by win/loss ratio
     User.findAll({
-        attributes: ["username", "mmr", "wins", "losses"]
+        attributes: ["username", "mmr", "wins", "losses"],
+        order: [
+            ['mmr', 'DESC'],
+            ['wins', 'DESC']
+        ]
     })
         .then((users) => {
-
-            // Sort by winrate
-            users.sort((a, b) => ((a.mmr) < (b.mmr)) ? 1 : -1)
 
             res.status(200).send({
                 users: users,
@@ -113,6 +154,5 @@ exports.get_rankings = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
-            console.log(err.message)
         });
 };

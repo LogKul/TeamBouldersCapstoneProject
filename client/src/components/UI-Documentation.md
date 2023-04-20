@@ -3,7 +3,7 @@
 This is a component that displays all of the navigation elements at the top of the page.
 This component should be displayed first when creating any new page.
 One important thing to note is that the CSS for the header and footer components rely on them being separate from the main content of a page.
-In order to achieve this, when creating your new component, first return the header, then a div with the classname="content-wrap" tag, and then the footer component.
+In order to achieve this, when creating your new component, first add the header, then a div with the classname="content-wrap" tag, and then the footer component.
 Your page's UI elements will go inside of the "content-wrap" div.
 See an example below:
 
@@ -13,11 +13,11 @@ See an example below:
     function myComponent() {
         return(
             <div>
-                <Header />
+                <Header /> //ADD HEADER BEFORE CONTENT WRAP DIV
                 <div className="content-wrap">
                     //YOUR PAGE CONTENT GOES HERE
                 </div>
-                <Footer />
+                <Footer /> //ADD FOOTER AFTER CONTENT WRAP DIV
             </div>
         )
     }

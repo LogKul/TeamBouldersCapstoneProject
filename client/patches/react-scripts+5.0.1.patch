@@ -1,0 +1,30 @@
+diff --git a/node_modules/react-scripts/config/webpackDevServer.config.js b/node_modules/react-scripts/config/webpackDevServer.config.js
+index 522a81b..faf918e 100644
+--- a/node_modules/react-scripts/config/webpackDevServer.config.js
++++ b/node_modules/react-scripts/config/webpackDevServer.config.js
+@@ -45,9 +45,23 @@ module.exports = function (proxy, allowedHost) {
+     // want to allow setting the allowedHosts manually for more complex setups
+     allowedHosts: disableFirewall ? 'all' : [allowedHost],
+     headers: {
+-      'Access-Control-Allow-Origin': '*',
++      'Cache-Control': 'no-store, max-age=0',
++      //'Clear-Site-Data':'\"cache\",\"cookies\",\"storage\"',
++      //default-src 'self' https://shark-app-e6tu3.ondigitalocean.app https://fonts.googleapis.com;
++      'Content-Security-Policy': "object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",
++      'Cross-Origin-Embedder-Policy': 'require-corp',
++      'Cross-Origin-Opener-Policy': 'same-origin',
++      'Cross-Origin-Resource-Policy': 'same-origin',
++      'Permissions-Policy': 'accelerometer=(),ambient-light-sensor=(),autoplay=(),battery=(),camera=(),display-capture=(),document-domain=(),encrypted-media=(),fullscreen=(),gamepad=(),geolocation=(),gyroscope=(),layout-animations=(self),legacy-image-formats=(self),magnetometer=(),microphone=(),midi=(),oversized-images=(self),payment=(),picture-in-picture=(),publickey-credentials-get=(),speaker-selection=(),sync-xhr=(self),unoptimized-images=(self),unsized-media=(self),usb=(),screen-wake-lock=(),web-share=(),xr-spatial-tracking=()',
++      'Pragma' : 'no-cache',
++      'X-DNS-Prefetch-Control': 'off',
++      'X-Frame-Options': 'SAMEORIGIN',
++      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
++      'X-Download-Options': 'noopen',
++      'X-Content-Type-Options': 'nosniff',
++      /* 'Access-Control-Allow-Origin': '*',
+       'Access-Control-Allow-Methods': '*',
+-      'Access-Control-Allow-Headers': '*',
++      'Access-Control-Allow-Headers': '*', */
+     },
+     // Enable gzip compression of generated files.
+     compress: true,

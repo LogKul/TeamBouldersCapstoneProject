@@ -17,7 +17,9 @@ const sequelize = new Sequelize(
         },
         define: {
             timestamps: false
-        }
+        },
+        logging: false,
+        timezone: 'America/Denver'
 
         /*pool: {
             max: config.pool.max,
@@ -64,39 +66,10 @@ db.ROLES = ["user", "moderator", "admin"];
     }
 });
 
-(db.user).hasMany(db.game, { foreignKey: { name: 'player1', type: DataTypes.UUID } });
-(db.user).hasMany(db.game, { foreignKey: { name: 'player2', type: DataTypes.UUID } });
-(db.game).belongsTo(db.user, { foreignKey: { name: 'id', type: DataTypes.UUID } });
 
-(db.user).hasMany(db.report, { foreignKey: { name: 'reported_user', type: DataTypes.UUID } });
-(db.report).belongsTo(db.user, { foreignKey: { name: 'id', type: DataTypes.UUID } });
+(db.game).belongsTo(db.user, { foreignKey: { name: 'player1', type: DataTypes.UUID }, as: 'player_1' });
+(db.game).belongsTo(db.user, { foreignKey: { name: 'player2', type: DataTypes.UUID }, as: 'player_2' });
+(db.user).hasMany(db.game, { foreignKey: { name: 'id', type: DataTypes.UUID } });
 
-(db.game).hasOne(db.chat, { foreignKey: { name: 'game_id', type: DataTypes.UUID } });
-(db.user).hasMany(db.chat, { foreignKey: { name: 'player', type: DataTypes.UUID } });
-(db.chat).belongsTo(db.user, { foreignKey: { name: 'id', type: DataTypes.UUID } });
-(db.chat).belongsTo(db.game, { foreignKey: { name: 'id', type: DataTypes.UUID } });
-
-// as: "player1",
-// as: "player2",
-
-// as: "reported_user",
-
-// as: "game_id",
-// as: "player", 
-
-
-/*
-db.role.belongsToMany(db.user, {
-    through: "user_roles",
-    foreignKey: "roleId",
-    otherKey: "userId"
-});
-db.user.belongsToMany(db.role, {
-    through: "user_roles",
-    foreignKey: "userId",
-    otherKey: "roleId"
-});*/
-
-// db.ROLES = ["user", "admin", "moderator"];
 
 module.exports = db;

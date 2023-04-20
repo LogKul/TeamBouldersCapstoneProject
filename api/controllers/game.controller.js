@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, DataTypes, Sequelize } = require("sequelize");
 const db = require("../models");
 const Game = db.game;
 const User = db.user;
@@ -10,6 +10,18 @@ const User = db.user;
 exports.find_completed_games = (req, res) => {
     // Return all current completed games
     Game.findAll({
+        include: [
+            {
+                model: User,
+                as: 'player_1',
+                attributes: ['username']
+            },
+            {
+                model: User,
+                as: 'player_2',
+                attributes: ['username']
+            },
+        ],
         where: {
             [Op.and]: [
                 {
@@ -28,12 +40,17 @@ exports.find_completed_games = (req, res) => {
                     },
                 }
             ]
-        }
+        },
+        order: [
+            ['finishedTime', 'DESC']
+        ]
     })
         .then((completed_games) => {
+
             res.status(200).send({
                 games: completed_games,
             });
+
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
@@ -56,6 +73,18 @@ exports.find_completed_games_by_user = (req, res) => {
             // Then return all current completed games
             // containing a particular user
             Game.findAll({
+                include: [
+                    {
+                        model: User,
+                        as: 'player_1',
+                        attributes: ['username']
+                    },
+                    {
+                        model: User,
+                        as: 'player_2',
+                        attributes: ['username']
+                    },
+                ],
                 where: {
                     [Op.and]: [
                         {
@@ -78,12 +107,17 @@ exports.find_completed_games_by_user = (req, res) => {
                         { player1: user.id },
                         { player2: user.id },
                     ]
-                }
+                },
+                order: [
+                    ['finishedTime', 'DESC']
+                ]
             })
                 .then((completed_games) => {
+
                     res.status(200).send({
                         games: completed_games,
                     });
+
                 })
                 .catch(err => {
                     res.status(500).send({ message: err.message });
@@ -129,7 +163,6 @@ exports.find_open_games = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
-            console.log(err.message)
         });
 };
 
@@ -164,14 +197,10 @@ exports.join_game = (req, res) => {
                 game.set({ player2: req.query.playerid });
             }
             else {
-                console.log("This should not be reachable");
-                res.status(500).send({ message: "Game is full" });
+                throw new Error('Game is full.');
             }
 
             game.save();
-
-            // Original response, can go back to it if we need to
-            //res.status(200).send({ message: "Successfully joined game!" });
 
             // Find opponent username
             User.findOne({
@@ -185,7 +214,7 @@ exports.join_game = (req, res) => {
                     }
 
                     res.status(200).send({
-                        opponent: opponent_username
+                        opponent: user.username
                     });
 
                 })
@@ -223,7 +252,6 @@ exports.create = (req, res) => {
         player2: req.body.player2,
     })
         .then(game => {
-            //res.status(200).send({ message: "Game created successfully!" });
             res.status(200).send({ id: game.id });
         })
         .catch(err => {

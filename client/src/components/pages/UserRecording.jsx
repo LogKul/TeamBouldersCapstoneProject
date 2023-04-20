@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react'
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import Header from '../Header'
 import Footer from '../Footer'
 import GameRecording from '../GameRecording'
@@ -12,7 +12,7 @@ const UserRecording = () => {
 
     useEffect(() => {
         getGames()
-    }, [])
+    }, [username])
 
     const getGames = async () => {
         try {
@@ -26,7 +26,6 @@ const UserRecording = () => {
                     withCredentials: false
                 }
             )
-            console.log(response)
             const localGameData = response?.data?.games
             setGames(localGameData)
         } catch (err) {
@@ -34,28 +33,32 @@ const UserRecording = () => {
         }
     }
 
-
-
     return (
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>This will be the User&apos;s Game Recording page!</h1>
-                <br></br>
-                <br></br>
-                <h2>This page will include links to:</h2>
-                <ul>
-                    <Link to="/account"><li>Accounts of both players</li></Link>
-                </ul>
 
-                <h1>Your Games</h1>
-                <hr></hr>
-                {games
-                    ? games.map((game) => (
-                        <GameRecording key={game.id} game={game} />
-                    ))
-                    : <p>No games recorded.</p>
+                {(sessionStorage.getItem("user") == username)
+                    ? <h1>Your Games</h1>
+                    : <h1>{username + "'s Games"}</h1>
                 }
+                <hr></hr>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Time Finished</th>
+                            <th>Winner</th>
+                            <th>Red</th>
+                            <th>Black</th>
+                        </tr>
+                        {games
+                            ? games.map((game, index) => (
+                                <GameRecording key={game.id} game={game} index={index} />
+                            ))
+                            : <p>Loading...</p>
+                        }
+                    </tbody>
+                </table>
             </div>
             <Footer />
         </div>

@@ -7,16 +7,16 @@ import Landing from "./components/pages/Landing"
 import Home from "./components/pages/Home"
 import Account from "./components/pages/Account"
 import Settings from "./components/pages/Settings"
-import GameStart from "./components/pages/GameStart";
-import GameOver from "./components/pages/GameOver";
 import Play from "./components/pages/Play"
 import Game from "./components/pages/Game"
 import Leaderboard from "./components/pages/Leaderboard"
 import Recording from "./components/pages/Recording"
 import UserRecording from "./components/pages/UserRecording"
 import Matchmaking from "./components/pages/Matchmaking"
+import Outdated from "./components/pages/Outdated"
+import PageNotFound from "./components/pages/PageNotFound"
 import PrivateRoutes from './components/util/PrivateRoutes'
-
+import CheckOutdated from './components/util/CheckOutdated'
 import axios from "./api/axios"
 
 function App() {
@@ -62,22 +62,24 @@ function App() {
   return (
     <main>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Landing />} />
-        <Route element={<PrivateRoutes />}>
-          <Route path="/Home" element={<Home />} exact />
-          <Route path="/account" element={<Account />} />
-          <Route path="/account/settings" element={<Settings />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/start" element={<GameStart />} />
-          <Route path="/play" element={<Play />} />
-          <Route path="/matchmaking" element={<Matchmaking />} />
-          <Route path="/game/:game_mode/:difficulty/:game_id/:color" element={<Game />} />
-          <Route path="over" element={<GameOver />} />
-          <Route path="/recordings" element={<Recording />} />
-          <Route path="/recordings/:username" element={<UserRecording />} />
+        <Route path="/outdatedbrowser" element={<Outdated />} />
+        <Route element={<CheckOutdated />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Landing />} />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/Home" element={<Home />} exact />
+            <Route path="/account" element={<Account />} />
+            <Route path="/account/settings" element={<Settings />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/play" element={<Play />} />
+            <Route path="/matchmaking" element={<Matchmaking />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/recordings" element={<Recording />} />
+            <Route path="/recordings/:username" element={<UserRecording />} />
+          </Route>
         </Route>
+        <Route path='*' exact={true} element={<PageNotFound />} />
       </Routes>
     </main>
   )

@@ -6,12 +6,33 @@ import axios from "../../api/axios"
 
 export default function Matchmaking() {
     const [searching, setSearching] = React.useState(true)
+    const [searchingValue, setSearchingValue] = React.useState(0)
+    const [searchingIndicator, setSearchingIndicator] = React.useState(".")
     const [gameData, setGameData] = React.useState(undefined)
     const [color, setColor] = React.useState(undefined)
     const [oppData, setOppData] = React.useState(undefined)
     const [rerenderQuery, setRerenderQuery] = React.useState(0)
     const [rerenderFindGame, setRerenderFindGame] = React.useState(0)
     const [rerenderJoinGame, setRerenderJoinGame] = React.useState(0)
+
+    // Update searching indicator every second
+    React.useEffect(() => {
+        if (searching) {
+            let interval = null
+            interval = setInterval(() => {
+                setSearchingValue(searchingValue => searchingValue + 1)
+            }, 1000)
+            if (searchingValue === 1) {
+                setSearchingIndicator(".")
+            } else if (searchingValue === 2) {
+                setSearchingIndicator("..")
+            } else if (searchingValue === 3) {
+                setSearchingIndicator("...")
+                setSearchingValue(0)
+            }
+            return () => clearInterval(interval)
+        }
+    }, [searchingValue])
 
     // Set interval for query checking for opponenet --- 10000 = 10 seconds
     React.useEffect(() => {
@@ -110,24 +131,31 @@ export default function Matchmaking() {
                             withCredentials: false
                         }
                     )
-                    setColor(response?.data.player1 === sessionStorage.getItem("userID") ? 0 : 1)
-                    if (response?.data.player1 !== null && response?.data.player2 !== null) {
-                        const oppUUID = response?.data.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1
-                        try {
-                            const response = await axios.get("/users/readid?playerid=" + oppUUID,
-                                {
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "x-access-token": sessionStorage.getItem("accessToken")
-                                    },
-                                    withCredentials: false
-                                }
-                            )
-                                setOppData(response?.data)
-                                setSearching(false)
-                        } catch (err) {
-                            console.log(err?.response)
+                    if (response?.data.player1 === sessionStorage.getItem("userID") || response?.data.player2 === sessionStorage.getItem("userID")) {
+                        const oppUUID = response.data?.player1 === sessionStorage.getItem("userID") ? response?.data.player2 : response?.data.player1
+                        if (oppUUID) {
+                            try {
+                                const next_response = await axios.get("/users/readid?playerid=" + oppUUID,
+                                    {
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "x-access-token": sessionStorage.getItem("accessToken")
+                                        },
+                                        withCredentials: false
+                                    }
+                                )
+                                    setColor(response?.data?.player1 === sessionStorage.getItem("userID") ? 0 : 1)
+                                    setOppData(next_response?.data)
+                                    setSearching(false)
+                            } catch (err) {
+                                console.log(err?.response)
+                            }
                         }
+                    } else {
+                        setGameData(undefined)
+                        setRerenderFindGame(0)
+                        setRerenderJoinGame(0)
+                        setRerenderQuery(0)
                     }
                 } catch (err) {
                     console.log(err?.response)
@@ -188,7 +216,7 @@ export default function Matchmaking() {
                     <br />
                     <br />
                     <div><h2>Searching For Opponent</h2></div>
-                    <div>Checking if someone is on the other end every 10 seconds. Checked {rerenderQuery} times.</div>
+                    <h3>{searchingIndicator}</h3>
                 </div>
                 <Footer />
             </div>
@@ -201,10 +229,11 @@ export default function Matchmaking() {
                 <div className='content-wrap'>
                     <p>Playing Online against {oppData.username}</p>
                     <div style={{
-                        display: 'flex',
+                        display: 'block',
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}>
+                        <br/>
                         <Checkers gameMode={1} difficulty={0} gameID={gameData.id} color={color} oppData={oppData} />
                     </div>
                 </div>

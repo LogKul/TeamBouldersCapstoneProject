@@ -51,9 +51,9 @@ export default class Opponent {
     }
 
     async sendResponse(boardState, gameID) {
+
         try {
-            await axios.put("/games/update?gameid=" + gameID,
-                { gamestate: JSON.stringify(boardState) },
+            const response = await axios.get("/games/read?gameid=" + gameID,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -62,6 +62,20 @@ export default class Opponent {
                     withCredentials: false
                 }
             )
+            if (response?.data?.winner !== null || response?.data?.gamestate === "abandon") {
+                return
+            } else {
+                await axios.put("/games/update?gameid=" + gameID,
+                    { gamestate: JSON.stringify(boardState) },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
+                    }
+                )
+            }
         } catch (err) {
             console.log(err?.response)
         }
@@ -87,48 +101,28 @@ export default class Opponent {
 
     async updateMMR(opp_data, win) {
         try {
-            /*const response = await axios.get("/users/readid",
-                { params: { playerid: opponent_uuid } },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-access-token": sessionStorage.getItem("accessToken")
-                    },
-                    withCredentials: false
-                }
-            )
 
-            const opp_data = response?.data*/
-
-            const mmr = parseInt(sessionStorage.getItem("mmr"))
             const wins = parseInt(sessionStorage.getItem("wins"))
             const losses = parseInt(sessionStorage.getItem("losses"))
+            const mmr = parseInt(sessionStorage.getItem("mmr"))
 
             const player_transformed = Math.pow(10, (mmr / 400))
             const opp_transformed = Math.pow(10, (opp_data.mmr / 400))
-
             const expected_score_player = player_transformed / (player_transformed + opp_transformed)
-            //const expected_score_opp = opp_transformed / (player_transformed + opp_transformed)
 
             let s = 0
-            win === true ? s = 1 : s = 0
-            const k = 16
+            win == true ? s = 1 : s = 0
+            const k = 32
 
             const newmmr = Math.round(mmr + k * (s - expected_score_player))
             sessionStorage.setItem("mmr", newmmr)
 
-            console.log("OPP MMR: " + opp_data.mmr)
-            console.log("OLD MMR: " + mmr)
-            console.log("NEW MMR: " + newmmr)
-
             if (win === true) {
 
-                sessionStorage.setItem("wins", wins + 1)
-
-                await axios.put("/users/update?username=" + sessionStorage.getItem("user"),
+                await axios.put("/users/updaterank?username=" + sessionStorage.getItem("user"),
                     {
-                        wins: wins + 1,
-                        mmr: newmmr
+                        won: true,
+                        opp_mmr: opp_data.mmr
                     },
                     {
                         headers: {
@@ -137,16 +131,17 @@ export default class Opponent {
                         },
                         withCredentials: false
                     }
-                )
+                ).then(() => {
+                    sessionStorage.setItem("wins", wins + 1)
+                })
+                console.log("updated mmr win")
             }
             else if (win === false) {
 
-                sessionStorage.setItem("losses", losses + 1)
-
-                await axios.put("/users/update?username=" + sessionStorage.getItem("user"),
+                await axios.put("/users/updaterank?username=" + sessionStorage.getItem("user"),
                     {
-                        losses: losses + 1,
-                        mmr: newmmr
+                        won: false,
+                        opp_mmr: opp_data.mmr
                     },
                     {
                         headers: {
@@ -155,7 +150,10 @@ export default class Opponent {
                         },
                         withCredentials: false
                     }
-                )
+                ).then(() => {
+                    sessionStorage.setItem("losses", losses + 1)
+                })
+                console.log("updated mmr loss")
             }
         } catch (err) {
             console.log(err?.response)
@@ -163,54 +161,25 @@ export default class Opponent {
 
     }
 
-    async forfeitGame(gameID, uuid) {
-        try {
-            const response = await axios.get("/games/read?gameid=" + gameID,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-access-token": sessionStorage.getItem("accessToken")
-                    },
-                    withCredentials: false
-                }
-            )
-            if (response?.data?.winner === null) {
-                if (response?.data?.player1 === uuid) {
-                    try {
-                        await axios.put("/games/update?gameid=" + gameID,
-                            { winner: response?.data?.player2 },
-                            {
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "x-access-token": sessionStorage.getItem("accessToken")
-                                },
-                                withCredentials: false
-                            }
-                        )
-                    } catch (err) {
-                        console.log(err?.response)
+    async forfeitGame(gameID, opp_data, gameOver) {
+        console.log(gameOver)
+        if (gameOver === false) {
+            try {
+                await axios.put("/games/update?gameid=" + gameID,
+                    { winner: opp_data.id },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-access-token": sessionStorage.getItem("accessToken")
+                        },
+                        withCredentials: false
                     }
-                } else {
-                    try {
-                        await axios.put("/games/update?gameid=" + gameID,
-                            { winner: response?.data?.player1 },
-                            {
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "x-access-token": sessionStorage.getItem("accessToken")
-                                },
-                                withCredentials: false
-                            }
-                        )
-                        return true
-                    } catch (err) {
-                        console.log(err?.response)
-                    }
-                }
+                )
+                this.updateMMR(opp_data, false)
+                console.log("ran update mmr")
+            } catch (err) {
+                console.log(err?.response)
             }
-        } catch (err) {
-            console.log(err?.response)
-            return false
         }
     }
 

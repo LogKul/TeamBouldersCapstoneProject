@@ -1,30 +1,58 @@
-import React from 'react'
-import { useParams } from "react-router-dom"
+import React, { useState } from 'react'
 import Header from '../Header'
 import Footer from '../Footer'
+import Modal from '../Modal'
 import Checkers from "../checkers/Checkers"
 
 const Game = () => {
 
-    const { game_mode, difficulty, game_id, color } = useParams();
+    const [modalIsOpen, setModalIsOpen] = useState(true)
 
-    return (
-        <div>
-            <Header />
-            <div className='content-wrap'>
-                <p>Game Mode: {game_mode}    Difficulty {difficulty}</p>
-                <p>Color: {color}    Game ID: {game_id}</p>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    <Checkers gameMode={parseInt(game_mode)} difficulty={parseInt(difficulty)} gameID={game_id} color={parseInt(color)} />
+    function openModal() {
+        setModalIsOpen(true);
+    }
+
+    function closeModal() {
+        setModalIsOpen(false);
+    }
+
+    const [color, setColor] = useState(undefined)
+
+    function setColorRed() {
+        setColor(0)
+    }
+
+    function setColorBlack() {
+        setColor(1)
+    }
+
+    if (color === undefined) {
+        return (
+            <div>
+                <Header />
+                <div className='content-wrap'>
+                    <Modal isOpen={modalIsOpen} closeModal={closeModal}>
+                        <h1> Choose Your Color</h1>
+                        <button onClick={setColorRed}>Play as Red</button>
+                        <button onClick={setColorBlack}>Play as Black</button>
+                    </Modal>
+                    <button onClick={openModal}>Choose A Color</button>
                 </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
-    )
+        )
+    } else {
+        return (
+            <div>
+                <Header />
+                <div className='content-wrap'>
+                    <br/>
+                    <Checkers gameMode={0} difficulty={0} gameID={'empty'} color={color} />
+                </div>
+                <Footer />
+            </div>
+        )
+    }
 }
 
 export default Game
