@@ -32,13 +32,12 @@ isAdmin = (req, res, next) => {
                     return;
                 }
             }
-
             res.status(403).send({
                 message: "Requires Admin Role."
             });
             return;
-        });
-    });
+        }).catch("An unexpected error occured. Error Code 2001");
+    }).catch("An unexpected error occured. Error Code 2002");
 };
 
 isModerator = (req, res, next) => {
@@ -54,8 +53,8 @@ isModerator = (req, res, next) => {
             res.status(403).send({
                 message: "Requires Moderator Role."
             });
-        });
-    });
+        }).catch("An unexpected error occured. Error Code 2003");
+    }).catch("An unexpected error occured. Error Code 2004");
 };
 
 isModeratorOrAdmin = (req, res, next) => {
@@ -76,8 +75,8 @@ isModeratorOrAdmin = (req, res, next) => {
             res.status(403).send({
                 message: "Requires elevated privileges."
             });
-        });
-    });
+        }).catch("An unexpected error occured. Error Code 2005");
+    }).catch("An unexpected error occured. Error Code 2006");
 };
 
 const authJwt = {
