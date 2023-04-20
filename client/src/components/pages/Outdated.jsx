@@ -1,16 +1,29 @@
 import React from 'react'
-import Login from "./components/pages/Login"
-import * as rdd from 'react-device-detect'
 function Outdated() {
 
-    return rdd.isIE ?
+    return (
         <div>
-            Browser Not Supported
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
+            <p>Browser Not Supported</p>
         </div>
-        : 
-        <div>
-            Placeholder text?
-        </div>
+    )
 
 }
 
