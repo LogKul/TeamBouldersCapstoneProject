@@ -3,24 +3,7 @@ function Outdated() {
 
     return (
         <div>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
-            <p>Browser Not Supported</p>
+            <p>This browser Not Supported!</p>
             <p>Browser Not Supported</p>
         </div>
     )

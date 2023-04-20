@@ -5,7 +5,7 @@ import React from "react"
 const CheckOutdated = () => {
 
     return (
-        (rdd.isIE) ? <Navigate to="/outdatedbrowser" /> : <Outlet />
+        (rdd.isIE || rdd.isMobile) ? <Navigate to="/outdatedbrowser" /> : <Outlet />
     )
 }
 
