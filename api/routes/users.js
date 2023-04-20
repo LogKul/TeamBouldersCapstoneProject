@@ -3,7 +3,7 @@ var express = require('express');
 const { user } = require('../models');
 var router = express.Router();
 var controller = require("../controllers/user.controller");
-const { authJwt, MMRLimiter } = require("../middleware");
+const { authJwt } = require("../middleware");
 
 
 router.use(function (req, res, next) {
@@ -18,20 +18,8 @@ router.use(function (req, res, next) {
 router.get('/read', [authJwt.verifyToken], controller.read);
 router.get('/readid', [authJwt.verifyToken], controller.readid);
 router.put('/update', [authJwt.verifyToken], controller.update);
-router.put('/updaterank', [authJwt.verifyToken, MMRLimiter], controller.update_rank);
+router.put('/updaterank', [authJwt.verifyToken], controller.update_rank);
 router.delete('/delete', [authJwt.verifyToken, authJwt.isModeratorOrAdmin], controller.delete);
 router.get('/rankings', [], controller.get_rankings);
 
-
-/* PRE-ORM
-router.get('/all', function (req, res, next) {
-  var db = req.app.locals.db;
-  db.query('SELECT * FROM public.users ORDER BY username ASC', (error, results) => {
-    if (error) {
-      throw error
-    }
-    res.status(200).json(results.rows)
-  })
-})
-*/
 module.exports = router;
