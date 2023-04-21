@@ -113,9 +113,6 @@ const Account = () => {
                             </form>
                         }
                         <br />
-                        <h4>Page Links:</h4>
-                        <Link to="/account/settings">Settings</Link>
-                        <br />
                         <Link to={"/recordings/" + sessionStorage.getItem("userID")}>Your Game Recordings</Link>
                     </section>
                 }
