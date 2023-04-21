@@ -8,13 +8,13 @@ function LeaderboardRow({ user, index }) {
     const [cell_style, setClass] = useState("odd-row")
     useEffect(() => {
         if (index == 0) {
-            setClass("first-place")
+            setClass("first-place even-row")
         }
         else if (index == 1) {
-            setClass("second-place")
+            setClass("second-place odd-row")
         }
         else if (index == 2) {
-            setClass("third-place")
+            setClass("third-place even-row")
         }
         else if (index % 2 == 0) {
             setClass("even-row")

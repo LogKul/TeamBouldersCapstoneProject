@@ -1,9 +1,10 @@
 import { React, useEffect, useState } from 'react'
-//import { Link } from "react-router-dom"
 import Header from '../Header'
 import Footer from '../Footer'
 import GameRecording from '../GameRecording'
 import axios from "../../api/axios"
+import { GiQueenCrown } from "react-icons/gi"
+import { FaClock } from "react-icons/fa"
 
 const Recording = () => {
 
@@ -31,22 +32,19 @@ const Recording = () => {
         }
     }
 
-
-
     return (
         <div>
             <Header />
             <div className='content-wrap'>
 
                 <h1>Global Game History</h1>
-                <hr></hr>
-                <table>
+                <table className='table'>
                     <tbody>
-                        <tr>
-                            <th>Time Finished</th>
-                            <th>Winner</th>
-                            <th>Red</th>
-                            <th>Black</th>
+                        <tr className='row'>
+                            <th className='column'><FaClock/> Time Finished <FaClock/></th>
+                            <th className='column'><GiQueenCrown/> Winner <GiQueenCrown/></th>
+                            <th className='column'>Red Player:</th>
+                            <th className='column'>Black Player:</th>
                         </tr>
                         {games
                             ? games.map((game, index) => (
