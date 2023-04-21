@@ -42,7 +42,6 @@ const UserRecording = () => {
                     ? <h1>Your Games</h1>
                     : <h1>{username + "'s Games"}</h1>
                 }
-                <hr></hr>
                 <table className='table'>
                     <tbody>
                         <tr className='row'>
