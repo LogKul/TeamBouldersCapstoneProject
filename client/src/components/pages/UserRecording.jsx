@@ -49,8 +49,8 @@ const UserRecording = () => {
                         <tr className='row'>
                             <th className='column'><FaClock/> Time Finished <FaClock/></th>
                             <th className='column'><GiQueenCrown/> Winner <GiQueenCrown/></th>
-                            <th className='column'>Red</th>
-                            <th className='column'>Black</th>
+                            <th className='column'>Red Player:</th>
+                            <th className='column'>Black Player:</th>
                         </tr>
                         {games
                             ? games.map((game, index) => (
