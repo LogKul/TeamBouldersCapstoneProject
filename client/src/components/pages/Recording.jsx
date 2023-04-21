@@ -30,8 +30,6 @@ const Recording = () => {
         }
     }
 
-
-
     return (
         <div>
             <Header />
