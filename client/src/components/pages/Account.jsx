@@ -1,6 +1,5 @@
 import React from 'react'
 import { useRef, useState, useEffect } from "react"
-import { Link } from "react-router-dom"
 import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
@@ -112,8 +111,7 @@ const Account = () => {
                                 }
                             </form>
                         }
-                        <br />
-                        <Link to={"/recordings/" + sessionStorage.getItem("user")}>Your Game Recordings</Link>
+                        <a href={"/recordings/" + sessionStorage.getItem("user")}><button>Your Game Recordings</button></a>
                     </section>
                 }
             </div>
