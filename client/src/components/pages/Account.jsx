@@ -11,7 +11,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 const Account = () => {
 
-    const [modalIsOpen, setModalIsOpen] = useState(true)
+    const [modalIsOpen, setModalIsOpen] = useState(false)
 
     function openModal() {
         setModalIsOpen(true);
