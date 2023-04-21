@@ -113,7 +113,7 @@ const Account = () => {
                             </form>
                         }
                         <br />
-                        <Link to={"/recordings/" + sessionStorage.getItem("userID")}>Your Game Recordings</Link>
+                        <Link to={"/recordings/" + sessionStorage.getItem("user")}>Your Game Recordings</Link>
                     </section>
                 }
             </div>
