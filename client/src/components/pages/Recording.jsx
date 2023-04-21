@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from 'react'
-//import { Link } from "react-router-dom"
 import Header from '../Header'
 import Footer from '../Footer'
 import GameRecording from '../GameRecording'
@@ -40,13 +39,13 @@ const Recording = () => {
 
                 <h1>Global Game History</h1>
                 <hr></hr>
-                <table>
+                <table className='table'>
                     <tbody>
-                        <tr>
-                            <th>Time Finished</th>
-                            <th>Winner</th>
-                            <th>Red</th>
-                            <th>Black</th>
+                        <tr className='row'>
+                            <th className='column'>Time Finished</th>
+                            <th className='column'>Winner</th>
+                            <th className='column'>Red</th>
+                            <th className='column'>Black</th>
                         </tr>
                         {games
                             ? games.map((game, index) => (
