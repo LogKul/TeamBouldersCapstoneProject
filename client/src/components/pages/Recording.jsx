@@ -3,6 +3,8 @@ import Header from '../Header'
 import Footer from '../Footer'
 import GameRecording from '../GameRecording'
 import axios from "../../api/axios"
+import { GiQueenCrown } from "react-icons/gi"
+import { FaClock } from "react-icons/fa"
 
 const Recording = () => {
 
@@ -39,10 +41,10 @@ const Recording = () => {
                 <table className='table'>
                     <tbody>
                         <tr className='row'>
-                            <th className='column'>Time Finished</th>
-                            <th className='column'>Winner</th>
-                            <th className='column'>Red</th>
-                            <th className='column'>Black</th>
+                            <th className='column'><FaClock/> Time Finished <FaClock/></th>
+                            <th className='column'><GiQueenCrown/> Winner <GiQueenCrown/></th>
+                            <th className='column'>Red Player:</th>
+                            <th className='column'>Black Player:</th>
                         </tr>
                         {games
                             ? games.map((game, index) => (
