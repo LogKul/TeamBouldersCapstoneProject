@@ -43,13 +43,13 @@ const UserRecording = () => {
                     : <h1>{username + "'s Games"}</h1>
                 }
                 <hr></hr>
-                <table>
+                <table className='table'>
                     <tbody>
-                        <tr>
-                            <th>Time Finished</th>
-                            <th>Winner</th>
-                            <th>Red</th>
-                            <th>Black</th>
+                        <tr className='row'>
+                            <th className='column'>Time Finished</th>
+                            <th className='column'>Winner</th>
+                            <th className='column'>Red</th>
+                            <th className='column'>Black</th>
                         </tr>
                         {games
                             ? games.map((game, index) => (
