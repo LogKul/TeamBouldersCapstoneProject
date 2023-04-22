@@ -86,6 +86,10 @@ p {
   color: black;
 }
 
+li {
+  @include font-montserrat(18px, bold, normal)
+}
+
 input {
   @include font-montserrat(16px, 500, normal);
   text-align: left;
