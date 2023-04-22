@@ -1,6 +1,5 @@
 import React from "react"
 import axios from "../../api/axios"
-import { Link } from 'react-router-dom';
 import Header from '../Header'
 import Footer from '../Footer'
 import '../../styles/register.scss'
@@ -174,7 +173,7 @@ const Register = () => {
 
                         <p>
                             Already registered?<br />
-                            <Link to="/login">Sign In</Link>
+                            <a href="/login"><button className="small-button">Sign In</button></a>
                         </p>
                     </div>
                     <Footer />
