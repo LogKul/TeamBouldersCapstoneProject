@@ -1,17 +1,14 @@
 import React from 'react'
-import Login from "./components/pages/Login"
-import * as rdd from 'react-device-detect'
 function Outdated() {
 
-    return rdd.isIE ?
+    return (
         <div>
-            Browser Not Supported
+            <p>This browser Not Supported!</p>
+            <p>You are currently using a browser or device that is not supported by our application.</p>
+            <p>Please download a supported browser or us a different device in order to use our application!</p>
+            <a href="https://www.mozilla.org/en-US/firefox/new/">Mozilla Firefox Browser for Desktop</a>
+            <a href="https://www.google.com/chrome/">Google Chrome Browser for Desktop</a>
         </div>
-        : 
-        <div>
-            Placeholder text?
-        </div>
-
+    )
 }
-
 export default Outdated
