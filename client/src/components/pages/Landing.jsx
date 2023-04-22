@@ -12,7 +12,7 @@ function Landing() {
     return (
         <div>
             <Header />
-            <div className='content-wrap'>
+            <div className='content-wrap landing-page'>
                 <h1>Welcome To Checkers!</h1>
                 <p>Please sign to access all functions on the site.</p>
                 <a href="/Login"><button className='large-button'>Login</button></a>
@@ -25,6 +25,8 @@ function Landing() {
                             <li><GiRank3/> Track your account stats and matchmaking rank.</li>
                             <li><ImStatsDots/> Climb the leaderboard.</li>
                         </ul>
+                        <br/>
+                        <img src="/assets/demo-board.png" alt="Demo Checkers Board" />
                     </div>
                     <div className='flex-child'>
                         <h4>Current Leaderboard:</h4>
