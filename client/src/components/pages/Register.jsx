@@ -86,14 +86,14 @@ const Register = () => {
     return (
         <>
             {success ? (
-                <section>
+                <div>
                     <h1>Success!</h1>
                     <p>
                         <a href="/login">Sign In</a>
                     </p>
-                </section>
+                </div>
             ) : (
-                <section>
+                <div>
                     <Header />
                     <div className="content-wrap">
                         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -177,7 +177,7 @@ const Register = () => {
                         </p>
                     </div>
                     <Footer />
-                </section>
+                </div>
             )}
         </>
     )
