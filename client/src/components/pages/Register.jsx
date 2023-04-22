@@ -1,7 +1,8 @@
-import React from "react"
+import { React, useState, useRef, useEffect } from "react"
 import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
+import Modal from '../Modal'
 import '../../styles/register.scss'
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
@@ -10,41 +11,50 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 const REGISTER_URL = process.env.REACT_APP_API_URL + "/auth/signup"
 
 const Register = () => {
-    const userRef = React.useRef()
-    const errRef = React.useRef()
+    const userRef = useRef()
+    const errRef = useRef()
 
-    const [user, setUser] = React.useState("")
-    const [validName, setValidName] = React.useState(false)
-    const [userFocus, setUserFocus] = React.useState(false)
+    const [user, setUser] = useState("")
+    const [validName, setValidName] = useState(false)
+    const [userFocus, setUserFocus] = useState(false)
 
-    const [pwd, setPwd] = React.useState("")
-    const [validPwd, setValidPwd] = React.useState(false)
-    const [pwdFocus, setPwdFocus] = React.useState(false)
+    const [pwd, setPwd] = useState("")
+    const [validPwd, setValidPwd] = useState(false)
+    const [pwdFocus, setPwdFocus] = useState(false)
 
-    const [matchPwd, setMatchPwd] = React.useState("")
-    const [validMatch, setValidMatch] = React.useState(false)
-    const [matchFocus, setMatchFocus] = React.useState(false)
+    const [matchPwd, setMatchPwd] = useState("")
+    const [validMatch, setValidMatch] = useState(false)
+    const [matchFocus, setMatchFocus] = useState(false)
 
-    const [errMsg, setErrMsg] = React.useState("")
-    const [success, setSuccess] = React.useState(false)
+    const [errMsg, setErrMsg] = useState("")
 
-    React.useEffect(() => {
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+
+    function openModal() {
+        setModalIsOpen(true);
+    }
+
+    function closeModal() {
+        setModalIsOpen(false);
+    }
+
+    useEffect(() => {
         userRef.current.focus()
     }, [])
 
-    React.useEffect(() => {
+    useEffect(() => {
         const result = USER_REGEX.test(user)
         setValidName(result)
     }, [user])
 
-    React.useEffect(() => {
+    useEffect(() => {
         const result = PWD_REGEX.test(pwd)
         setValidPwd(result)
         const match = pwd === matchPwd
         setValidMatch(match)
     }, [pwd, matchPwd])
 
-    React.useEffect(() => {
+    useEffect(() => {
         setErrMsg("")
     }, [user, pwd, matchPwd])
 
@@ -66,11 +76,9 @@ const Register = () => {
                 }
             )
             if (response.status === 200) {
-                setSuccess(true)
+                openModal()
             }
-            // console.log(JSON.stringify(response))
             console.log("Registered successfully")
-            // clear input fields?
         } catch (err) {
             if (!err?.response) {
                 setErrMsg("No Server Response")
@@ -84,102 +92,96 @@ const Register = () => {
     }
 
     return (
-        <>
-            {success ? (
-                <div>
+        <div>
+            <Header />
+            <div className="content-wrap">
+                <Modal isOpen={modalIsOpen} closeModal={closeModal}>
                     <h1>Success!</h1>
-                    <p>
-                        <a href="/login">Sign In</a>
+                    <p>A new user has been created. Please login.</p>
+                    <a href="login"><button className="large-button">Sign In</button></a>
+                </Modal>
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <h1>Register</h1>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="username">
+                        Username:
+                        <span className={validName ? "valid" : "hide"}>Valid</span>
+                        <span className={validName || !user ? "hide" : "invalid"}>Invalid</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="username"
+                        ref={userRef}
+                        autoComplete="off"
+                        onChange={(e) => setUser(e.target.value)}
+                        required
+                        aria-invalid={validName ? "false" : "true"}
+                        aria-describedby="uidnote"
+                        onFocus={() => setUserFocus(true)}
+                        onBlur={() => setUserFocus(false)}
+                    />
+                    <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
+                        4 to 24 characters.<br />
+                        Must begin with a letter.<br />
+                        Letters, numbers, underscores, hyphens allows.
                     </p>
-                </div>
-            ) : (
-                <div>
-                    <Header />
-                    <div className="content-wrap">
-                        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                        <h1>Register</h1>
-                        <form onSubmit={handleSubmit}>
-                            <label htmlFor="username">
-                                Username:
-                                <span className={validName ? "valid" : "hide"}>Valid</span>
-                                <span className={validName || !user ? "hide" : "invalid"}>Invalid</span>
-                            </label>
-                            <input
-                                type="text"
-                                id="username"
-                                ref={userRef}
-                                autoComplete="off"
-                                onChange={(e) => setUser(e.target.value)}
-                                required
-                                aria-invalid={validName ? "false" : "true"}
-                                aria-describedby="uidnote"
-                                onFocus={() => setUserFocus(true)}
-                                onBlur={() => setUserFocus(false)}
-                            />
-                            <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
-                                4 to 24 characters.<br />
-                                Must begin with a letter.<br />
-                                Letters, numbers, underscores, hyphens allows.
-                            </p>
 
-                            <br />
+                    <br />
 
-                            <label htmlFor="password">
-                                Password:
-                                <span className={validPwd ? "valid" : "hide"}>Valid</span>
-                                <span className={validPwd || !pwd ? "hide" : "invalid"}>Invalid</span>
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                onChange={(e) => setPwd(e.target.value)}
-                                required
-                                aria-invalid={validPwd ? "false" : "true"}
-                                aria-describedby="pwdnote"
-                                onFocus={() => setPwdFocus(true)}
-                                onBlur={() => setPwdFocus(false)}
-                            />
-                            <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
-                                8 to 24 characters.<br />
-                                Must include uppercase and lowercase letters, a number, and a special character.<br />
-                                Allowed special characters: !@#$%
-                            </p>
+                    <label htmlFor="password">
+                        Password:
+                        <span className={validPwd ? "valid" : "hide"}>Valid</span>
+                        <span className={validPwd || !pwd ? "hide" : "invalid"}>Invalid</span>
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        onChange={(e) => setPwd(e.target.value)}
+                        required
+                        aria-invalid={validPwd ? "false" : "true"}
+                        aria-describedby="pwdnote"
+                        onFocus={() => setPwdFocus(true)}
+                        onBlur={() => setPwdFocus(false)}
+                    />
+                    <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
+                        8 to 24 characters.<br />
+                        Must include uppercase and lowercase letters, a number, and a special character.<br />
+                        Allowed special characters: !@#$%
+                    </p>
 
-                            <br />
+                    <br />
 
-                            <label htmlFor="confirm_pwd">
-                                Confirm Password:
-                                <span className={validMatch && matchPwd ? "valid" : "hide"}>Valid</span>
-                                <span className={validMatch || !matchPwd ? "hide" : "invalid"}>Invalid</span>
-                            </label>
-                            <input
-                                type="password"
-                                id="confirm_pwd"
-                                onChange={(e) => setMatchPwd(e.target.value)}
-                                required
-                                aria-invalid={validMatch ? "false" : "true"}
-                                aria-describedby="confirmnote"
-                                onFocus={() => setMatchFocus(true)}
-                                onBlur={() => setMatchFocus(false)}
-                            />
-                            <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                                Must match the first password input field.
-                            </p>
+                    <label htmlFor="confirm_pwd">
+                        Confirm Password:
+                        <span className={validMatch && matchPwd ? "valid" : "hide"}>Valid</span>
+                        <span className={validMatch || !matchPwd ? "hide" : "invalid"}>Invalid</span>
+                    </label>
+                    <input
+                        type="password"
+                        id="confirm_pwd"
+                        onChange={(e) => setMatchPwd(e.target.value)}
+                        required
+                        aria-invalid={validMatch ? "false" : "true"}
+                        aria-describedby="confirmnote"
+                        onFocus={() => setMatchFocus(true)}
+                        onBlur={() => setMatchFocus(false)}
+                    />
+                    <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+                        Must match the first password input field.
+                    </p>
 
-                            <br />
+                    <br />
 
-                            <button disabled={!validName || !validPwd || !validMatch ? true : false}>Submit</button>
-                        </form>
+                    <button disabled={!validName || !validPwd || !validMatch ? true : false}>Submit</button>
+                </form>
 
-                        <p>
-                            Already registered?<br />
-                            <a href="/login"><button className="small-button">Sign In</button></a>
-                        </p>
-                    </div>
-                    <Footer />
-                </div>
-            )}
-        </>
+                <p>
+                    Already registered?<br />
+                    <a href="/login"><button className="small-button">Sign In</button></a>
+                </p>
+            </div>
+            <Footer />
+        </div>
     )
 }
 
