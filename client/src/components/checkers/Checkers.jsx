@@ -223,7 +223,7 @@ export default function Checkers(props) {
 
     let board = []
 
-    //time left to make a move before forfeiting
+    //count down time left to make a move before forfeiting
     React.useEffect(() => {
         let interval = null
         if (timeRemaining > 0) {
@@ -237,8 +237,7 @@ export default function Checkers(props) {
         }
     }, [timeRemaining])
 
-    // GAMEOVER CHECK: check to see if there are any pieces left on the board
-    // NEED TO ADD: check to see if there are any moves left for player
+    // GAMEOVER CHECK: check to see if there are any pieces left on the board or that a player can move a piece
     React.useEffect(() => {
         if (gameOver === false) {
             let bCount = 0
@@ -335,10 +334,9 @@ export default function Checkers(props) {
     const delay = ms => new Promise(res => setTimeout(res, ms))
 
     
-    // get response from ai or other player only if 5 seconds have passed
+    // get response from other player only if 5 seconds have passed OR get response from ai if 1 second has passed
     React.useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false && props.gameMode === 1 && renderUnload > 0) {
-            //opponent has 5*5 seconds to make a move or game will be forfeit/abandon
             if (timeoutCounter > 30) {
                 if (playerMoved === false || oppMoved === false) {
                     setModalIsOpen(true)
@@ -461,7 +459,6 @@ export default function Checkers(props) {
 
     // handle cleanup if game is closed
     function internalNavigation(event) {
-        //opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
         window.location = event.target.getAttribute('href')
     }
 
@@ -480,6 +477,7 @@ export default function Checkers(props) {
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
+    //KNOWN BUG: cleanup code to does apply a loss to someone who leaves consistently
     React.useEffect(() => {
         if (renderUnload > 0 && props.gameMode === 1 && gameOver === false) {
             if (playerMoved === false || oppMoved === false) {
@@ -597,7 +595,6 @@ export default function Checkers(props) {
                     ref={checkersBoardRef}>
                     {board}
                 </div>
-                <button onClick={externalNaviLate}>Forfeit</button>
             </>
         )
     }

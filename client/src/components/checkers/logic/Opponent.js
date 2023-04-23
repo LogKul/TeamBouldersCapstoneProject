@@ -11,10 +11,10 @@ export default class Opponent {
                 return undefined
             }
         } else if (difficulty === 1) {
-            console.log("difficulty is medium")
+            console.log("Please check difficulty settings. This option should not occur.")
             return this.aiMediumMove(boardState, oppColor)
         } else {
-            console.log("difficulty is hard")
+            console.log("Please check difficulty settings. This option should not occur.")
             return this.aiHardMove(boardState, oppColor)
         }
     }
@@ -40,7 +40,6 @@ export default class Opponent {
             if (response?.data?.gamestate === "") {
                 return boardState
             } else if (response?.data?.gamestate === "abandon") {
-                //console.log(response?.data?.gamestate)
                 return response?.data?.gamestate
             } else {
                 return JSON.parse(response?.data?.gamestate)
@@ -134,7 +133,6 @@ export default class Opponent {
                 ).then(() => {
                     sessionStorage.setItem("wins", wins + 1)
                 })
-                console.log("updated mmr win")
             }
             else if (win === false) {
 
@@ -153,7 +151,6 @@ export default class Opponent {
                 ).then(() => {
                     sessionStorage.setItem("losses", losses + 1)
                 })
-                console.log("updated mmr loss")
             }
         } catch (err) {
             console.log(err?.response)
@@ -176,7 +173,6 @@ export default class Opponent {
                     }
                 )
                 this.updateMMR(opp_data, false)
-                console.log("ran update mmr")
             } catch (err) {
                 console.log(err?.response)
             }
