@@ -39,11 +39,8 @@ const UserRecording = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-
-                {(sessionStorage.getItem("user") == username)
-                    ? <h1>Your Games</h1>
-                    : <h1>{username + "'s Games"}</h1>
-                }
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <h2>{sessionStorage.getItem("user")}'s Games</h2>
                 <table className='table'>
                     <tbody>
                         <tr className='row'>
