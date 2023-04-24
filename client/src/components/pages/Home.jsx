@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Header from '../Header'
 import Footer from '../Footer'
 import '../../styles/home.scss'
@@ -12,7 +13,7 @@ const Home = () => {
                 <h2>Dashboard</h2>
                 <a href="/play"><button className='large-button'>Play Game</button></a>
                 <br/>
-                <a href={"/recordings/" + sessionStorage.getItem("user")}><button>Game History</button></a>
+                <Link to={"/recordings" + sessionStorage.getItem("user")}><button>Game History</button></Link>
                 <a href="/account"><button>Your Account</button></a>
                 <div className='flex-container'>
                     <div className='flex-child home-left-section'>
