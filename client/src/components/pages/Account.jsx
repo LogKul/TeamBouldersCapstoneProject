@@ -77,13 +77,15 @@ const Account = () => {
             <div className='content-wrap'>
                 {success
                     ? <section>
-                        <h1>Password Updated!</h1>
+                        <h4>Password Updated!</h4>
                         <p>
                             <a href="/home">Home</a>
                         </p>
                     </section>
                     : <section>
-                        <h2>Your Stats</h2>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
+                        <h2>{sessionStorage.getItem("user")}'s Account</h2>
+                        <h4>Your Stats</h4>
                         <table className='table-account'>
                             <tr>
                                 <th className='mmr-account'>MMR</th>
