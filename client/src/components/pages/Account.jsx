@@ -1,5 +1,6 @@
 import React from 'react'
 import { useRef, useState, useEffect } from "react"
+import { Link } from 'react-router-dom'
 import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
@@ -104,7 +105,7 @@ const Account = () => {
                             </tr>
                         </table>
 
-                        <button onClick={() => openModal(true)}>Update Password</button>
+                        <button onClick={() => openModal()}>Update Password</button>
                         <br />
                         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                         <Modal isOpen={modalIsOpen} closeModal={closeModal}>
@@ -121,7 +122,7 @@ const Account = () => {
                                 <button>Submit</button>
                             </form>
                         </Modal>
-                        <a href={"/recordings/" + sessionStorage.getItem("user")}><button>Your Game Recordings</button></a>
+                        <Link to={"/recordings/" + sessionStorage.getItem("user")}><button>Your Game Recordings</button></Link>
                     </section>
                 }
             </div>
