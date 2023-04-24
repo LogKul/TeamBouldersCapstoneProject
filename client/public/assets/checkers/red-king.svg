@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="etOwW3CiFYL3-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
+      <stop id="etOwW3CiFYL3-fill-0" offset="0.15" stop-color="#f5a5a5"/>
+      <stop id="etOwW3CiFYL3-fill-1" offset="0.51" stop-color="#fc4747"/>
+      <stop id="etOwW3CiFYL3-fill-2" offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="etOwW3CiFYL4-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
+      <stop id="etOwW3CiFYL4-fill-0" offset="0.15" stop-color="#060404"/>
+      <stop id="etOwW3CiFYL4-fill-1" offset="0.51" stop-color="#fc4747"/>
+      <stop id="etOwW3CiFYL4-fill-2" offset="1" stop-color="#400a0a"/>
+    </linearGradient>
+    <linearGradient id="etOwW3CiFYL5-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
+      <stop id="etOwW3CiFYL5-fill-0" offset="0.18" stop-color="#ee5f5f"/>
+      <stop id="etOwW3CiFYL5-fill-1" offset="0.73" stop-color="#991f1f"/>
+      <stop id="etOwW3CiFYL5-fill-2" offset="0.89" stop-color="#931818"/>
+      <stop id="etOwW3CiFYL5-fill-3" offset="1" stop-color="#ef6464"/>
+    </linearGradient>
+  </defs>
+  <ellipse rx="246.894" ry="235.994" stroke-width="0" cx="247.578" cy="239.104" style=""/>
+  <ellipse rx="238.768" ry="229.01" fill="url(#etOwW3CiFYL3-fill)" stroke-width="0" cx="247.578" cy="239.104" style=""/>
+  <ellipse rx="221.153" ry="212.114" fill="url(#etOwW3CiFYL4-fill)" stroke-width="0" cx="250.127" cy="236.663" style=""/>
+  <ellipse rx="180.698" ry="173.313" fill="url(#etOwW3CiFYL5-fill)" stroke-width="0" cx="247.578" cy="234.822" style=""/>
+  <text style="fill: rgb(0, 0, 0); font-family: Arial, sans-serif; font-size: 300px; font-weight: 700; white-space: pre;" x="121.065" y="323.312">★</text>
+</svg>

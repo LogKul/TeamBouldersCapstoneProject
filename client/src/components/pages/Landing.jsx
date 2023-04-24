@@ -19,7 +19,7 @@ function Landing() {
                 <div className='flex-container'>
                     <div className='flex-child'>
                         <h4>Features:</h4>
-                        <ul className='landing-page-list'>
+                        <ul className='unordered-list'>
                             <li><FaRobot/> Play Vs. AI</li>
                             <li><GiCrossedSwords/> Play online via matchmaking.</li>
                             <li><GiRank3/> Track your account stats and matchmaking rank.</li>
