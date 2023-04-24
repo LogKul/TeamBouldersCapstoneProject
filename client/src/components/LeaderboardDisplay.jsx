@@ -1,11 +1,9 @@
 import { React, useState, useEffect } from 'react'
-import Header from '../Header'
-import Footer from '../Footer'
-import LeaderboardRow from '../LeaderboardRow'
-import axios from "../../api/axios"
-import "../../styles/leaderboard.scss"
+import LeaderboardRow from './LeaderboardRow'
+import axios from "../api/axios"
+import "../styles/leaderboard.scss"
 
-const Leaderboard = () => {
+const LeaderboardDisplay = () => {
 
     const [users, setUsers] = useState([])
 
@@ -24,6 +22,7 @@ const Leaderboard = () => {
                     withCredentials: false
                 }
             )
+            console.log(response)
             const localUserData = response?.data?.users
             setUsers(localUserData)
         } catch (err) {
@@ -33,9 +32,7 @@ const Leaderboard = () => {
 
     return (
         <div>
-            <Header />
-            <div className='content-wrap'>
-                <h1>Leaderboard</h1>
+            <div>
                 <table className='table'>
                     <tbody>
                         <tr className='bordering'>
@@ -55,9 +52,8 @@ const Leaderboard = () => {
                     </tbody>
                 </table>
             </div>
-            <Footer />
         </div>
     )
 }
 
-export default Leaderboard
+export default LeaderboardDisplay

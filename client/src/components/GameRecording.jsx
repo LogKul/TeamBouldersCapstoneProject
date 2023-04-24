@@ -1,30 +1,42 @@
-import React from 'react'
+import { React, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-//const momenttz = require('moment-timezone')
 const moment = require('moment')
 
-function GameRecording({ game }) {
-    //var time = moment.tz(game.finishedTime, "America/Denver")
-    //console.log("GAME: " + String(game))
-    //console.log("TIME: " + String(game.finishedTime))
-    //console.log("FORMATTED TIME: " + time)
+function GameRecording({ game, index }) {
+
+    const [cell_style, setClass] = useState("odd-row")
+    useEffect(() => {
+        if (index == 0) {
+            setClass("first-place even-row")
+        }
+        else if (index == 1) {
+            setClass("second-place odd-row")
+        }
+        else if (index == 2) {
+            setClass("third-place even-row")
+        }
+        else if (index % 2 == 0) {
+            setClass("even-row")
+        }
+        else {
+            setClass("odd-row")
+        }
+    }, [])
 
     return (
-        <tr>
+        <tr className='row'>
             {(game.finishedTime != null)
-                ? <td>{moment(game.finishedTime).format('MM/DD/YYYY LTS')}</td>
-                : <td>no time</td>
+                ? <td className={`${cell_style}`}>{moment(game.finishedTime).format('MM/DD/YYYY LTS')}</td>
+                : <td className={`${cell_style}`}>no time</td>
             }
             {(game.winner == game.player1)
-                ? <Link to={"/recordings/" + game.player_1.username}><td>{game.player_1.username}</td></Link>
-                : <Link to={"/recordings/" + game.player_2.username}><td>{game.player_2.username}</td></Link>
+                ? <td className={`${cell_style}`}><Link to={"/recordings/" + game.player_1.username}>{game.player_1.username}</Link></td>
+                : <td className={`${cell_style}`}><Link to={"/recordings/" + game.player_2.username}>{game.player_2.username}</Link></td>
             }
-            <Link to={"/recordings/" + game.player_1.username}><td>{game.player_1.username}</td></Link>
-            <Link to={"/recordings/" + game.player_2.username}><td>{game.player_2.username}</td></Link>
+            <td className={`${cell_style}`}><Link to={"/recordings/" + game.player_1.username}>{game.player_1.username}</Link></td>
+            <td className={`${cell_style}`}><Link to={"/recordings/" + game.player_2.username}>{game.player_2.username}</Link></td>
         </tr>
     )
 }
 
 export default GameRecording
-
-//<td>{momenttz.tz(game.finishedTime).format("MM/DD/YYYY LTS")}</td>

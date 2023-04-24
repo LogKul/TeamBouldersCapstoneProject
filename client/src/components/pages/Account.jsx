@@ -1,9 +1,9 @@
 import React from 'react'
 import { useRef, useState, useEffect } from "react"
-import { Link } from "react-router-dom"
 import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
+import Modal from '../Modal'
 import '../../styles/account.scss'
 
 const USER_URL = "/users/update?username=" + sessionStorage.getItem("user")
@@ -11,14 +11,22 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 const Account = () => {
 
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+
+    function openModal() {
+        setModalIsOpen(true);
+    }
+
+    function closeModal() {
+        setModalIsOpen(false);
+    }
+
     const errRef = useRef()
 
     const [pwd, setPwd] = useState("")
 
     const [errMsg, setErrMsg] = useState("")
     const [success, setSuccess] = useState(false)
-
-    const [showUpdateField, setShowUpdateField] = useState(false)
 
     useEffect(() => {
         setErrMsg("")
@@ -94,12 +102,13 @@ const Account = () => {
                             </tr>
                         </table>
 
-                        <button onClick={() => setShowUpdateField(true)}>Update Password</button>
+                        <button onClick={() => openModal(true)}>Update Password</button>
                         <br />
                         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                        {showUpdateField == true &&
+                        <Modal isOpen={modalIsOpen} closeModal={closeModal}>
+                            <h1>New Password</h1>
                             <form onSubmit={updateUserPassword}>
-                                <label htmlFor="password">New Password</label>
+                                <label htmlFor="password">Change Password</label>
                                 <input
                                     type="password"
                                     id="password"
@@ -107,16 +116,10 @@ const Account = () => {
                                     value={pwd}
                                     required
                                 />
-                                {showUpdateField == true &&
-                                    <button>Submit</button>
-                                }
+                                <button>Submit</button>
                             </form>
-                        }
-                        <br />
-                        <h4>Page Links:</h4>
-                        <Link to="/account/settings">Settings</Link>
-                        <br />
-                        <Link to={"/recordings/" + sessionStorage.getItem("userID")}>Your Game Recordings</Link>
+                        </Modal>
+                        <a href={"/recordings/" + sessionStorage.getItem("user")}><button>Your Game Recordings</button></a>
                     </section>
                 }
             </div>

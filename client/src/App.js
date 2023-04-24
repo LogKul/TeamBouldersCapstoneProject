@@ -14,6 +14,7 @@ import Recording from "./components/pages/Recording"
 import UserRecording from "./components/pages/UserRecording"
 import Matchmaking from "./components/pages/Matchmaking"
 import Outdated from "./components/pages/Outdated"
+import PageNotFound from "./components/pages/PageNotFound"
 import PrivateRoutes from './components/util/PrivateRoutes'
 import CheckOutdated from './components/util/CheckOutdated'
 import axios from "./api/axios"
@@ -39,7 +40,6 @@ function App() {
       // console.log(JSON.stringify(response))
       const accessToken = response?.data?.accessToken
       // console.log(response?.status)
-      console.log("REFRESH TOKEN: " + accessToken)
       sessionStorage.setItem("accessToken", accessToken)
 
     } catch (err) {
@@ -78,6 +78,7 @@ function App() {
             <Route path="/recordings/:username" element={<UserRecording />} />
           </Route>
         </Route>
+        <Route path='*' exact={true} element={<PageNotFound />} />
       </Routes>
     </main>
   )

@@ -14,8 +14,6 @@ export const AuthProvider = ({ children }) => {
         try {
             const REFRESH_URL = process.env.REACT_APP_API_URL + "/auth/refresh"
 
-            console.log(auth.user)
-            console.log(auth.accessToken)
             const response = await axios.get(REFRESH_URL,
                 {
                     params: {
@@ -28,15 +26,12 @@ export const AuthProvider = ({ children }) => {
                     withCredentials: false
                 }
             )
-            console.log(JSON.stringify(response))
+
             const accessToken = response?.data?.accessToken
             const user = auth.user
             setAuth({ user, accessToken })
-            console.log("CURRENT AUTH: ");
-            console.log(auth);
         } catch (err) {
             console.log(err?.response)
-            console.log(err)
         }
     }
 
