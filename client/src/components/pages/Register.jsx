@@ -5,7 +5,7 @@ import Footer from '../Footer'
 import Modal from '../Modal'
 import '../../styles/register.scss'
 
-const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/
+const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,15}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 const REGISTER_URL = process.env.REACT_APP_API_URL + "/auth/signup"
@@ -43,7 +43,7 @@ const Register = () => {
     }, [])
 
     useEffect(() => {
-        const result = USER_REGEX.test(user)
+        const result = USER_REGEX.test(user) && user.length <= 16
         setValidName(result)
     }, [user])
 
@@ -62,8 +62,13 @@ const Register = () => {
         e.preventDefault()
         const v1 = USER_REGEX.test(user)
         const v2 = PWD_REGEX.test(pwd)
+        const v3 = (user.length <= 16)
         if (!v1 || !v2) {
             setErrMsg("Invalid Entry")
+            return
+        }
+        else if (!v3) {
+            setErrMsg("Username must be 16 characters or less")
             return
         }
 
@@ -121,7 +126,7 @@ const Register = () => {
                         onBlur={() => setUserFocus(false)}
                     />
                     <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
-                        4 to 24 characters.<br />
+                        4 to 16 characters.<br />
                         Must begin with a letter.<br />
                         Letters, numbers, underscores, hyphens allows.
                     </p>
