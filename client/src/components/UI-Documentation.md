@@ -62,3 +62,34 @@ The modal display prop can be tied to a button press, or any piece of logic that
     }
 
     export default myPage
+
+# Icons
+
+We use the React Icons package in order to load a wide variety of icons on our pages.
+Adding icons to your page is really simple.
+First, visit this page and find the icon that you want to add: https://react-icons.github.io/react-icons/
+Second, click on the icon on that page to copy the icons code.
+Third, import the icon on the page that you want to add it it. The first two letters of the icon give a hint as to what package you should import from.
+Fourth, add the icon as a standalone HTML element where you want.
+Icons can be nested in just about any other HTML element so get creative with them!
+For example, if I wanted to add a robot icon from the Font Awesome package, I would use this code:
+
+    import Header from "../Header"
+    import Footer from "../Footer"
+
+    import { FaRobot } from "react-icons/fa"; //Import the icon.
+
+    const Robot = () => {
+        return (
+            <div>
+                <Header />
+                <div className='content-wrap'>
+                    <h1>Robot Icon</h1>
+                    <FaRobot/> //The icon as an HTML element.
+                </div>
+                <Footer />
+            </div>
+        )
+    }
+
+    export default Robot
