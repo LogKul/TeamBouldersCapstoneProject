@@ -44,6 +44,7 @@ function Header() {
                 </div>
                 <div className='header-right'>
                     <Modal isOpen={modalIsOpen} closeModal={closeModal}>
+                        <h1>Menu</h1>
                         <a href="/play"><button>Play Game</button></a><br/>
                         <a href="/leaderboard"><button>Leaderboard</button></a><br/>
                         <a href="/recordings"><button>Recordings</button></a><br/>
