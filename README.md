@@ -23,6 +23,9 @@ This website is a combination of a Node.js/React client and Express.js, which al
 <br></br>
 
 ## How To Run
+
+*Brief preface, it is highly advised to play on the website at [playcheckersnow.com](https://playcheckersnow.com/) if you are just trying to run the code without any changes (such as a certain professor we know), as the environment variables and database configuration can be a bit of a hassle to set up, and are not included in this public repository.*
+
 1. Install Node.js
 2. Clone this repository
 3. Within the /api directory, you will need to set environment variables within a .env file as follows:
