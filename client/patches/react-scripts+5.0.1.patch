@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-scripts/config/webpackDevServer.config.js b/node_modules/react-scripts/config/webpackDevServer.config.js
-index 522a81b..45199fe 100644
+index 522a81b..b4e67e9 100644
 --- a/node_modules/react-scripts/config/webpackDevServer.config.js
 +++ b/node_modules/react-scripts/config/webpackDevServer.config.js
 @@ -45,9 +45,23 @@ module.exports = function (proxy, allowedHost) {
@@ -9,13 +9,13 @@ index 522a81b..45199fe 100644
 -      'Access-Control-Allow-Origin': '*',
 +      'Cache-Control': 'no-store, max-age=0',
 +      //'Clear-Site-Data':'\"cache\",\"cookies\",\"storage\"',
-+      'default-src': "'self' update.googleapis.com update.googleapis.com content-autofill.googleapis.com optimizationguide-pa.googleapis.com fonts.gstatic.com playcheckersnow.com accounts.google.com",
-+      'Content-Security-Policy': "script-source 'self' update.googleapis.com update.googleapis.com content-autofill.googleapis.com optimizationguide-pa.googleapis.com fonts.gstatic.com playcheckersnow.com accounts.google.com; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",
++      'Content-Security-Policy': "'default-src' 'self' update.googleapis.com update.googleapis.com content-autofill.googleapis.com optimizationguide-pa.googleapis.com fonts.gstatic.com playcheckersnow.com accounts.google.com; script-source 'self' update.googleapis.com update.googleapis.com content-autofill.googleapis.com optimizationguide-pa.googleapis.com fonts.gstatic.com playcheckersnow.com accounts.google.com; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",
 +      'Cross-Origin-Embedder-Policy': 'require-corp',
 +      'Cross-Origin-Opener-Policy': 'same-origin',
 +      'Cross-Origin-Resource-Policy': 'same-origin',
 +      'Permissions-Policy': 'accelerometer=(),ambient-light-sensor=(),autoplay=(),battery=(),camera=(),display-capture=(),document-domain=(),encrypted-media=(),fullscreen=(),gamepad=(),geolocation=(),gyroscope=(),layout-animations=(self),legacy-image-formats=(self),magnetometer=(),microphone=(),midi=(),oversized-images=(self),payment=(),picture-in-picture=(),publickey-credentials-get=(),speaker-selection=(),sync-xhr=(self),unoptimized-images=(self),unsized-media=(self),usb=(),screen-wake-lock=(),web-share=(),xr-spatial-tracking=()',
 +      'Pragma' : 'no-cache',
++      'referrer-policy': 'no-referrer',
 +      'X-DNS-Prefetch-Control': 'off',
 +      'X-Frame-Options': 'SAMEORIGIN',
 +      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
