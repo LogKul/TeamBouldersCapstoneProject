@@ -33,7 +33,7 @@ app.use(
     },
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"],
+        defaultSrc: ["'self' update.googleapis.com update.googleapis.com content-autofill.googleapis.com optimizationguide-pa.googleapis.com fonts.gstatic.com playcheckersnow.com accounts.google.com"],
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
         upgradeInsecureRequests: [],
