@@ -1,11 +1,16 @@
 ===========================
           Pages
 ===========================
+Last updated: 4/24/2023
+
+
 
 All pages route from the base page.
 
 Local access via NPM: localhost:3000
 Web access: https://playcheckersnow.com
+
+
 
 
 
@@ -24,9 +29,9 @@ While logged in, the navigation bar functions from left to right as follows:
 Home (Checkers icon - redirects to Home page),
 Play Game (redirects to Play page),
 Leaderboard (redirects to Leaderboard page),
-Recording (redirects to Recordings page),
+Game History (redirects to Recordings page),
 Account (redirects to Account page),
-LOGOUT (redirects to base page)
+LOGOUT (redirects to base page and removes stored access token)
 
 Once a user is logged in, they are given an access token which will automatically refresh every
 2 minutes. If the access token expires or a user closes the site, they will need to log in again.
@@ -121,4 +126,165 @@ page.
 
 -----------------
 Home page:
+-----------------
+
+The home page includes 3 buttons:
+
+Play Game (redirects to Play page)
+Game History (redirects to Recordings page specific to the user)
+Your Account (redirects to Account page)
+
+The home page also contains dashboard information, specifically the players stats (MMR, Wins,
+Losses, and W/L Ratio).
+
+
+
+
+
+
+
+
+-----------------
+Account page:
+-----------------
+
+The accounge page includes 2 buttons:
+
+'Update Password' opens a modal containing 1 field for the user to input a new password. Once the
+new password is submitted by clicking the 'Submit' button, the new password is updated in the
+database and a success message is shown on the account page. There are no error messages that
+display in the password update page; however, error messages will show up in the the console log.
+The success message also contains a link to return 'Home'.
+
+Your Game Recordings (redirects to Recordings page specific to the user)
+
+The account page also contains stat information specific to the player (MMR, Wins, Losses, and W/L
+Ratio).
+
+
+
+
+
+-----------------
+Recordings page:
+-----------------
+
+The Recordings page when accessed via 'Game History' in the navigation bar, lists all the games
+played by all players.
+
+Each players name can be clicked which will redirect to the Recordings page specific to the
+username clicked.
+
+Recordings pages specific to a username include only games that user has played.
+
+Game information displayed includes Time Finished, Winner, Red Player, and Black Player.
+
+
+
+
+
+
+-----------------
+Leaderboard page:
+-----------------
+
+The Leaderboard page lists all the players in order by their rank where 1st is the highest rank.
+
+Included for each player record is their username, MMR, Winrate (W/L Ratio), Wins, and Losses.
+
+Each players name can be clicked which will redirect to the Recordings page specific to the
+username clicked.
+
+
+
+
+
+
+-----------------
+Play page:
+-----------------
+
+The Play page includes 2 buttons:
+
+Offline Against AI (redirects to Game page)
+PVP Online (redirects to Matchmaking page)
+
+Features of gameplay are shown under each button which describe what the player can expect when
+they choose between playing AI or Online.
+
+
+
+
+
+
+-----------------
+Game page:
+-----------------
+
+The Game page initially displays a modal for the player to choose their color. This is done with 2
+buttons labelled accordingly 'Play as Red' and 'Play as Black'. If the 'Close' button is clicked,
+the modal will close and a button 'Choose Color' will be shown which, if clicked, will reopen the
+modal for the player to choose their color.
+
+After choosing a color, the Checkers game engine runs and begins the game with the player playing
+as their chosen color.
+
+**See more below about the Checkers game engine for AI**
+
+After the game ends, a modal is displayed that indicates if the player has won or lost. It is also
+indicated the reason the player has won or lost. 3 buttons are shown in the modal:
+
+Play Another (redirects to the Play page)
+Return Home (redirects to the Home page)
+
+'Close' button closes the modal showing a message indicating whether the player won or lost.
+
+
+
+
+
+
+-----------------
+Matchmaking page:
+-----------------
+
+The Matchmaking page initially searches for an open game for the player to join. If no games exist,
+a game is created and the player is put into a pairing queue while they wait for another player to
+join. If a game does exist, the player joins the game and waits for the Checkers game engine to run.
+A message indicates when the player is searching for a game and a seperate message indicates when
+the player is waiting for another player to join the game. When joining a game, both players are
+randomly given a color.
+
+After 2 players have joined a game, the Checkers game engine runs with each player playing as their
+randomly generated color.
+
+**See more below about the Checkers game engine for Online**
+
+After the game ends, a modal is displayed that indicates if the player has won or lost. It is also
+indicated the reason the player has won or lost. 3 buttons are shown in the modal:
+
+Play Another (redirects to the Play page)
+Return Home (redirects to the Home page)
+
+'Close' button closes the modal showing a message indicating whether the player won or lost.
+
+
+
+
+
+
+===========================
+   Checkers Game Engine
+===========================
+
+-----------------
+Checkers rules:
+-----------------
+
+-----------------
+Against AI:
+-----------------
+
+-----------------
+Online:
 -----------------
