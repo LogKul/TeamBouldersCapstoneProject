@@ -9,7 +9,7 @@ index 522a81b..c39e632 100644
 -      'Access-Control-Allow-Origin': '*',
 +      'Cache-Control': 'no-store, max-age=0',
 +      //'Clear-Site-Data':'\"cache\",\"cookies\",\"storage\"',
-+      'Content-Security-Policy': "script-source 'self' update.googleapis.com update.googleapis.com content-autofill.googleapis.com optimizationguide-pa.googleapis.com fonts.gstatic.com playcheckersnow.com accounts.google.com; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",      'Cross-Origin-Embedder-Policy': 'require-corp',
++      'content-security-policy': "script-source 'self' update.googleapis.com update.googleapis.com content-autofill.googleapis.com optimizationguide-pa.googleapis.com fonts.gstatic.com playcheckersnow.com accounts.google.com; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",      'Cross-Origin-Embedder-Policy': 'require-corp',
 +      'Cross-Origin-Opener-Policy': 'same-origin',
 +      'Cross-Origin-Resource-Policy': 'same-origin',
 +      'Permissions-Policy': 'accelerometer=(),ambient-light-sensor=(),autoplay=(),battery=(),camera=(),display-capture=(),document-domain=(),encrypted-media=(),fullscreen=(),gamepad=(),geolocation=(),gyroscope=(),layout-animations=(self),legacy-image-formats=(self),magnetometer=(),microphone=(),midi=(),oversized-images=(self),payment=(),picture-in-picture=(),publickey-credentials-get=(),speaker-selection=(),sync-xhr=(self),unoptimized-images=(self),unsized-media=(self),usb=(),screen-wake-lock=(),web-share=(),xr-spatial-tracking=()',
