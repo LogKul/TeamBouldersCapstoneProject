@@ -37,7 +37,7 @@ const Recording = () => {
             <Header />
             <div className='content-wrap'>
 
-                <h1>Global Game History</h1>
+                <h2>Global Game History</h2>
                 <table className='table'>
                     <tbody>
                         <tr className='row'>
