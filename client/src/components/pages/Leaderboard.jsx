@@ -35,7 +35,7 @@ const Leaderboard = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>Leaderboard</h1>
+                <h2>Leaderboard</h2>
                 <table className='table'>
                     <tbody>
                         <tr className='bordering'>

@@ -44,15 +44,16 @@ function Header() {
                 </div>
                 <div className='header-right'>
                     <Modal isOpen={modalIsOpen} closeModal={closeModal}>
-                        <a href="/play"><button>Play Game</button></a><br/>
-                        <a href="/leaderboard"><button>Leaderboard</button></a><br/>
-                        <a href="/recordings"><button>Recordings</button></a><br/>
-                        <a href="/account"><button>Account</button></a><br/>
+                        <h4>Menu</h4>
+                        <a href="/play"><button className='small-button'>Play Game</button></a><br/>
+                        <a href="/leaderboard"><button className='small-button'>Leaderboard</button></a><br/>
+                        <a href="/recordings"><button className='small-button'>Game History</button></a><br/>
+                        <a href="/account"><button className='small-button'>Account</button></a><br/>
                         {sessionStorage.getItem("user", user) != null &&
-                            <a href="/" onClick={() => { sessionStorage.clear() }}><button>LOGOUT</button></a>
+                            <a href="/" onClick={() => { sessionStorage.clear() }}><button className='small-button'>LOGOUT</button></a>
                         }
                         {sessionStorage.getItem("user", user) == null &&
-                            <a href="/login" onClick={() => { sessionStorage.clear() }}><button>LOGIN</button></a>
+                            <a href="/login" onClick={() => { sessionStorage.clear() }}><button className='small-button'>LOGIN</button></a>
                         }
                     </Modal>
                     <a href="#" onClick={openModal}><AiOutlineMenu /></a>
@@ -77,7 +78,7 @@ function Header() {
                 <div className='header-right'>
                     <Link to="/play">Play Game</Link>
                     <Link to="/leaderboard">Leaderboard</Link>
-                    <Link to="/recordings">Recording</Link>
+                    <Link to="/recordings">Game History</Link>
                     <Link to="/account">Account</Link>
                     {sessionStorage.getItem("user", user) != null &&
                         <Link to="/" onClick={() => { sessionStorage.clear() }}>LOGOUT</Link>

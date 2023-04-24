@@ -14,8 +14,9 @@ function Landing() {
             <Header />
             <div className='content-wrap landing-page'>
                 <h1>Welcome To Checkers!</h1>
-                <p>Please sign to access all functions on the site.</p>
-                <a href="/Login"><button className='large-button'>Login</button></a>
+                <p>Please create an account to access all functions on the site.</p>
+                <a href="register"><button>Sign Up</button></a>
+                <a href="/Login"><button>Login</button></a>
                 <div className='flex-container'>
                     <div className='flex-child'>
                         <h4>Features:</h4>

@@ -9,7 +9,7 @@ const Play = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>Choose Your Opponent</h1>
+                <h2>Choose Your Opponent</h2>
                 <div className='flex-container'>
                     <div className='flex-child'>
                         <a href="/game"><button className='large-button'><FaRobot/> Offline Against AI <FaRobot/></button></a>
