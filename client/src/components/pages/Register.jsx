@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom"
 import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
-//import Modal from '../Modal'
 import '../../styles/register.scss'
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,15}$/
@@ -31,16 +30,6 @@ const Register = () => {
     const [errMsg, setErrMsg] = useState("")
 
     const navigate = useNavigate()
-
-    //const [modalIsOpen, setModalIsOpen] = useState(false)
-
-    // function openModal() {
-    //     setModalIsOpen(true);
-    // }
-
-    // function closeModal() {
-    //     setModalIsOpen(false);
-    // }
 
     useEffect(() => {
         userRef.current.focus()
@@ -147,11 +136,6 @@ const Register = () => {
         <div>
             <Header />
             <div className="content-wrap">
-                {/* <Modal isOpen={modalIsOpen} closeModal={closeModal}>
-                    <h1>Success!</h1>
-                    <p>A new user has been created. Please login.</p>
-                    <a href="login"><button className="large-button">Sign In</button></a>
-                </Modal> */}
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                 <h1>Register</h1>
                 <form onSubmit={handleSubmit}>
