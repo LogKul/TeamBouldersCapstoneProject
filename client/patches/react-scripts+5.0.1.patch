@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-scripts/config/webpackDevServer.config.js b/node_modules/react-scripts/config/webpackDevServer.config.js
-index 522a81b..faf918e 100644
+index 522a81b..bd75e4f 100644
 --- a/node_modules/react-scripts/config/webpackDevServer.config.js
 +++ b/node_modules/react-scripts/config/webpackDevServer.config.js
 @@ -45,9 +45,23 @@ module.exports = function (proxy, allowedHost) {
@@ -10,7 +10,7 @@ index 522a81b..faf918e 100644
 +      'Cache-Control': 'no-store, max-age=0',
 +      //'Clear-Site-Data':'\"cache\",\"cookies\",\"storage\"',
 +      //default-src 'self' https://shark-app-e6tu3.ondigitalocean.app https://fonts.googleapis.com;
-+      'Content-Security-Policy': "object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",
++      'Content-Security-Policy': "script-source 'self' update.googleapis.com update.googleapis.com content-autofill.googleapis.com optimizationguide-pa.googleapis.com fonts.gstatic.com playcheckersnow.com accounts.google.com; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content",
 +      'Cross-Origin-Embedder-Policy': 'require-corp',
 +      'Cross-Origin-Opener-Policy': 'same-origin',
 +      'Cross-Origin-Resource-Policy': 'same-origin',
