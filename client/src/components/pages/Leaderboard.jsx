@@ -24,7 +24,6 @@ const Leaderboard = () => {
                     withCredentials: false
                 }
             )
-            console.log(response)
             const localUserData = response?.data?.users
             setUsers(localUserData)
         } catch (err) {
