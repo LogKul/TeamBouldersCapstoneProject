@@ -80,7 +80,7 @@ const Account = () => {
                     ? <section>
                         <h4>Password Updated!</h4>
                         <p>
-                            <a href="/home">Home</a>
+                            <Link to={"/home"}><button>Home</button></Link>
                         </p>
                     </section>
                     : <section>
