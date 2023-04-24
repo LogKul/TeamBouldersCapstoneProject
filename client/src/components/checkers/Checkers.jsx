@@ -158,13 +158,13 @@ export default function Checkers(props) {
                                 }
                                 if (p.color === 0) {
                                     if (x === 0) {
-                                        p.image = "/assets/checkers/red-king.png"
+                                        p.image = "/assets/checkers/red-king.svg"
                                         p.king = true
                                         allowMove = false
                                     }
                                 } else {
                                     if (x === 7) {
-                                        p.image = "/assets/checkers/black-king.png"
+                                        p.image = "/assets/checkers/black-king.svg"
                                         p.king = true
                                         allowMove = false
                                     }
