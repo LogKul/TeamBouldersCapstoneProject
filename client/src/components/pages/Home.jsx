@@ -11,10 +11,10 @@ const Home = () => {
             <Header />
             <div className='content-wrap'>
                 <h2>Dashboard</h2>
-                <a href="/play"><button className='large-button'>Play Game</button></a>
+                <Link to={"/play"}><button className='large-button'>Play Game</button></Link>
                 <br/>
                 <Link to={"/recordings/" + sessionStorage.getItem("user")}><button>Game History</button></Link>
-                <a href="/account"><button>Your Account</button></a>
+                <Link to={"/account"}><button>Your Account</button></Link>
                 <div className='flex-container'>
                     <div className='flex-child home-left-section'>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
