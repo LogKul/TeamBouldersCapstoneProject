@@ -47,7 +47,7 @@ function Header() {
                         <h4>Menu</h4>
                         <a href="/play"><button className='small-button'>Play Game</button></a><br/>
                         <a href="/leaderboard"><button className='small-button'>Leaderboard</button></a><br/>
-                        <a href="/recordings"><button className='small-button'>Recordings</button></a><br/>
+                        <a href="/recordings"><button className='small-button'>Game History</button></a><br/>
                         <a href="/account"><button className='small-button'>Account</button></a><br/>
                         {sessionStorage.getItem("user", user) != null &&
                             <a href="/" onClick={() => { sessionStorage.clear() }}><button className='small-button'>LOGOUT</button></a>
@@ -78,7 +78,7 @@ function Header() {
                 <div className='header-right'>
                     <Link to="/play">Play Game</Link>
                     <Link to="/leaderboard">Leaderboard</Link>
-                    <Link to="/recordings">Recording</Link>
+                    <Link to="/recordings">Game History</Link>
                     <Link to="/account">Account</Link>
                     {sessionStorage.getItem("user", user) != null &&
                         <Link to="/" onClick={() => { sessionStorage.clear() }}>LOGOUT</Link>
