@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/header.scss'
 import { AiOutlineMenu } from "react-icons/ai"
@@ -7,6 +7,15 @@ import Modal from './Modal'
 function Header() {
 
     const user = useState("")
+
+    const [width, setWidth]   = useState(window.innerWidth);
+    const updateDimensions = () => {
+        setWidth(window.innerWidth);
+    }
+    useEffect(() => {
+        window.addEventListener("resize", updateDimensions);
+        return () => window.removeEventListener("resize", updateDimensions);
+    }, []);
 
     const [modalIsOpen, setModalIsOpen] = useState(false)
 
@@ -18,7 +27,7 @@ function Header() {
         setModalIsOpen(false);
     }
 
-    if (window.innerWidth <= 1024) {
+    if (width <= 1235) {
         return (
             <div className='header'>
                 <div className='header-left'>
