@@ -1,14 +1,16 @@
 import { React, useState, useRef, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
-import Modal from '../Modal'
+//import Modal from '../Modal'
 import '../../styles/register.scss'
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,15}$/
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 const REGISTER_URL = process.env.REACT_APP_API_URL + "/auth/signup"
+const LOGIN_URL = process.env.REACT_APP_API_URL + "/auth/login"
 
 const Register = () => {
     const userRef = useRef()
@@ -28,15 +30,17 @@ const Register = () => {
 
     const [errMsg, setErrMsg] = useState("")
 
-    const [modalIsOpen, setModalIsOpen] = useState(false)
+    const navigate = useNavigate()
 
-    function openModal() {
-        setModalIsOpen(true);
-    }
+    //const [modalIsOpen, setModalIsOpen] = useState(false)
 
-    function closeModal() {
-        setModalIsOpen(false);
-    }
+    // function openModal() {
+    //     setModalIsOpen(true);
+    // }
+
+    // function closeModal() {
+    //     setModalIsOpen(false);
+    // }
 
     useEffect(() => {
         userRef.current.focus()
@@ -81,7 +85,7 @@ const Register = () => {
                 }
             )
             if (response.status === 200) {
-                openModal()
+                handleLogin()
             }
             console.log("Registered successfully")
         } catch (err) {
@@ -96,15 +100,58 @@ const Register = () => {
         }
     }
 
+    const handleLogin = async () => {
+
+        try {
+            const response = await axios.get(LOGIN_URL,
+                { params: { username: user, password: pwd } },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: false
+                }
+            )
+
+            sessionStorage.setItem("user", user)
+            sessionStorage.setItem("userID", response?.data?.id)
+            sessionStorage.setItem("wins", response?.data?.wins)
+            sessionStorage.setItem("losses", response?.data?.losses)
+            sessionStorage.setItem("mmr", response?.data?.mmr)
+            sessionStorage.setItem("deleted", response?.data?.deleted)
+            sessionStorage.setItem("lightswitch", response?.data?.lightswitch)
+            sessionStorage.setItem("theme", response?.data?.theme)
+            sessionStorage.setItem("banned", response?.data?.banned)
+            sessionStorage.setItem("hideschat", response?.data?.hideschat)
+            sessionStorage.setItem("accessToken", response?.data?.accessToken)
+            console.log("Logged in")
+
+            setUser("")
+            setPwd("")
+            navigate("/Home")
+            console.log("Navigating to home")
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response")
+            } else if (err.response?.status === 401) {
+                setErrMsg("Invalid Password")
+            } else if (err.response?.status === 404) {
+                setErrMsg("User Not Found")
+            } else {
+                setErrMsg("Login Failed")
+            }
+            console.log(err?.response)
+            errRef.current.focus()
+        }
+    }
+
     return (
         <div>
             <Header />
             <div className="content-wrap">
-                <Modal isOpen={modalIsOpen} closeModal={closeModal}>
+                {/* <Modal isOpen={modalIsOpen} closeModal={closeModal}>
                     <h1>Success!</h1>
                     <p>A new user has been created. Please login.</p>
                     <a href="login"><button className="large-button">Sign In</button></a>
-                </Modal>
+                </Modal> */}
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                 <h1>Register</h1>
                 <form onSubmit={handleSubmit}>
