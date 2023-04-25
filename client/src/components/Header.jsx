@@ -32,31 +32,31 @@ function Header() {
             <div className='header'>
                 <div className='header-left'>
                     {sessionStorage.getItem("user", user) != null &&
-                        <a href="/Home">
+                        <Link to={"/home"}>
                             <img src="/Checkerboard.ico" alt="Checkers Logo" />
-                        </a>
+                        </Link>
                     }
                     {sessionStorage.getItem("user", user) == null &&
-                        <a href="/">
+                        <Link to={"/"}>
                             <img src="/Checkerboard.ico" alt="Checkers Logo" />
-                        </a>
+                        </Link>
                     }
                 </div>
                 <div className='header-right'>
                     <Modal isOpen={modalIsOpen} closeModal={closeModal}>
                         <h4>Menu</h4>
-                        <a href="/play"><button className='small-button'>Play Game</button></a><br/>
-                        <a href="/leaderboard"><button className='small-button'>Leaderboard</button></a><br/>
-                        <a href="/recordings"><button className='small-button'>Game History</button></a><br/>
-                        <a href="/account"><button className='small-button'>Account</button></a><br/>
+                        <Link to={"/play"}><button className='small-button'>Play Game</button></Link><br/>
+                        <Link to={"/leaderboard"}><button className='small-button'>Leaderboard</button></Link><br/>
+                        <Link to={"/recordings"}><button className='small-button'>Game History</button></Link><br/>
+                        <Link to={"/account"}><button className='small-button'>Account</button></Link><br/>
                         {sessionStorage.getItem("user", user) != null &&
-                            <a href="/" onClick={() => { sessionStorage.clear() }}><button className='small-button'>LOGOUT</button></a>
+                            <Link to={"/"} onClick={() => { sessionStorage.clear() }}><button className='small-button'>LOGOUT</button></Link>
                         }
                         {sessionStorage.getItem("user", user) == null &&
-                            <a href="/login" onClick={() => { sessionStorage.clear() }}><button className='small-button'>LOGIN</button></a>
+                            <Link to={"/login"} onClick={() => { sessionStorage.clear() }}><button className='small-button'>LOGIN</button></Link>
                         }
                     </Modal>
-                    <a href="#" onClick={openModal}><AiOutlineMenu /></a>
+                    <Link to={"#"} onClick={openModal}><AiOutlineMenu /></Link>
                 </div>
             </div>
         )
@@ -65,14 +65,14 @@ function Header() {
             <div className='header'>
                 <div className='header-left'>
                     {sessionStorage.getItem("user", user) != null &&
-                        <a href="/Home">
+                        <Link to={"/home"}>
                             <img src="/Checkerboard.ico" alt="Checkers Logo" />
-                        </a>
+                        </Link>
                     }
                     {sessionStorage.getItem("user", user) == null &&
-                        <a href="/">
+                        <Link to={"/"}>
                             <img src="/Checkerboard.ico" alt="Checkers Logo" />
-                        </a>
+                        </Link>
                     }
                 </div>
                 <div className='header-right'>

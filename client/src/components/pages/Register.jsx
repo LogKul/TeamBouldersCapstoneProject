@@ -1,5 +1,5 @@
 import { React, useState, useRef, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import axios from "../../api/axios"
 import Header from '../Header'
 import Footer from '../Footer'
@@ -213,7 +213,7 @@ const Register = () => {
 
                 <p>
                     Already registered?<br />
-                    <a href="/login"><button className="small-button">Sign In</button></a>
+                    <Link to={"/login"}><button className="small-button">Sign In</button></Link>
                 </p>
             </div>
             <Footer />

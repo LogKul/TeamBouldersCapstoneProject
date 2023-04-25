@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import Header from '../Header'
 import Footer from '../Footer'
 import { GiCrossedSwords } from "react-icons/gi";
@@ -12,7 +13,7 @@ const Play = () => {
                 <h2>Choose Your Opponent</h2>
                 <div className='flex-container'>
                     <div className='flex-child'>
-                        <a href="/game"><button className='large-button'><FaRobot/> Offline Against AI <FaRobot/></button></a>
+                        <Link to={"/game"}><button className='large-button'><FaRobot/> Offline Against AI <FaRobot/></button></Link>
                         <ul className='unordered-list'>
                             <li>No time limit.</li>
                             <li>Stats are not saved.</li>
@@ -20,7 +21,7 @@ const Play = () => {
                         </ul>
                     </div>
                     <div className='flex-child'>
-                        <a href="/matchmaking"><button className='large-button'>PVP <GiCrossedSwords/> Online</button></a>
+                        <Link to={"/matchmaking"}><button className='large-button'>PVP <GiCrossedSwords/> Online</button></Link>
                         <ul className='unordered-list'>
                             <li>Automatic matchmaking</li>
                             <li>Timed games.</li>
@@ -30,7 +31,6 @@ const Play = () => {
                         </ul>
                     </div>
                 </div>
-
             </div>
             <Footer />
         </div>

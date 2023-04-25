@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Header from '../Header'
 import Footer from '../Footer'
 import '../../styles/landing.scss'
@@ -15,8 +16,8 @@ function Landing() {
             <div className='content-wrap landing-page'>
                 <h1>Welcome To Checkers!</h1>
                 <p>Please create an account to access all functions on the site.</p>
-                <a href="register"><button>Sign Up</button></a>
-                <a href="/Login"><button>Login</button></a>
+                <Link to={"/register"}><button>Sign Up</button></Link>
+                <Link to={"/login"}><button>Login</button></Link>
                 <div className='flex-container'>
                     <div className='flex-child'>
                         <h4>Features:</h4>
