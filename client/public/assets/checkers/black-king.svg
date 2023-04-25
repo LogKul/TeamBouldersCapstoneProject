@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="elWyENa9SAt3-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
-      <stop id="elWyENa9SAt3-fill-0" offset="0.15" stop-color="#3c3c3c"/>
-      <stop id="elWyENa9SAt3-fill-1" offset="0.58" stop-color="#9f9f9f"/>
-      <stop id="elWyENa9SAt3-fill-2" offset="1" stop-color="#4a4a4a"/>
+    <linearGradient id="etOwW3CiFYL3-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
+      <stop id="etOwW3CiFYL3-fill-0" offset="0.15" stop-color="#3c3c3c"/>
+      <stop id="etOwW3CiFYL3-fill-1" offset="0.51" stop-color="#9f9f9f"/>
+      <stop id="etOwW3CiFYL3-fill-2" offset="1" stop-color="#4a4a4a"/>
     </linearGradient>
-    <linearGradient id="elWyENa9SAt4-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
-      <stop id="elWyENa9SAt4-fill-0" offset="0.1149" stop-color="#000"/>
-      <stop id="elWyENa9SAt4-fill-1" offset="0.51" stop-color="#4a4a4a"/>
-      <stop id="elWyENa9SAt4-fill-2" offset="1" stop-color="#010101"/>
+    <linearGradient id="etOwW3CiFYL4-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
+      <stop id="etOwW3CiFYL4-fill-0" offset="0.15" stop-color="#000"/>
+      <stop id="etOwW3CiFYL4-fill-1" offset="0.51" stop-color="#4a4a4a"/>
+      <stop id="etOwW3CiFYL4-fill-2" offset="1" stop-color="#010101"/>
     </linearGradient>
-    <linearGradient id="elWyENa9SAt5-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
-      <stop id="elWyENa9SAt5-fill-0" offset="0.18" stop-color="#252525"/>
-      <stop id="elWyENa9SAt5-fill-1" offset="0.4" stop-color="#000"/>
-      <stop id="elWyENa9SAt5-fill-2" offset="0.77" stop-color="#333"/>
-      <stop id="elWyENa9SAt5-fill-3" offset="1" stop-color="#090909"/>
+    <linearGradient id="etOwW3CiFYL5-fill" x1="0" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)">
+      <stop id="etOwW3CiFYL5-fill-0" offset="0.18" stop-color="#252525"/>
+      <stop id="etOwW3CiFYL5-fill-1" offset="0.73" stop-color="#000"/>
+      <stop id="etOwW3CiFYL5-fill-2" offset="0.89" stop-color="#333"/>
+      <stop id="etOwW3CiFYL5-fill-3" offset="1" stop-color="#090909"/>
     </linearGradient>
   </defs>
-  <ellipse rx="247.017" ry="222.927" stroke-width="0" cx="250.457" cy="228.719" style=""/>
-  <ellipse rx="238.884" ry="216.327" fill="url(#elWyENa9SAt3-fill)" stroke-width="0" cx="250.457" cy="228.719" style=""/>
-  <ellipse rx="221.262" ry="200.369" fill="url(#elWyENa9SAt4-fill)" stroke-width="0" cx="253.004" cy="226.413" style=""/>
-  <ellipse rx="180.788" ry="163.717" fill="url(#elWyENa9SAt5-fill)" stroke-width="0" cx="250.457" cy="224.674" style=""/>
-  <text style="fill: rgb(167, 35, 35); font-family: Arial, sans-serif; font-size: 137px; white-space: pre;" x="35.878" y="136.518" transform="matrix(2.750376, 0, 0, 2.490667, -6.021297, -8.633943)">★</text>
+  <ellipse rx="246.894" ry="235.994" stroke-width="0" cx="247.578" cy="239.104" style=""/>
+  <ellipse rx="238.768" ry="229.01" fill="url(#etOwW3CiFYL3-fill)" stroke-width="0" cx="247.578" cy="239.104" style=""/>
+  <ellipse rx="221.153" ry="212.114" fill="url(#etOwW3CiFYL4-fill)" stroke-width="0" cx="250.127" cy="236.663" style=""/>
+  <ellipse rx="180.698" ry="173.313" fill="url(#etOwW3CiFYL5-fill)" stroke-width="0" cx="247.578" cy="234.822" style=""/>
+  <text style="fill: rgb(167, 35, 35); font-family: Arial, sans-serif; font-size: 137px; white-space: pre;" x="25" y="150" transform="matrix(2.750376, 0, 0, 2.490667, -6.021297, -8.633943)">♛</text>
 </svg>
