@@ -6,8 +6,17 @@ import Logic from "./logic/Logic"
 import Opponent from "./logic/Opponent"
 import Modal from "../Modal"
 import AILogic from "./logic/AILogic"
+import useSound from "use-sound"
+import grabSFX from "../../sfx/pickup.mp3"
+import dropSFX from "../../sfx/put-down.mp3"
+import captureSFX from "../../sfx/capture.mp3"
+import enemySFX from "../../sfx/enemy.mp3"
+import crownSFX from "../../sfx/crown.mp3"
+import victorySFX from "../../sfx/victory.mp3"
+import gameOverSFX from "../../sfx/game-over.mp3"
 
 export default function Checkers(props) {
+
     const initialBoardState = []
 
     for (let i = 0; i < 8; i++) {
@@ -49,6 +58,38 @@ export default function Checkers(props) {
 
     let gameover = false
 
+    //SFX
+    const [playPickupSFX] = useSound(
+        grabSFX
+    )
+
+    const [playDropSFX] = useSound(
+        dropSFX
+    )
+
+    const [playCaptureSFX] = useSound(
+        captureSFX
+    )
+
+    const [playEnemySFX] = useSound(
+        enemySFX,
+        { volume: 0.4 }
+    )
+
+    const [playCrownSFX] = useSound(
+        crownSFX
+    )
+
+    const [playVictorySFX] = useSound(
+        victorySFX,
+        { volume: 0.75 }
+    )
+
+    const [playGameOverSFX] = useSound(
+        gameOverSFX,
+        { volume: 0.75 }
+    )
+
     const grabPiece = (e) => {
 
         const element = e.target
@@ -72,6 +113,7 @@ export default function Checkers(props) {
             element.style.top = y + 'px'
 
             setActivePiece(element)
+            playPickupSFX()
         }
     }
 
@@ -140,20 +182,24 @@ export default function Checkers(props) {
                                         removeX = x + 1
                                         removeY = y + 1
                                         spliceVal = 1
+                                        playCaptureSFX()
                                     } else {
                                         removeX = x + 1
                                         removeY = y - 1
                                         spliceVal = 1
+                                        playCaptureSFX()
                                     }
                                 } else if (gridX === (x - 2)) {
                                     if (gridY === (y + 2)) {
                                         removeX = x - 1
                                         removeY = y + 1
                                         spliceVal = 1
+                                        playCaptureSFX()
                                     } else {
                                         removeX = x - 1
                                         removeY = y - 1
                                         spliceVal = 1
+                                        playCaptureSFX()
                                     }
                                 }
                                 if (p.color === 0) {
@@ -161,12 +207,14 @@ export default function Checkers(props) {
                                         p.image = "/assets/checkers/red-king.svg"
                                         p.king = true
                                         allowMove = false
+                                        playCrownSFX()
                                     }
                                 } else {
                                     if (x === 7) {
                                         p.image = "/assets/checkers/black-king.svg"
                                         p.king = true
                                         allowMove = false
+                                        playCrownSFX()
                                     }
                                 }
                                 p.x = x
@@ -200,6 +248,7 @@ export default function Checkers(props) {
                 })
             }
             setActivePiece(undefined)
+            playDropSFX()
         }
     }
 
@@ -268,6 +317,7 @@ export default function Checkers(props) {
             if (possiblePlayerMoves.length === 0 && bCount > 0 && rCount > 0) {
                 setModalIsOpen(true)
                 setGameOver(true)
+                playGameOverSFX()
                 gameover = true
                 setGameOverCondition("You have no remaining moves.")
                 if (props.gameMode === 1) {
@@ -278,6 +328,7 @@ export default function Checkers(props) {
                 setModalIsOpen(true)
                 setGameOver(true)
                 gameover = true
+                playVictorySFX()
                 setGameOverCondition("Your opponent has no remaining moves.")
                 setWinner(true)
                 if (props.gameMode === 1) {
@@ -295,11 +346,13 @@ export default function Checkers(props) {
                         }
                         setGameOverCondition("Your opponent has no remaining pieces.")
                         setWinner(true)
+                        playVictorySFX()
                     } else {
                         if (props.gameMode === 1) {
                             opponent.updateMMR(props.oppData, false)
                         }
                         setGameOverCondition("You have no remaining pieces.")
+                        playGameOverSFX()
                     }
                 } else {
                     if (rCount === 0) {
@@ -309,11 +362,13 @@ export default function Checkers(props) {
                         }
                         setGameOverCondition("Your opponent has no remaining pieces.")
                         setWinner(true)
+                        playVictorySFX()
                     } else {
                         if (props.gameMode === 1) {
                             opponent.updateMMR(props.oppData, false)
                         }
                         setGameOverCondition("You have no remaining pieces.")
+                        playGameOverSFX()
                     }
                 }
                 setModalIsOpen(true)
@@ -372,6 +427,7 @@ export default function Checkers(props) {
                 } else if (oppBoardState !== "") {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
+                        playEnemySFX()
                         playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
                         setTimeRemaining(60)
                         setMoveCounter(moveCounter + 1)
@@ -400,6 +456,7 @@ export default function Checkers(props) {
                     setBoardState(oppBoardState)
                     setCurrentTurn(playerColor)
                     playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
+                    playEnemySFX()
                 } else {
                     setWinner(true)
                     setModalIsOpen(true)
