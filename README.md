@@ -47,9 +47,6 @@ This website is a combination of a Node.js/React client and Express.js, which al
    | Variable Name     | Variable Description  |
    | ----------------- | --------------------- |
    | REACT_APP_API_URL | Address of API App    |
-   | REACT_APP_SECRET  | Encryption Key        |
-   | REACT_APP_S1      | Salt 1                |
-   | REACT_APP_S2      | Salt 2                |
 
 5. In a CLI, run `npm install` within the /api directory
 6. Also run `npm install` in a CLI within the /client directory
