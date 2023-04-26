@@ -11,7 +11,7 @@ function Modal({ isOpen, closeModal, children }) {
         >
             {children}
             <br/>
-            <button onClick={closeModal}>Close</button>
+            <button onClick={closeModal} className='small-button'>Close</button>
         </ReactModal>
     )
 }

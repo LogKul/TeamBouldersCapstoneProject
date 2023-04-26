@@ -1,0 +1,290 @@
+===========================
+          Pages
+===========================
+Last updated: 4/24/2023
+
+
+
+All pages route from the base page.
+
+Local access via NPM: localhost:3000
+Web access: https://playcheckersnow.com
+
+
+
+
+
+-----------------
+All pages:
+-----------------
+
+All pages contain a navigation bar located at the top of the page and a footer bar located at the
+bottom of the page. The navigation bar redirects differently if the user is logged in/out.
+
+While logged out, all links redirect the user to the login page except for the home link which
+redirects the user to the base page.
+
+While logged in, the navigation bar functions from left to right as follows:
+
+Home (Checkers icon - redirects to Home page),
+Play Game (redirects to Play page),
+Leaderboard (redirects to Leaderboard page),
+Game History (redirects to Recordings page),
+Account (redirects to Account page),
+LOGOUT (redirects to base page and removes stored access token)
+
+Once a user is logged in, they are given an access token which will automatically refresh every
+2 minutes. If the access token expires or a user closes the site, they will need to log in again.
+
+
+
+
+
+
+-----------------
+Base page:
+-----------------
+
+The base page is the first page a user will see when accessing the site. It exists at the base
+URL of the site which can be found at the top of this document.
+
+Before a user can access any other pages on the website, besides Login and Signup, they must create
+and/or log in to an account.
+
+Attempting to access any links on the base page will redirect the user to the Login page.
+
+Once a user is logged in, they can access the base page again via URL but access tokens are
+stored locally per session, so clicking any links from the base page will redirect the user
+without prompting them to log in again. Additionally, because access tokens are stored per session,
+once the site is closed, the user must log in again.
+
+The base page includes a 'Login' button, a 'Features' section which indicates some of the primary
+features of the site, and a 'Current Leaderboards' section which shows the current player rankings.
+
+
+
+
+
+
+
+
+-----------------
+Login page:
+-----------------
+
+The Login page uses 2 fields for authentication: Username and Password
+
+Once a username and password is submitted by clicking the 'Sign In' button, the field information
+is authenticated against the database. Either the user is logged in and redirected to the Home page,
+or an error message is displayed.
+
+Error messages display on the screen when an error occurs with login to indicate to the user of
+invalid credentials, missing field values, or connectivity to the server.
+
+An additional 'Sign Up' button is included in the Login page which redirects the user to the
+Register page.
+
+
+
+
+
+
+
+
+-----------------
+Register page:
+-----------------
+
+The Register page uses 3 fields to create an account: Username, Password, and Confirm Password
+
+Once a username, password, and confirmed password is submitted by clicking the 'Submit' button, the
+field information is validated against the database. Upon successful account creation, a modal
+pops up to indicate to the user the account was successfully created which includes two buttons:
+'Sign In' which redirects to the Login page and 'Close' which closes the modal showing the Register
+page. Upon unsuccessful account creation, an error message is displayed indicating the reason the
+account was not created.
+
+Account creation criteria:
+A username must not exist in the database and passwords must meet specific conditions.
+
+1 uppercase letter, 1 lowercase letter, 1 special character, 1 number, and 8-24 characters in length
+
+The confirm password field must match the initial password.
+
+Error messages regarding password criteria are indicated to the user while the password fields are
+active and until the criteria is met. The validity of the password is indicated to the user in
+realtime.
+
+The Register page also includes a 'Sign In' button which if clicked redirects the user to the Login
+page.
+
+
+
+
+
+
+
+-----------------
+Home page:
+-----------------
+
+The home page includes 3 buttons:
+
+Play Game (redirects to Play page)
+Game History (redirects to Recordings page specific to the user)
+Your Account (redirects to Account page)
+
+The home page also contains dashboard information, specifically the players stats (MMR, Wins,
+Losses, and W/L Ratio).
+
+
+
+
+
+
+
+
+-----------------
+Account page:
+-----------------
+
+The accounge page includes 2 buttons:
+
+'Update Password' opens a modal containing 1 field for the user to input a new password. Once the
+new password is submitted by clicking the 'Submit' button, the new password is updated in the
+database and a success message is shown on the account page. There are no error messages that
+display in the password update page; however, error messages will show up in the the console log.
+The success message also contains a link to return 'Home'.
+
+Your Game Recordings (redirects to Recordings page specific to the user)
+
+The account page also contains stat information specific to the player (MMR, Wins, Losses, and W/L
+Ratio).
+
+
+
+
+
+-----------------
+Recordings page:
+-----------------
+
+The Recordings page when accessed via 'Game History' in the navigation bar, lists all the games
+played by all players.
+
+Each players name can be clicked which will redirect to the Recordings page specific to the
+username clicked.
+
+Recordings pages specific to a username include only games that user has played.
+
+Game information displayed includes Time Finished, Winner, Red Player, and Black Player.
+
+
+
+
+
+
+-----------------
+Leaderboard page:
+-----------------
+
+The Leaderboard page lists all the players in order by their rank where 1st is the highest rank.
+
+Included for each player record is their username, MMR, Winrate (W/L Ratio), Wins, and Losses.
+
+Each players name can be clicked which will redirect to the Recordings page specific to the
+username clicked.
+
+
+
+
+
+
+-----------------
+Play page:
+-----------------
+
+The Play page includes 2 buttons:
+
+Offline Against AI (redirects to Game page)
+PVP Online (redirects to Matchmaking page)
+
+Features of gameplay are shown under each button which describe what the player can expect when
+they choose between playing AI or Online.
+
+
+
+
+
+
+-----------------
+Game page:
+-----------------
+
+The Game page initially displays a modal for the player to choose their color. This is done with 2
+buttons labelled accordingly 'Play as Red' and 'Play as Black'. If the 'Close' button is clicked,
+the modal will close and a button 'Choose Color' will be shown which, if clicked, will reopen the
+modal for the player to choose their color.
+
+After choosing a color, the Checkers game engine runs and begins the game with the player playing
+as their chosen color.
+
+**See more below about the Checkers game engine for AI**
+
+After the game ends, a modal is displayed that indicates if the player has won or lost. It is also
+indicated the reason the player has won or lost. 3 buttons are shown in the modal:
+
+Play Another (redirects to the Play page)
+Return Home (redirects to the Home page)
+
+'Close' button closes the modal and shows a message indicating whether the player won or lost.
+
+
+
+
+
+
+-----------------
+Matchmaking page:
+-----------------
+
+The Matchmaking page initially searches for an open game for the player to join. If no games exist,
+a game is created and the player is put into a pairing queue while they wait for another player to
+join. If a game does exist, the player joins the game and waits for the Checkers game engine to run.
+A message indicates when the player is searching for a game and a seperate message indicates when
+the player is waiting for another player to join the game. When joining a game, both players are
+randomly given a color.
+
+After 2 players have joined a game, the Checkers game engine runs with each player playing as their
+randomly generated color.
+
+**See more below about the Checkers game engine for Online**
+
+After the game ends, a modal is displayed that indicates if the player has won or lost. It is also
+indicated the reason the player has won or lost. 3 buttons are shown in the modal:
+
+Play Another (redirects to the Play page)
+Return Home (redirects to the Home page)
+
+'Close' button closes the modal and shows a message indicating whether the player won or lost.
+
+
+
+
+
+
+===========================
+   Checkers Game Engine
+===========================
+
+-----------------
+Checkers rules:
+-----------------
+
+-----------------
+AI:
+-----------------
+
+-----------------
+Online:
+-----------------

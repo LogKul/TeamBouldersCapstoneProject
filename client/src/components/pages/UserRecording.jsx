@@ -4,6 +4,8 @@ import Header from '../Header'
 import Footer from '../Footer'
 import GameRecording from '../GameRecording'
 import axios from "../../api/axios"
+import { GiQueenCrown } from "react-icons/gi"
+import { FaClock } from "react-icons/fa"
 
 const UserRecording = () => {
 
@@ -37,19 +39,15 @@ const UserRecording = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-
-                {(sessionStorage.getItem("user") == username)
-                    ? <h1>Your Games</h1>
-                    : <h1>{username + "'s Games"}</h1>
-                }
-                <hr></hr>
-                <table>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <h2>{sessionStorage.getItem("user")}'s Games</h2>
+                <table className='table'>
                     <tbody>
-                        <tr>
-                            <th>Time Finished</th>
-                            <th>Winner</th>
-                            <th>Red</th>
-                            <th>Black</th>
+                        <tr className='row'>
+                            <th className='column'><FaClock/> Time Finished <FaClock/></th>
+                            <th className='column'><GiQueenCrown/> Winner <GiQueenCrown/></th>
+                            <th className='column'>Red Player:</th>
+                            <th className='column'>Black Player:</th>
                         </tr>
                         {games
                             ? games.map((game, index) => (

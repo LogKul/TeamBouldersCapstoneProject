@@ -6,8 +6,17 @@ import Logic from "./logic/Logic"
 import Opponent from "./logic/Opponent"
 import Modal from "../Modal"
 import AILogic from "./logic/AILogic"
+import useSound from "use-sound"
+import grabSFX from "../../sfx/pickup.mp3"
+import dropSFX from "../../sfx/put-down.mp3"
+import captureSFX from "../../sfx/capture.mp3"
+import enemySFX from "../../sfx/enemy.mp3"
+import crownSFX from "../../sfx/crown.mp3"
+import victorySFX from "../../sfx/victory.mp3"
+import gameOverSFX from "../../sfx/game-over.mp3"
 
 export default function Checkers(props) {
+
     const initialBoardState = []
 
     for (let i = 0; i < 8; i++) {
@@ -32,11 +41,15 @@ export default function Checkers(props) {
     const [moveAgainText, setMoveAgainText] = React.useState("---")
     const [currentTurn, setCurrentTurn] = React.useState(0)
     const [gameOver, setGameOver] = React.useState(false)
+    const gameOverRef = React.useRef()
+    gameOverRef.current = gameOver
     const [rerender, setRerender] = React.useState(0)
     const [renderUnload, setRenderUnload] = React.useState(0)
     const [playerMoved, setPlayerMoved] = React.useState(false)
     const [oppMoved, setOppMoved] = React.useState(false)
     const [abandon, setAbandon] = React.useState(false)
+    const abandonRef = React.useRef()
+    abandonRef.current = abandon
     const [winner, setWinner] = React.useState(false)
     const [gameOverCondition, setGameOverCondition] = React.useState("")
     const [timeoutCounter, setTimeoutCounter] = React.useState(0)
@@ -47,7 +60,37 @@ export default function Checkers(props) {
     const logic = new Logic()
     const opponent = new Opponent()
 
-    let gameover = false
+    //SFX
+    const [playPickupSFX] = useSound(
+        grabSFX
+    )
+
+    const [playDropSFX] = useSound(
+        dropSFX
+    )
+
+    const [playCaptureSFX] = useSound(
+        captureSFX
+    )
+
+    const [playEnemySFX] = useSound(
+        enemySFX,
+        { volume: 0.4 }
+    )
+
+    const [playCrownSFX] = useSound(
+        crownSFX
+    )
+
+    const [playVictorySFX] = useSound(
+        victorySFX,
+        { volume: 0.75 }
+    )
+
+    const [playGameOverSFX] = useSound(
+        gameOverSFX,
+        { volume: 0.75 }
+    )
 
     const grabPiece = (e) => {
 
@@ -72,6 +115,7 @@ export default function Checkers(props) {
             element.style.top = y + 'px'
 
             setActivePiece(element)
+            playPickupSFX()
         }
     }
 
@@ -140,33 +184,39 @@ export default function Checkers(props) {
                                         removeX = x + 1
                                         removeY = y + 1
                                         spliceVal = 1
+                                        playCaptureSFX()
                                     } else {
                                         removeX = x + 1
                                         removeY = y - 1
                                         spliceVal = 1
+                                        playCaptureSFX()
                                     }
                                 } else if (gridX === (x - 2)) {
                                     if (gridY === (y + 2)) {
                                         removeX = x - 1
                                         removeY = y + 1
                                         spliceVal = 1
+                                        playCaptureSFX()
                                     } else {
                                         removeX = x - 1
                                         removeY = y - 1
                                         spliceVal = 1
+                                        playCaptureSFX()
                                     }
                                 }
                                 if (p.color === 0) {
                                     if (x === 0) {
-                                        p.image = "/assets/checkers/red-king.png"
+                                        p.image = "/assets/checkers/red-king.svg"
                                         p.king = true
                                         allowMove = false
+                                        playCrownSFX()
                                     }
                                 } else {
                                     if (x === 7) {
-                                        p.image = "/assets/checkers/black-king.png"
+                                        p.image = "/assets/checkers/black-king.svg"
                                         p.king = true
                                         allowMove = false
+                                        playCrownSFX()
                                     }
                                 }
                                 p.x = x
@@ -200,6 +250,7 @@ export default function Checkers(props) {
                 })
             }
             setActivePiece(undefined)
+            playDropSFX()
         }
     }
 
@@ -223,7 +274,7 @@ export default function Checkers(props) {
 
     let board = []
 
-    //time left to make a move before forfeiting
+    //count down time left to make a move before forfeiting
     React.useEffect(() => {
         let interval = null
         if (timeRemaining > 0) {
@@ -237,8 +288,7 @@ export default function Checkers(props) {
         }
     }, [timeRemaining])
 
-    // GAMEOVER CHECK: check to see if there are any pieces left on the board
-    // NEED TO ADD: check to see if there are any moves left for player
+    // GAMEOVER CHECK: check to see if there are any pieces left on the board or that a player can move a piece
     React.useEffect(() => {
         if (gameOver === false) {
             let bCount = 0
@@ -267,20 +317,21 @@ export default function Checkers(props) {
                 }
             })
             if (possiblePlayerMoves.length === 0 && bCount > 0 && rCount > 0) {
+                setGameOverTrue(false)
                 setModalIsOpen(true)
                 setGameOver(true)
-                gameover = true
+                playGameOverSFX()
                 setGameOverCondition("You have no remaining moves.")
                 if (props.gameMode === 1) {
                     opponent.updateMMR(props.oppData, false)
                 }
             }
             if (possibleOpponentMoves.length === 0 && bCount > 0 && rCount > 0) {
+                setGameOverTrue(true)
                 setModalIsOpen(true)
                 setGameOver(true)
-                gameover = true
+                playVictorySFX()
                 setGameOverCondition("Your opponent has no remaining moves.")
-                setWinner(true)
                 if (props.gameMode === 1) {
                     opponent.updateMMR(props.oppData, true)
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
@@ -295,12 +346,16 @@ export default function Checkers(props) {
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setGameOverCondition("Your opponent has no remaining pieces.")
+                        setGameOverTrue(true)
                         setWinner(true)
+                        playVictorySFX()
                     } else {
                         if (props.gameMode === 1) {
                             opponent.updateMMR(props.oppData, false)
                         }
                         setGameOverCondition("You have no remaining pieces.")
+                        setGameOverTrue(false)
+                        playGameOverSFX()
                     }
                 } else {
                     if (rCount === 0) {
@@ -309,36 +364,32 @@ export default function Checkers(props) {
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setGameOverCondition("Your opponent has no remaining pieces.")
+                        setGameOverTrue(true)
                         setWinner(true)
+                        playVictorySFX()
                     } else {
                         if (props.gameMode === 1) {
                             opponent.updateMMR(props.oppData, false)
                         }
                         setGameOverCondition("You have no remaining pieces.")
+                        setGameOverTrue(false)
+                        playGameOverSFX()
                     }
                 }
-                setModalIsOpen(true)
-                setGameOver(true)
-                gameover = true
             }
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
-            opponent.forfeitGame(props.gameID, props.oppData, gameover)
+            opponent.forfeitGame(props.gameID, props.oppData)
             setGameOverCondition("You did not play a move in time.")
-            setModalIsOpen(true)
-            setGameOver(true)
-            gameover = true
+            setGameOverTrue(false)
         }
     }, [moveCounter])
 
-
     const delay = ms => new Promise(res => setTimeout(res, ms))
-
     
-    // get response from ai or other player only if 5 seconds have passed
+    // get response from other player only if 5 seconds have passed OR get response from ai if 1 second has passed
     React.useEffect(() => {
         if (currentTurn !== playerColor && gameOver === false && props.gameMode === 1 && renderUnload > 0) {
-            //opponent has 5*5 seconds to make a move or game will be forfeit/abandon
             if (timeoutCounter > 30) {
                 if (playerMoved === false || oppMoved === false) {
                     setModalIsOpen(true)
@@ -347,10 +398,7 @@ export default function Checkers(props) {
                     opponent.updateMMR(props.oppData, true)
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                     setGameOverCondition("Your opponent forfeited the game.")
-                    setWinner(true)
-                    setModalIsOpen(true)
-                    setGameOver(true)
-                    gameover = true
+                    setGameOverTrue(true)
                 }
             }
             const getResponse = async () => {
@@ -362,18 +410,14 @@ export default function Checkers(props) {
                 } else if (oppBoardState === "winner") {
                     opponent.updateMMR(props.oppData, true)
                     setGameOverCondition("Your opponent forfeited the game.")
-                    setModalIsOpen(true)
-                    setWinner(true)
-                    setGameOver(true)
-                    gameover = true
+                    setGameOverTrue(true)
                 } else if (oppBoardState === "loser") {
                     opponent.updateMMR(props.oppData, false)
-                    setModalIsOpen(true)
-                    setGameOver(true)
-                    gameover = true
+                    setGameOverTrue(false)
                 } else if (oppBoardState !== "") {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
+                        playEnemySFX()
                         playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
                         setTimeRemaining(60)
                         setMoveCounter(moveCounter + 1)
@@ -402,11 +446,9 @@ export default function Checkers(props) {
                     setBoardState(oppBoardState)
                     setCurrentTurn(playerColor)
                     playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
+                    playEnemySFX()
                 } else {
-                    setWinner(true)
-                    setModalIsOpen(true)
-                    setGameOver(true)
-                    gameover = true
+                    setGameOverTrue(true)
                 }
             }
             getAIMove()
@@ -461,25 +503,31 @@ export default function Checkers(props) {
 
     // handle cleanup if game is closed
     function internalNavigation(event) {
-        //opponent.forfeitGame(props.gameID, sessionStorage.getItem("userID"))
         window.location = event.target.getAttribute('href')
     }
 
     async function externalNaviEarly() {
-        if (gameover === false) {
+        if (gameOverRef.current === false && abandonRef.current === false) {
             await opponent.abandonGame(props.gameID)
         }
     }
 
     async function externalNaviLate() {
-        await opponent.forfeitGame(props.gameID, props.oppData, gameover)
-        setGameOverCondition("You forfeited the game.")
+        if (gameOverRef.current === false && abandonRef.current === false) {
+            await opponent.forfeitGame(props.gameID, props.oppData)
+            setGameOverCondition("You forfeited the game.")
+            setGameOverTrue(false)
+        }
+    }
+
+    function setGameOverTrue(winner) {
+        setWinner(winner)
         setModalIsOpen(true)
         setGameOver(true)
-        gameover = true
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
+    //KNOWN BUG: cleanup code to does apply a loss to someone who leaves consistently
     React.useEffect(() => {
         if (renderUnload > 0 && props.gameMode === 1 && gameOver === false) {
             if (playerMoved === false || oppMoved === false) {
@@ -597,7 +645,6 @@ export default function Checkers(props) {
                     ref={checkersBoardRef}>
                     {board}
                 </div>
-                <button onClick={externalNaviLate}>Forfeit</button>
             </>
         )
     }

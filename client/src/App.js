@@ -40,7 +40,6 @@ function App() {
       // console.log(JSON.stringify(response))
       const accessToken = response?.data?.accessToken
       // console.log(response?.status)
-      console.log("REFRESH TOKEN: " + accessToken)
       sessionStorage.setItem("accessToken", accessToken)
 
     } catch (err) {

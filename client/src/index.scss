@@ -6,7 +6,9 @@
   font-style: $style;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-};
+}
+
+;
 
 // COLORS
 $primary-color: #424242;
@@ -17,47 +19,47 @@ $secondary-light: #ff6659;
 $secondary-dark: #9a0007;
 
 // GLOBAL STYLES
-h1 { 
-  @include font-montserrat(97px, 700, normal); 
+h1 {
+  @include font-montserrat(97px, 700, normal);
   margin: auto;
   padding: 4rem;
 }
 
-h2 { 
-  @include font-montserrat(61px, 600, normal); 
+h2 {
+  @include font-montserrat(61px, 600, normal);
   margin: auto;
   padding: 4rem;
 }
 
-h3 { 
-  @include font-montserrat(48px, 500, normal); 
+h3 {
+  @include font-montserrat(48px, 500, normal);
   margin: auto;
   padding: 4rem;
 }
 
-h4 { 
-  @include font-montserrat(34px, 400, normal); 
+h4 {
+  @include font-montserrat(34px, 400, normal);
   margin: auto;
   padding: 4rem;
 }
 
-h5 { 
-  @include font-montserrat(24px, 300, normal); 
+h5 {
+  @include font-montserrat(24px, 300, normal);
   margin: auto;
   padding: 4rem;
 }
 
-h6 { 
-  @include font-montserrat(20px, 200, normal); 
+h6 {
+  @include font-montserrat(20px, 200, normal);
   margin: auto;
   padding: 4rem;
 }
 
-body { 
+body {
   @include font-montserrat(18px, 400, normal);
   text-align: center;
   margin: auto;
-  padding: auto; 
+  padding: auto;
   min-height: 100vh;
   position: relative;
 }
@@ -70,6 +72,11 @@ body {
 a {
   @include font-montserrat(18px, 400, normal);
   color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $secondary-color;
 }
 
 p {
@@ -82,6 +89,10 @@ p {
   color: black;
 }
 
+li {
+  @include font-montserrat(18px, bold, normal)
+}
+
 input {
   @include font-montserrat(16px, 500, normal);
   text-align: left;
@@ -89,8 +100,8 @@ input {
   padding: auto;
 }
 
-button { 
-  @include font-montserrat(16px, bold, normal); 
+button {
+  @include font-montserrat(16px, bold, normal);
   margin: 1.5rem;
   padding: 0.75rem 2rem 0.75rem 2rem;
   border-radius: 2rem;
@@ -98,8 +109,9 @@ button {
   background-color: $primary-dark;
   transition: all .2s ease-in-out;
 }
+
 .small-button {
-  @include font-montserrat(14px, bold, normal); 
+  @include font-montserrat(14px, bold, normal);
   margin: 1rem;
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   border-radius: 2rem;
@@ -107,8 +119,9 @@ button {
   background-color: $primary-dark;
   transition: all .2s ease-in-out;
 }
+
 .large-button {
-  @include font-montserrat(20px, bold, normal); 
+  @include font-montserrat(20px, bold, normal);
   margin: 2rem;
   padding: 1rem 2.5rem 1rem 2.5rem;
   border-radius: 2rem;
@@ -116,7 +129,10 @@ button {
   background-color: $primary-dark;
   transition: all .2s ease-in-out;
 }
-button:hover, .small-button:hover, .large-button:hover {
+
+button:hover,
+.small-button:hover,
+.large-button:hover {
   color: $primary-dark;
   background-color: $secondary-color;
   scale: (1.15);
@@ -130,4 +146,58 @@ button:hover, .small-button:hover, .large-button:hover {
 .flex-child {
   flex: 1;
   margin: 0.25rem;
-} 
+}
+
+//Style rules for tables USE GLOBALLY
+.table {
+  width: 60%;
+  margin: auto;
+  border: 1px solid black;
+  margin-bottom: 3rem;
+}
+
+.column {
+  padding: 4px;
+  border: 1px solid black;
+}
+
+.row {
+  padding: 4px;
+  border: 1px solid black;
+}
+
+.even-row {
+  border: 1px solid black;
+  background-color: $secondary-color;
+  ;
+}
+
+.even-row a:hover {
+  color: white;
+}
+
+.odd-row {
+  border: 1px solid black;
+  background-color: $primary-dark;
+  color: white;
+}
+
+.odd-row a {
+  color: white;
+}
+
+.odd-row a:hover {
+  color: $secondary-color;
+}
+
+.cell {
+  padding: 4px;
+  border: 1px solid black;
+}
+
+//Style rules for unordered lists USE GLOBALLY
+.unordered-list {
+  text-align: left;
+  width: 40%;
+  margin: auto;
+}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Header from '../Header'
 import Footer from '../Footer'
 import '../../styles/home.scss'
@@ -9,14 +10,15 @@ const Home = () => {
         <div>
             <Header />
             <div className='content-wrap'>
-                <h1>Dashboard</h1>
-                <a href="/play"><button className='large-button'>Play Game</button></a>
+                <h2>Dashboard</h2>
+                <Link to={"/play"}><button className='large-button'>Play Game</button></Link>
                 <br/>
-                <a href={"/recordings/" + sessionStorage.getItem("user")}><button>Game History</button></a>
-                <a href="/account"><button>Your Account</button></a>
+                <Link to={"/recordings/" + sessionStorage.getItem("user")}><button>Game History</button></Link>
+                <Link to={"/account"}><button>Your Account</button></Link>
                 <div className='flex-container'>
                     <div className='flex-child home-left-section'>
-                        <h3>Your Stats:</h3>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
+                        <h4>{sessionStorage.getItem("user")}'s Stats:</h4>
                     </div>
                     <div className='flex-child home-right-section'>
                         <p>MMR: {sessionStorage.getItem("mmr")}</p>

@@ -1,10 +1,17 @@
-import React, { useState } from 'react'
+import { React, useState } from 'react'
 import Header from '../Header'
 import Footer from '../Footer'
 import Modal from '../Modal'
 import Checkers from "../checkers/Checkers"
+import useSound from 'use-sound'
+import gameStartSFX from "../../sfx/start.mp3"
 
 const Game = () => {
+
+    const [playStartSFX] = useSound(
+        gameStartSFX,
+        { volume: 0.4 }
+    )
 
     const [modalIsOpen, setModalIsOpen] = useState(true)
 
@@ -42,6 +49,7 @@ const Game = () => {
             </div>
         )
     } else {
+        playStartSFX()
         return (
             <div>
                 <Header />
