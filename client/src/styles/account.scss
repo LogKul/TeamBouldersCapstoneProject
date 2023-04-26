@@ -1,29 +1,38 @@
 .table-account {
     width: 60%;
     margin: auto;
-    border: 1px ridge black;
+    border: 1rem ridge black;
+    border-radius: 2rem;
 }
 
-.mmr-account {
+.table-header {
     width: 25%;
     padding: 4px;
-    border: 1px ridge black;
+    border-bottom: 0.5rem solid black;
+    border-right: 0.5rem solid black;
+    font-size: 2rem;
+    font-weight: bold;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
-.winrate-account {
+.table-header-last {
     width: 25%;
     padding: 4px;
-    border: 1px ridge black;
+    border-bottom: 0.5rem solid black;
+    font-size: 2rem;
+    font-weight: bold;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
-.wins-account {
-    width: 25%;
-    padding: 4px;
-    border: 1px ridge black;
+.table-cell-content {
+    border-right: 0.5rem solid black;
+    font-size: 5rem;
+    font-weight: bold;
 }
 
-.losses-account {
-    width: 25%;
-    padding: 4px;
-    border: 1px ridge black;
+.table-cell-content-last {
+    font-size: 5rem;
+    font-weight: bold;
 }
