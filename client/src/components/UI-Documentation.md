@@ -143,3 +143,64 @@ An example of how to integrate the Leaderboard Display component can be found on
 
     export default Landing
 
+# Sound Effects
+
+We use the use-sound package in order to easily load and play sfx on our pages.
+Learn more here: https://www.joshwcomeau.com/react/announcing-use-sound-react-hook/
+In order to use sfx on pages, first import the package and your sound file.
+Then define an executable variable that plays the imported sound file.
+There are several options that you can define when playing the sound file.
+Finally, call the variable that you defined wherever/whenever you would like the sound to play.
+
+    import { React, useState } from 'react'
+    import Header from '../Header'
+    import Footer from '../Footer'
+    import Checkers from "../checkers/Checkers"
+    import useSound from 'use-sound' //IMPORT USE-SOUND PACKAGE
+    import gameStartSFX from "../../sfx/start.mp3" // IMPORT SOUND FILE
+
+    const Game = () => {
+
+        const [playStartSFX] = useSound( //DEFINE PLAY SOUND VAR
+            gameStartSFX,
+            { volume: 0.4 } //SET SOUND OPTIONS
+        )
+
+        const [color, setColor] = useState(undefined)
+
+        function setColorRed() {
+            setColor(0)
+        }
+
+        function setColorBlack() {
+            setColor(1)
+        }
+
+        if (color === undefined) {
+            return (
+                <div>
+                    <Header />
+                    <div className='content-wrap'>
+                        <h1> Choose Your Color</h1>
+                        <button onClick={setColorRed}>Play as Red</button>
+                        <button onClick={setColorBlack}>Play as Black</button>
+                    </div>
+                    <Footer />
+                </div>
+            )
+        } else {
+            playStartSFX() //PLAY THE SOUND
+            return (
+                <div>
+                    <Header />
+                    <div className='content-wrap'>
+                        <br/>
+                        <Checkers gameMode={0} difficulty={0} gameID={'empty'} color={color} />
+                    </div>
+                    <Footer />
+                </div>
+            )
+        }
+    }
+
+    export default Game
