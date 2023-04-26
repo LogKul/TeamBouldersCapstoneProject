@@ -41,6 +41,7 @@ This website is a combination of a Node.js/React client and Express.js, which al
    | S1             | Salt 1                |
    | S2             | Salt 2                |
    | PORT           | API Application Port  |
+   | SROUNDS        | # of Salting Rounds   |
 
 4. Within the /client directory, you will need to set environment variables within a .env file as follows:
    | Variable Name     | Variable Description  |
