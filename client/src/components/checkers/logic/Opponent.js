@@ -158,24 +158,21 @@ export default class Opponent {
 
     }
 
-    async forfeitGame(gameID, opp_data, gameOver) {
-        console.log(gameOver)
-        if (gameOver === false) {
-            try {
-                await axios.put("/games/update?gameid=" + gameID,
-                    { winner: opp_data.id },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-access-token": sessionStorage.getItem("accessToken")
-                        },
-                        withCredentials: false
-                    }
-                )
-                this.updateMMR(opp_data, false)
-            } catch (err) {
-                console.log(err?.response)
-            }
+    async forfeitGame(gameID, opp_data) {
+        try {
+            await axios.put("/games/update?gameid=" + gameID,
+                { winner: opp_data.id },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": sessionStorage.getItem("accessToken")
+                    },
+                    withCredentials: false
+                }
+            )
+            this.updateMMR(opp_data, false)
+        } catch (err) {
+            console.log(err?.response)
         }
     }
 

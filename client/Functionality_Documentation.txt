@@ -237,7 +237,7 @@ indicated the reason the player has won or lost. 3 buttons are shown in the moda
 Play Another (redirects to the Play page)
 Return Home (redirects to the Home page)
 
-'Close' button closes the modal showing a message indicating whether the player won or lost.
+'Close' button closes the modal and shows a message indicating whether the player won or lost.
 
 
 
@@ -266,7 +266,7 @@ indicated the reason the player has won or lost. 3 buttons are shown in the moda
 Play Another (redirects to the Play page)
 Return Home (redirects to the Home page)
 
-'Close' button closes the modal showing a message indicating whether the player won or lost.
+'Close' button closes the modal and shows a message indicating whether the player won or lost.
 
 
 
@@ -282,7 +282,7 @@ Checkers rules:
 -----------------
 
 -----------------
-Against AI:
+AI:
 -----------------
 
 -----------------

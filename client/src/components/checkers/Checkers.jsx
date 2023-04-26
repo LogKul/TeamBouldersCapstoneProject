@@ -32,11 +32,15 @@ export default function Checkers(props) {
     const [moveAgainText, setMoveAgainText] = React.useState("---")
     const [currentTurn, setCurrentTurn] = React.useState(0)
     const [gameOver, setGameOver] = React.useState(false)
+    const gameOverRef = React.useRef()
+    gameOverRef.current = gameOver
     const [rerender, setRerender] = React.useState(0)
     const [renderUnload, setRenderUnload] = React.useState(0)
     const [playerMoved, setPlayerMoved] = React.useState(false)
     const [oppMoved, setOppMoved] = React.useState(false)
     const [abandon, setAbandon] = React.useState(false)
+    const abandonRef = React.useRef()
+    abandonRef.current = abandon
     const [winner, setWinner] = React.useState(false)
     const [gameOverCondition, setGameOverCondition] = React.useState("")
     const [timeoutCounter, setTimeoutCounter] = React.useState(0)
@@ -46,8 +50,6 @@ export default function Checkers(props) {
     const checkersBoardRef = React.useRef(null)
     const logic = new Logic()
     const opponent = new Opponent()
-
-    let gameover = false
 
     const grabPiece = (e) => {
 
@@ -266,20 +268,15 @@ export default function Checkers(props) {
                 }
             })
             if (possiblePlayerMoves.length === 0 && bCount > 0 && rCount > 0) {
-                setModalIsOpen(true)
-                setGameOver(true)
-                gameover = true
+                setGameOverTrue(false)
                 setGameOverCondition("You have no remaining moves.")
                 if (props.gameMode === 1) {
                     opponent.updateMMR(props.oppData, false)
                 }
             }
             if (possibleOpponentMoves.length === 0 && bCount > 0 && rCount > 0) {
-                setModalIsOpen(true)
-                setGameOver(true)
-                gameover = true
+                setGameOverTrue(true)
                 setGameOverCondition("Your opponent has no remaining moves.")
-                setWinner(true)
                 if (props.gameMode === 1) {
                     opponent.updateMMR(props.oppData, true)
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
@@ -294,12 +291,13 @@ export default function Checkers(props) {
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setGameOverCondition("Your opponent has no remaining pieces.")
-                        setWinner(true)
+                        setGameOverTrue(true)
                     } else {
                         if (props.gameMode === 1) {
                             opponent.updateMMR(props.oppData, false)
                         }
                         setGameOverCondition("You have no remaining pieces.")
+                        setGameOverTrue(false)
                     }
                 } else {
                     if (rCount === 0) {
@@ -308,31 +306,25 @@ export default function Checkers(props) {
                             opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                         }
                         setGameOverCondition("Your opponent has no remaining pieces.")
-                        setWinner(true)
+                        setGameOverTrue(true)
                     } else {
                         if (props.gameMode === 1) {
                             opponent.updateMMR(props.oppData, false)
                         }
                         setGameOverCondition("You have no remaining pieces.")
+                        setGameOverTrue(false)
                     }
                 }
-                setModalIsOpen(true)
-                setGameOver(true)
-                gameover = true
             }
         }
         if (props.gameMode === 1 && timeRemaining === 0 && gameOver === false) {
-            opponent.forfeitGame(props.gameID, props.oppData, gameover)
+            opponent.forfeitGame(props.gameID, props.oppData)
             setGameOverCondition("You did not play a move in time.")
-            setModalIsOpen(true)
-            setGameOver(true)
-            gameover = true
+            setGameOverTrue(false)
         }
     }, [moveCounter])
 
-
     const delay = ms => new Promise(res => setTimeout(res, ms))
-
     
     // get response from other player only if 5 seconds have passed OR get response from ai if 1 second has passed
     React.useEffect(() => {
@@ -345,10 +337,7 @@ export default function Checkers(props) {
                     opponent.updateMMR(props.oppData, true)
                     opponent.updateWinner(props.gameID, sessionStorage.getItem("userID"))
                     setGameOverCondition("Your opponent forfeited the game.")
-                    setWinner(true)
-                    setModalIsOpen(true)
-                    setGameOver(true)
-                    gameover = true
+                    setGameOverTrue(true)
                 }
             }
             const getResponse = async () => {
@@ -360,15 +349,10 @@ export default function Checkers(props) {
                 } else if (oppBoardState === "winner") {
                     opponent.updateMMR(props.oppData, true)
                     setGameOverCondition("Your opponent forfeited the game.")
-                    setModalIsOpen(true)
-                    setWinner(true)
-                    setGameOver(true)
-                    gameover = true
+                    setGameOverTrue(true)
                 } else if (oppBoardState === "loser") {
                     opponent.updateMMR(props.oppData, false)
-                    setModalIsOpen(true)
-                    setGameOver(true)
-                    gameover = true
+                    setGameOverTrue(false)
                 } else if (oppBoardState !== "") {
                     if (JSON.stringify(oppBoardState) !== JSON.stringify(boardState)) {
                         setOppMoved(true)
@@ -401,10 +385,7 @@ export default function Checkers(props) {
                     setCurrentTurn(playerColor)
                     playerColor === 0 ? setTurnDisplay("Red") : setTurnDisplay("Black")
                 } else {
-                    setWinner(true)
-                    setModalIsOpen(true)
-                    setGameOver(true)
-                    gameover = true
+                    setGameOverTrue(true)
                 }
             }
             getAIMove()
@@ -463,17 +444,23 @@ export default function Checkers(props) {
     }
 
     async function externalNaviEarly() {
-        if (gameover === false) {
+        if (gameOverRef.current === false && abandonRef.current === false) {
             await opponent.abandonGame(props.gameID)
         }
     }
 
     async function externalNaviLate() {
-        await opponent.forfeitGame(props.gameID, props.oppData, gameover)
-        setGameOverCondition("You forfeited the game.")
+        if (gameOverRef.current === false && abandonRef.current === false) {
+            await opponent.forfeitGame(props.gameID, props.oppData)
+            setGameOverCondition("You forfeited the game.")
+            setGameOverTrue(false)
+        }
+    }
+
+    function setGameOverTrue(winner) {
+        setWinner(winner)
         setModalIsOpen(true)
         setGameOver(true)
-        gameover = true
     }
 
     // apply leavingPageEvent event to all links on page or if page closes/reloads/changes site
