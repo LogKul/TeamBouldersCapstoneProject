@@ -86,24 +86,32 @@ const Account = () => {
                     : <section>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
                         <h2>{sessionStorage.getItem("user")}'s Account</h2>
-                        <h4>Your Stats</h4>
+                        <hr></hr>
+                        <h3>Your Stats</h3>
                         <table className='table-account'>
                             <tr>
-                                <th className='mmr-account'>MMR</th>
-                                <th className='wins-account'>Wins</th>
-                                <th className='losses-account'>Losses</th>
-                                <th className='winrate-account'>W/L</th>
+                                <th className='table-header'>MMR</th>
+                                <th className='table-header'>Wins</th>
+                                <th className='table-header'>Losses</th>
+                                <th className='table-header-last'>W/L</th>
                             </tr>
                             <tr>
-                                <td>{sessionStorage.getItem("mmr")}</td>
-                                <td>{sessionStorage.getItem("wins")}</td>
-                                <td>{sessionStorage.getItem("losses")}</td>
+                                <td className='table-cell-content'>{sessionStorage.getItem("mmr")}</td>
+                                <td className='table-cell-content'>{sessionStorage.getItem("wins")}</td>
+                                <td className='table-cell-content'>{sessionStorage.getItem("losses")}</td>
                                 {sessionStorage.getItem("losses") == 0
-                                    ? <td>Perfect</td>
-                                    : <td>{(sessionStorage.getItem("wins") / sessionStorage.getItem("losses")).toFixed(2)}</td>
+                                    ? <td className='table-cell-content-last'>Perfect</td>
+                                    : <td className='table-cell-content-last'>{(sessionStorage.getItem("wins") / sessionStorage.getItem("losses")).toFixed(2)}</td>
                                 }
                             </tr>
                         </table>
+                        <br />
+                        <br />
+
+                        <Link to={"/recordings/" + sessionStorage.getItem("user")}><button>Your Game Recordings</button></Link>
+                        <br />
+                        <br />
+                        <hr></hr>
 
                         <button onClick={() => openModal()}>Update Password</button>
                         <br />
@@ -122,7 +130,6 @@ const Account = () => {
                                 <button>Submit</button>
                             </form>
                         </Modal>
-                        <Link to={"/recordings/" + sessionStorage.getItem("user")}><button>Your Game Recordings</button></Link>
                     </section>
                 }
             </div>

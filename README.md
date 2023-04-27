@@ -24,7 +24,7 @@ This website is a combination of a Node.js/React client and Express.js, which al
 
 ## How To Run
 
-*Brief preface, it is highly advised to play on the website at [playcheckersnow.com](https://playcheckersnow.com/) if you are just trying to run the code without any changes (such as a certain professor we know), as the environment variables and database configuration can be a bit of a hassle to set up, and are not included in this public repository.*
+*Brief preface, it is highly advised to play on the website at [playcheckersnow.com](https://playcheckersnow.com/) if you are just trying to run the code without any changes (such as a certain professor we know), as the environment variables and database configuration can be a bit of a hassle to set up, but a SQL backup file containing the database schema is available in the root folder of the repositor if you would prefer connecting to your own Postgres database.*
 
 1. Install Node.js
 2. Clone this repository
@@ -41,14 +41,12 @@ This website is a combination of a Node.js/React client and Express.js, which al
    | S1             | Salt 1                |
    | S2             | Salt 2                |
    | PORT           | API Application Port  |
+   | SROUNDS        | # of Salting Rounds   |
 
-4. Within the /client directory, you will need to set environment variables within a .env file as follows:
+4. Within the /client directory, you will need to set an environment variable within a .env file as follows:
    | Variable Name     | Variable Description  |
    | ----------------- | --------------------- |
    | REACT_APP_API_URL | Address of API App    |
-   | REACT_APP_SECRET  | Encryption Key        |
-   | REACT_APP_S1      | Salt 1                |
-   | REACT_APP_S2      | Salt 2                |
 
 5. In a CLI, run `npm install` within the /api directory
 6. Also run `npm install` in a CLI within the /client directory
