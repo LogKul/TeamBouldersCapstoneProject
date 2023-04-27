@@ -40,12 +40,15 @@ const UserRecording = () => {
             <Header />
             <div className='content-wrap'>
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <h2>{sessionStorage.getItem("user")}'s Games</h2>
+                {(sessionStorage.getItem("user") == username)
+                    ? <h2>Your Games</h2>
+                    : <h2>{username}&apos;s Games</h2>
+                }
                 <table className='table'>
                     <tbody>
                         <tr className='row'>
-                            <th className='column'><FaClock/> Time Finished <FaClock/></th>
-                            <th className='column'><GiQueenCrown/> Winner <GiQueenCrown/></th>
+                            <th className='column'><FaClock /> Time Finished <FaClock /></th>
+                            <th className='column'><GiQueenCrown /> Winner <GiQueenCrown /></th>
                             <th className='column'>Red Player:</th>
                             <th className='column'>Black Player:</th>
                         </tr>
