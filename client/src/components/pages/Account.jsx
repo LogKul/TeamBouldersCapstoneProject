@@ -25,9 +25,16 @@ const Account = () => {
     const errRef = useRef()
 
     const [pwd, setPwd] = useState("")
+    const [validPwd, setValidPwd] = useState(false)
+    const [pwdFocus, setPwdFocus] = useState(false)
 
     const [errMsg, setErrMsg] = useState("")
     const [success, setSuccess] = useState(false)
+
+    useEffect(() => {
+        const result = PWD_REGEX.test(pwd)
+        setValidPwd(result)
+    }, [pwd])
 
     useEffect(() => {
         setErrMsg("")
@@ -86,8 +93,7 @@ const Account = () => {
                     : <section>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
                         <h2>{sessionStorage.getItem("user")}'s Account</h2>
-                        <hr></hr>
-                        <h3>Your Stats</h3>
+                        <h3>Your Stats:</h3>
                         <table className='table-account'>
                             <tr>
                                 <th className='table-header'>MMR</th>
@@ -105,13 +111,8 @@ const Account = () => {
                                 }
                             </tr>
                         </table>
-                        <br />
-                        <br />
 
                         <Link to={"/recordings/" + sessionStorage.getItem("user")}><button>Your Game Recordings</button></Link>
-                        <br />
-                        <br />
-                        <hr></hr>
 
                         <button onClick={() => openModal()}>Update Password</button>
                         <br />
@@ -119,15 +120,27 @@ const Account = () => {
                         <Modal isOpen={modalIsOpen} closeModal={closeModal}>
                             <h1>New Password</h1>
                             <form onSubmit={updateUserPassword}>
-                                <label htmlFor="password">Change Password</label>
+                                <label htmlFor="password">Change Password:
+                                    <span className={validPwd ? "valid" : "hide"}>Valid</span>
+                                    <span className={validPwd || !pwd ? "hide" : "invalid"}>Invalid</span>
+                                </label>
                                 <input
                                     type="password"
                                     id="password"
                                     onChange={(e) => setPwd(e.target.value)}
                                     value={pwd}
                                     required
+                                    aria-invalid={validPwd ? "false" : "true"}
+                                    aria-describedby="pwdnote"
+                                    onFocus={() => setPwdFocus(true)}
+                                    onBlur={() => setPwdFocus(false)}
                                 />
                                 <button>Submit</button>
+                                <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
+                                    8 to 24 characters.<br />
+                                    Must include uppercase and lowercase letters, a number, and a special character.<br />
+                                    Allowed special characters: !@#$%
+                                </p>
                             </form>
                         </Modal>
                     </section>
