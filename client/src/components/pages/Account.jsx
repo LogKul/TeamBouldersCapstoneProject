@@ -86,8 +86,7 @@ const Account = () => {
                     : <section>
                         {/* eslint-disable-next-line react/no-unescaped-entities */}
                         <h2>{sessionStorage.getItem("user")}'s Account</h2>
-                        <hr></hr>
-                        <h3>Your Stats</h3>
+                        <h3>Your Stats:</h3>
                         <table className='table-account'>
                             <tr>
                                 <th className='table-header'>MMR</th>
@@ -105,13 +104,8 @@ const Account = () => {
                                 }
                             </tr>
                         </table>
-                        <br />
-                        <br />
 
                         <Link to={"/recordings/" + sessionStorage.getItem("user")}><button>Your Game Recordings</button></Link>
-                        <br />
-                        <br />
-                        <hr></hr>
 
                         <button onClick={() => openModal()}>Update Password</button>
                         <br />
