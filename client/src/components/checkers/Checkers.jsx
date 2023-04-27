@@ -206,17 +206,21 @@ export default function Checkers(props) {
                                 }
                                 if (p.color === 0) {
                                     if (x === 0) {
-                                        p.image = "/assets/checkers/red-king.svg"
-                                        p.king = true
+                                        if (p.king === false) {
+                                            p.image = "/assets/checkers/red-king.svg"
+                                            p.king = true 
+                                            playCrownSFX()
+                                        }
                                         allowMove = false
-                                        playCrownSFX()
                                     }
                                 } else {
                                     if (x === 7) {
-                                        p.image = "/assets/checkers/black-king.svg"
-                                        p.king = true
+                                        if (p.king === false) {
+                                            p.image = "/assets/checkers/black-king.svg"
+                                            p.king = true
+                                            playCrownSFX()
+                                        }
                                         allowMove = false
-                                        playCrownSFX()
                                     }
                                 }
                                 p.x = x

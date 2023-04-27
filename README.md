@@ -74,3 +74,7 @@ A: These questions were fabricated, as we just wanted some excuses to add a litt
 
 A: Right [here](https://playcheckersnow.com/)!
 <br></br>
+
+## Miscellaneous
+API endpoint documentation is available in the /api/API_Documentation.txt file and client-specific documentation is located in /client/Functionality_Documentation.txt.
+<br></br>
