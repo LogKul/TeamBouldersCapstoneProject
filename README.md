@@ -43,13 +43,10 @@ This website is a combination of a Node.js/React client and Express.js, which al
    | PORT           | API Application Port  |
    | SROUNDS        | # of Salting Rounds   |
 
-4. Within the /client directory, you will need to set environment variables within a .env file as follows:
+4. Within the /client directory, you will need to set an environment variable within a .env file as follows:
    | Variable Name     | Variable Description  |
    | ----------------- | --------------------- |
    | REACT_APP_API_URL | Address of API App    |
-   | REACT_APP_SECRET  | Encryption Key        |
-   | REACT_APP_S1      | Salt 1                |
-   | REACT_APP_S2      | Salt 2                |
 
 5. In a CLI, run `npm install` within the /api directory
 6. Also run `npm install` in a CLI within the /client directory
