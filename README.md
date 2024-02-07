@@ -1,7 +1,7 @@
 # PlayCheckersNow
 
 Senior Capstone Project for Team Boulders.
-Website accessible [here](https://playcheckersnow.com/).
+WEBSITE IS NO LONGER ACCESSIBLE, but used to be hosted at https://playcheckersnow.com/. Links removed.
 
 ### Team Members
 - Cody Cox
@@ -24,7 +24,7 @@ This website is a combination of a Node.js/React client and Express.js, which al
 
 ## How To Run
 
-*Brief preface, it is highly advised to play on the website at [playcheckersnow.com](https://playcheckersnow.com/) if you are just trying to run the code without any changes (such as a certain professor we know), as the environment variables and database configuration can be a bit of a hassle to set up, but a SQL backup file containing the database schema is available in the root folder of the repository if you would prefer connecting to your own Postgres database.*
+*Brief preface, it is highly advised to play on the website at playcheckersnow.com (NO LONGER IN SERVICE) if you are just trying to run the code without any changes (such as a certain professor we know), as the environment variables and database configuration can be a bit of a hassle to set up, but a SQL backup file containing the database schema is available in the root folder of the repository if you would prefer connecting to your own Postgres database.*
 
 1. Install Node.js (If it is not prepackaged with your OS)
 2. Clone this repository
@@ -72,7 +72,7 @@ A: These questions were fabricated, as we just wanted some excuses to add a litt
 
 >Q: Where can I access the live deployment of this Checkers website?
 
-A: Right [here](https://playcheckersnow.com/)!
+A: The live deployment of the website has been taken down, but used to be available at playcheckersnow.com.
 <br></br>
 
 ## Miscellaneous
